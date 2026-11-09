@@ -62,7 +62,20 @@ export async function scoreAll(me: Profile): Promise<Scored[]> {
       semanticScores("offering", me.looking_for, me.pid),
       semanticScores("looking_for", me.offering, me.pid),
       semanticScores("working_on", me.working_on, me.pid),
-      searchAll<Profile>(IDX.profiles, { bool: { must_not: [{ term: { pid: me.pid } }, { term: { status: "red" } }] } }, 1000),
+      searchAll<Profile>(
+        IDX.profiles,
+        {
+          bool: {
+            must_not: [
+              { term: { pid: me.pid } },
+              { term: { status: "red" } },
+              // Never show you your own older profiles (same GitHub) if you signed up more than once.
+              ...(me.github ? [{ term: { github: me.github } }] : []),
+            ],
+          },
+        },
+        1000,
+      ),
       savedTalksByPerson(),
     ]);
     const mine = saved.get(me.pid) ?? new Set<string>();

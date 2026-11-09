@@ -41,7 +41,7 @@ struct OnboardingView: View {
                 VStack(spacing: 8) {
                     Avatar(name: name.isEmpty ? "?" : name, github: github, size: 80)
                     Text("Orbit")
-                        .font(.system(size: 40, weight: .heavy, design: .rounded))
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
                         .foregroundStyle(Theme.brand)
                     Text("Find your people at the conference")
                         .font(.subheadline)
@@ -68,8 +68,8 @@ struct OnboardingView: View {
                 .padding(.horizontal, 16)
                 .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
 
-                question("What are you into?", placeholder: "LLMs, pretraining, fine-tuning", text: $interests, color: .purple)
-                question("What do you want from this conference?", placeholder: "Meet people training LLMs at scale", text: $lookingFor, color: .pink)
+                question("What are you into?", placeholder: "LLMs, pretraining, fine-tuning", text: $interests, color: Theme.accent)
+                question("What do you want from this conference?", placeholder: "Meet people training LLMs at scale", text: $lookingFor, color: Theme.accent)
 
                 Button {
                     Task { await submit() }
@@ -101,12 +101,12 @@ struct OnboardingView: View {
 
     private func question(_ title: String, placeholder: String, text: Binding<String>, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(color)
+            Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
             TextField(placeholder, text: text, axis: .vertical)
                 .lineLimit(1...3)
                 .padding(14)
                 .background(.background, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(color.opacity(0.35)))
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Color(.separator)))
         }
     }
 

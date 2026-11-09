@@ -1,30 +1,17 @@
-// Theme.swift — Orbit's colours: one vivid accent, a brand gradient, and a stable colour per topic.
+// Theme.swift — Orbit's look: one calm indigo accent on plain system backgrounds.
 
 import SwiftUI
 
 enum Theme {
-    /// App-wide tint (buttons, selected tab, links).
-    static let accent = Color(red: 0.45, green: 0.27, blue: 0.95)
+    /// App-wide tint (buttons, selected tab, links, chips).
+    static let accent = Color.indigo
 
-    /// Violet → pink → orange, used for headers and the primary button.
-    static let brand = LinearGradient(
-        colors: [Color(red: 0.45, green: 0.27, blue: 0.95), .pink, .orange],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
+    /// Primary button fill and the wordmark. Solid, no gradient.
+    static let brand = Color.indigo
 
-    /// Soft background wash for full-screen pages.
-    static let wash = LinearGradient(
-        colors: [Color.purple.opacity(0.14), Color.pink.opacity(0.08), Color.orange.opacity(0.05)],
-        startPoint: .top,
-        endPoint: .bottom
-    )
+    /// Page background: the standard grouped background, so it looks native in light and dark mode.
+    static let wash = Color(.systemGroupedBackground)
 
-    private static let palette: [Color] = [.pink, .orange, .purple, .teal, .indigo, .mint, .blue, .green, .cyan]
-
-    /// Same topic, same colour, everywhere in the app.
-    static func color(for text: String) -> Color {
-        let hash = text.lowercased().unicodeScalars.reduce(5381) { ($0 &* 33) &+ Int($1.value) }
-        return palette[(hash & Int.max) % palette.count]
-    }
+    /// Topic chips use the single accent colour to keep things clean.
+    static func color(for text: String) -> Color { accent }
 }
