@@ -40,7 +40,10 @@ struct MyCalendarView: View {
             .safeAreaInset(edge: .bottom) { if hasItemsToday { exportBar } }
             .overlay(alignment: .top) { bannerView }
             .refreshable { await load() }
-            .task { await load() }
+            // Reload every time the Calendar tab is opened, so talks saved since then show up.
+            .task(id: appState.selectedTab) {
+                if appState.selectedTab == .calendar { await load() }
+            }
             .sheet(item: $resolving) { group in
                 ClashSheet(group: group) { keep in
                     Task { await resolve(group, keeping: keep) }

@@ -27,7 +27,10 @@ struct MatchesListView: View {
             .navigationTitle("Matches")
             .toolbar { ToolbarItem(placement: .topBarTrailing) { DevSettingsButton() } }
             .refreshable { await load() }
-            .task { await load() }
+            // Reload every time the Matches tab is opened, so new matches and meetups show up.
+            .task(id: appState.selectedTab) {
+                if appState.selectedTab == .matches { await load() }
+            }
         }
     }
 
