@@ -16,7 +16,7 @@ The `Orbit/` folder is **synced**. Any `.swift` or `.json` file you drop into it
 | Folder | Owner |
 |---|---|
 | `App/`, `Core/`, `Onboarding/`, `Radar/` | Jenish |
-| `Talks/`, `Calendar/`, `People/`, `Matches/` | Teammate C. Files there are placeholders; replace them freely |
+| `Talks/`, `Calendar/`, `People/`, `Matches/`, `Components/` | Teammate C. See [`TEAMMATE_C.md`](TEAMMATE_C.md) |
 
 ## Data
 
