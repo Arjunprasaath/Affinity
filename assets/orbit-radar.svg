@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360" width="880" height="360" role="img" aria-labelledby="title desc">
+  <title id="title">Orbit</title>
+  <desc id="desc">Animated radar: you in the center, a match pulsing as she walks toward you, other attendees on distance rings at 2, 5 and 15 meters.</desc>
+  <defs>
+    <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5DCAA5" stop-opacity="0"/>
+      <stop offset="1" stop-color="#5DCAA5" stop-opacity="0.28"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="880" height="360" rx="20" fill="#0B1020"/>
+
+  <!-- Wordmark -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="56" y="140" fill="#FFFFFF" font-size="72" font-weight="700" letter-spacing="-2">Orbit</text>
+    <text x="58" y="182" fill="#B4B2A9" font-size="19">See who's around you at the conference,</text>
+    <text x="58" y="208" fill="#B4B2A9" font-size="19">and who's worth meeting.</text>
+    <rect x="58" y="236" width="282" height="30" rx="15" fill="#1A2238"/>
+    <text x="74" y="256" fill="#85B7EB" font-size="13">Cloud Native Hackathon · KubeCon NA</text>
+    <g font-size="12" fill="#888780">
+      <circle cx="64" cy="300" r="5" fill="#1D9E75"/><text x="76" y="304">match</text>
+      <circle cx="130" cy="300" r="5" fill="#378ADD"/><text x="142" y="304">strong</text>
+      <circle cx="204" cy="300" r="5" fill="none" stroke="#EF9F27" stroke-width="2"/><text x="216" y="304">ask first</text>
+      <circle cx="286" cy="300" r="4" fill="#5F5E5A"/><text x="298" y="304">nearby</text>
+    </g>
+  </g>
+
+  <!-- Radar -->
+  <g transform="translate(650 180)">
+    <circle r="150" fill="#0F172A" stroke="#26314F" stroke-width="1"/>
+    <circle r="100" fill="none" stroke="#26314F" stroke-width="1"/>
+    <circle r="50" fill="none" stroke="#26314F" stroke-width="1"/>
+    <g font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10" fill="#5F5E5A">
+      <text x="4" y="-38">2 m</text>
+      <text x="4" y="-88">5 m</text>
+      <text x="4" y="-138">15 m</text>
+    </g>
+
+    <!-- Sweep -->
+    <g>
+      <path d="M0 0 L0 -150 A150 150 0 0 1 106 -106 Z" fill="url(#sweep)"/>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="5s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- People orbiting slowly (no names: just nearby) -->
+    <g>
+      <circle cx="-118" cy="60" r="4" fill="#5F5E5A"/>
+      <circle cx="40" cy="132" r="4" fill="#5F5E5A"/>
+      <circle cx="128" cy="-30" r="4" fill="#5F5E5A"/>
+      <circle cx="-60" cy="-128" r="4" fill="#5F5E5A"/>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="60s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- Aiko: strong match -->
+    <circle cx="-72" cy="-24" r="8" fill="#378ADD"/>
+    <text x="-72" y="-6" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#E6F1FB">Aiko</text>
+
+    <!-- Marco: good match, asked people to check first -->
+    <circle cx="-40" cy="104" r="6" fill="#378ADD" fill-opacity="0.55"/>
+    <circle cx="-40" cy="104" r="10" fill="none" stroke="#EF9F27" stroke-width="2"/>
+
+    <!-- Priya: your match, walking toward you and back -->
+    <g>
+      <circle r="12" fill="#1D9E75" fill-opacity="0.35">
+        <animate attributeName="r" values="12;24;12" dur="1.6s" repeatCount="indefinite"/>
+        <animate attributeName="fill-opacity" values="0.4;0;0.4" dur="1.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="10" fill="#1D9E75"/>
+      <text y="26" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#E1F5EE">Priya · 3.2 m</text>
+      <animateTransform attributeName="transform" type="translate" values="96 -96; 26 -30; 96 -96" keyTimes="0; 0.5; 1" calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" dur="7s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- You -->
+    <path d="M0 -11 L-8 8 L0 3 L8 8 Z" fill="#378ADD"/>
+  </g>
+</svg>
