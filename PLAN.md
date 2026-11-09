@@ -1,19 +1,16 @@
-# Orbit — combined build plan
+# Orbit — build plan
 
 > Cloud Native Hackathon (WeMakeDevs × KubeCon NA), Salt Lake City, Nov 9 2026.
-> Written at **2:30 PM MT**. Submissions close at **5:30 PM**, which leaves **3 hours**.
+> Written at **2:40 PM MT**. Submissions close at **5:30 PM**.
 >
-> This plan merges **HallwayTrack** (profiles, reciprocal matching, talk search) and **Orbit**
-> (live iPhone radar) into a single product. It replaces both earlier plans.
-> [`PLAN_ORBIT.md`](PLAN_ORBIT.md) remains as the detailed reference for the iOS proximity work.
+> One iPhone app that combines **HallwayTrack** (swipe on talks → your calendar → matched people →
+> where you can meet) and **Orbit** (a live radar of who's near you).
+> [`PLAN_ORBIT.md`](PLAN_ORBIT.md) remains as the detailed reference for the proximity work.
 
 ## One-liner
 
-**Orbit knows who you should meet, where they're heading next, and when they're 4 meters away.**
-
-Open the app and a radar shows the people physically near you. The ones you should meet glow.
-Tap one to see why ("Priya needs what you offer") and which talk you'd both like next. Then
-follow the arrow to walk over.
+**Swipe to build your conference. Get matched with people who share your interests. See where you
+can meet. When they're nearby, Orbit points the way.**
 
 ## Pitch hook
 
@@ -21,363 +18,331 @@ follow the arrow to walk over.
 
 - Networking is the #1 reason people attend conferences, and many find it awkward.
 - KubeCon NA 2025 had about 9,400 attendees, **half of them first-timers**.
-- Whova, Brella and Sched give you a **list of 9,000 people**. Orbit tells you **which of the people standing next to you is worth talking to, and why**.
-- Proximity apps like Highlight and Banjo died from cold start and creepiness. A conference fixes the cold start (everyone is in one building to meet strangers). Our design fixes the creepiness: no location ever goes to a server, you're visible only while the app is open, and 🔴 makes you invisible.
+- Sched gives you 300 talks in a list, and Whova gives you a list of 9,000 people. Neither tells you **which talks are for you, who you should meet, when you're both free, or that they're 4 meters away right now.**
 
-## How the two ideas fit together
+## The user flow (5 steps)
 
-| Layer | From | Answers | Runs on |
-|---|---|---|---|
-| **Profile** | HallwayTrack | Who you are, what you need, what you offer | Backend + Elastic + LLM |
-| **Match** | HallwayTrack | Is this person worth meeting, and why | Backend + Elastic |
-| **Where next** | HallwayTrack (cut down) | Which talk you'd both like, and when and where it is | Backend + Elastic |
-| **Radar + Find** | Orbit | Who is near me **right now**, and which way to walk | iPhone, peer to peer |
+```
+1. Onboard ─► 2. Swipe talks ─► 3. My calendar ─► 4. Swipe people ─► 5. Match: where we can meet ─► 6. Orbit radar + Find
+   profile      (Elastic)          (EventKit)        (reciprocal)       (partial calendar reveal)       (live, peer to peer)
+```
 
-The radar finds **who is nearby**, the backend decides **who matters**, and the card says **why and where next**.
+1. **Onboard (under 60 seconds)**
+   - Name, role, company, pronouns (optional), GitHub username.
+   - **"What are you working on?"**, **"What are you looking for here?"**, **"What could you help someone with?"**
+   - "Here for" chips: hiring / job hunting / learning / finding contributors / meeting users.
+   - The backend builds a profile (GitHub + LLM). The app shows the topic tags it found, and the user removes any that are wrong, then confirms.
+2. **Swipe talks**
+   - Each card shows title, speaker, room, time, level, and **a one-line reason it fits you** ("You maintain an eBPF tracing repo, and this talk covers eBPF for network policy").
+   - Right = save · Up = must-attend · Left = skip.
+   - Cards that clash with a must-attend are marked "⚠️ clashes with …".
+   - The deck adapts as you swipe: right-swiped talks pull the next recommendations toward them.
+3. **My calendar**
+   - Saved talks in a day timeline (Nov 10–12). Gaps show as **free blocks**.
+   - Clashes are highlighted, with a one-tap choice to keep one.
+   - **"Add all to Calendar"** writes the talks into the iPhone Calendar using EventKit.
+4. **Swipe people**
+   - The deck is recommended people with a reason: *"Priya is looking for GPU autoscaling contributors, which you've done · You've saved 3 of the same talks."*
+   - Each card shows role, company, "Working on", "Here for", and shared topics. **No calendar details yet.**
+   - Right = want to meet · Left = skip. **A match happens only when both swipe right.**
+5. **Match: where we can meet**, with **partial calendar reveal**
+   - Only after a mutual match, each person sees a **limited** view of the other's calendar:
+     - ✅ **Talks you're both attending**, e.g. "eBPF at Scale · 3:30 · Room 155"
+     - ✅ **Times you're both free**, e.g. "Tue 2:40–3:20", **without** what the other person is doing the rest of the time
+     - ✅ **Where they'll be next** (planned), e.g. "Next: Room 155 until 3:40", labeled *planned*, never live
+     - ❌ Never their full schedule, private talks, or any live location
+   - **Meetup suggestions**, ranked:
+     1. A shared talk: "Meet at the Room 155 door when 'eBPF at Scale' ends (3:40)"
+     2. Overlapping free time: "Coffee by Hall B, Tue 2:45–3:15", a spot between both previous rooms
+   - **Propose → Accept**: once both accept, the meetup is added to both in-app calendars and the iPhone Calendar.
+6. **📡 Orbit radar** (live, in the room)
+   - Shows nearby people as dots on distance rings (< 2m, 2–5m, 5–15m), found phone-to-phone.
+   - **Your matches glow brightest**, recommended people glow softly, and everyone else is dimmed.
+   - Tap a dot to open their card. For a match it shows the meetup and the times you're both free.
+   - **Find:** a full-screen arrow + distance, like AirTag precision finding. Use it to walk over when your meetup is due, or to catch a match you didn't know was nearby.
+   - **Status:** 🟢 open to chat / 🟡 ask first / 🔴 invisible (stops advertising completely).
 
-## Features
+## Privacy and consent (Merge Forward)
 
-### In scope (must ship)
+| Data | Who sees it |
+|---|---|
+| Profile (role, topics, working on) | Everyone at the event (that's the point), unless 🔴 |
+| Your saved talks | Only you. Mutual matches see **only the talks you both saved** |
+| Your free time | Only mutual matches, and only **overlaps** with their own free time |
+| Your next planned room | Only mutual matches. You can turn it off ("Hide where I'll be") |
+| Live proximity | Never leaves the phone. Computed between the two phones only. The server gets profile ids, never positions |
 
-1. **Onboarding (under 60 seconds)**
-   - Name, role, company, pronouns (optional).
-   - GitHub username (optional but encouraged).
-   - **"What are you working on?"** (one line)
-   - **"What are you looking for here?"** (free text, plus "Here for" chips: hiring / job hunting / learning / finding contributors / meeting users)
-   - **"What could you help someone with?"** (free text)
-   - The backend builds the profile, then the app shows the topic tags it found. The user can remove any of them, then confirms.
-2. **📡 Radar**
-   - You're in the center, with nearby people as dots on distance rings (< 2m, 2–5m, 5–15m).
-   - **Dot glow = match score** from `/match`: strong matches glow, the rest are dimmed.
-   - Status color on each dot: 🟢 open to chat / 🟡 ask first. 🔴 people don't appear at all.
-   - On phones with UWB direction, dots sit in the person's real direction. Otherwise they get a stable random angle.
-3. **🪪 Person card** (tap a dot):
-   - Name, role, company, pronouns, status, "Here for" chips, GitHub link
-   - **"Working on"**, one line
-   - **"Why you should meet"**, a reason generated from the reciprocal match ("Priya is looking for GPU autoscaling contributors, which you've done")
-   - **"A talk for both of you"**, e.g. *"eBPF at Scale · 3:30 PM · Room 155"* (from `/talks/shared`)
-   - **Find** button
-4. **🧭 Find:** a full-screen arrow plus the distance ("3.2 m"), like AirTag precision finding. If the phone can't measure direction, show distance only.
-5. **🟢🟡🔴 Status:** one tap from the radar screen. 🔴 stops advertising completely.
-
-### Stretch (only once the demo works end to end)
-
-- Filter chips: show only hiring, first-timers, or one topic.
-- "People I met today": a list kept only on the phone, of people within 2m for at least 30 seconds.
-- LinkedIn profile PDF upload and OpenAlex (Scholar-style) papers as extra profile sources.
-- Dash0 dashboard + SLO.
-- A big-screen demo dashboard (opt-in demo mode only).
-
-### Cut on purpose
-
-- Talk and people swipe decks, schedule builder, `.ics` export, meetup suggestions, venue map
-- Web app, Android, background detection, chat/DMs, X ingestion, voice input
-- Radar (Skyhook) track deploy
+- Unmatching or blocking hides everything instantly.
+- You're visible on the radar only while the app is open. 🔴 makes you invisible.
+- 🟡 **Ask first** lets people who find approaching strangers hard still be discoverable on their own terms.
+- All data is deleted after the event. Raw GitHub data is discarded after the profile is built.
+- VoiceOver labels on every card and dot. The swipe decks have **Save / Skip buttons** as an alternative to swiping. The radar has a list view.
 
 ## Architecture
 
 ```
-┌──────────────────────── iPhone (SwiftUI) ────────────────────────┐
-│ Onboarding ─► POST /profiles                                     │
-│                                                                  │
-│ ProximityManager                                                 │
-│   MultipeerConnectivity  (discover peers, discoveryInfo={pid})   │
-│   NearbyInteraction      (distance + direction per peer)         │
-│        │ nearby pids                                             │
-│        ▼                                                         │
-│ RadarView ─► POST /match {me, others[]} ─► glow + reasons        │
-│ PersonCard ─► GET /profiles/:pid, GET /talks/shared?a=&b=        │
-│ FindView   (NI direction/distance only, no network)              │
-└──────────────────────────────────────────────────────────────────┘
-                 │ HTTPS (profile ids only, never location)
-                 ▼
-┌──────────────── Backend (Node 22 + TypeScript, Fastify) ─────────┐
-│ /profiles   GitHub API ─► OpenAI extraction ─► Elastic profiles   │
-│ /match      reciprocal scoring over Elastic semantic_text + RRF   │
-│ /talks/shared  hybrid query over Elastic talks using both people  │
-│ OpenTelemetry ─► Dash0 (spans for Elastic, OpenAI, GitHub calls)  │
-└──────────────────────────────────────────────────────────────────┘
-                 │
-                 ▼
-        Elastic Serverless: profiles, talks
+┌──────────────────────────── iPhone app (SwiftUI) ────────────────────────────┐
+│ Onboarding │ Talks deck │ My Calendar │ People deck │ Matches │ Orbit radar   │
+│                              │ EventKit                         │ Multipeer   │
+│                              ▼                                  │ + NI (UWB)  │
+│                         iPhone Calendar                         ▼             │
+│                                                     ProximityManager          │
+└───────────────┬──────────────────────────────────────────────────────────────┘
+                │ HTTPS: profile ids, swipes, schedules (never location)
+                ▼
+┌──────────────────── Backend (Node 22 + TypeScript, Fastify) ─────────────────┐
+│ profiles: GitHub ─► OpenAI extraction ─► Elastic                              │
+│ talks:    recommend (hybrid + RRF + swipe feedback), schedule, clashes        │
+│ people:   recommend (reciprocal + shared talks), swipes, mutual matches       │
+│ meet:     shared talks + free-time overlap ─► suggestions, meetups            │
+│ radar:    POST /radar/match {me, others[]} ─► glow tiers                      │
+│ OpenTelemetry ─► Dash0                                                        │
+└───────────────┬──────────────────────────────────────────────────────────────┘
+                ▼
+     Elastic Serverless: profiles · talks · swipes · schedules · meetups
 ```
 
 ## Team split (3 people)
 
 Each person owns separate files, so nobody blocks anyone else after the first 10 minutes.
 
-| | **A: Jenish (iOS)** | **B: Arjun (search + matching)** | **C: third teammate (platform + profiles)** |
+| | **A: Jenish (iOS core + Orbit)** | **B: Arjun (backend + Elastic)** | **C: third teammate (iOS screens)** |
 |---|---|---|---|
-| **Mission** | Make the radar and Find work on real iPhones | Make the matches smart: Elastic is the brain | Give everyone a running backend, real profiles and observability |
-| **Owns** | `/ios/**` | `backend/src/elastic.ts`, `match.ts`, `talks.ts`, `scripts/seed.ts`, `/data/**` | `backend/src/server.ts`, `profile.ts`, `otel.ts`, deploy, `README.md` |
-| **Builds** | Device checklist, `ProximityManager` (Multipeer + NI), `MockProximityManager`, Onboarding, RadarView, PersonCard, FindView, status (🟢🟡🔴), VoiceOver labels, list view | Elastic project + both index mappings, `talks.json` (about 50 talks) + `personas.json` (about 20 personas), seed script, `POST /match` (reciprocal scoring, tiers, reasons, caching), `GET /talks/shared` (hybrid + RRF) | Fastify scaffold with stub routes returning the contract's sample JSON, `POST/GET/PATCH /profiles` (GitHub fetch + OpenAI structured extraction + index), public deploy, OpenTelemetry → Dash0, planted slow path + Agent0 fix, README + AI disclosure, backup demo video |
-| **Done when** | Two iPhones show each other on the radar with glow from `/match`, and Find points the way | `/match` returns sensible strong matches for seeded personas in under 1 second, and `/talks/shared` returns 3 relevant upcoming talks | The deployed URL serves every endpoint, a real GitHub username becomes a good profile, and a trace of `/match` is visible in Dash0 |
-| **Unblocks** | — | A (glow, reasons, talks) | A (stub endpoints by 3:00, real `/profiles` by 3:40) and B (scaffold + deploy) |
+| **Mission** | App shell + the live radar | The brain: profiles, recommendations, matching, meetups | The swipe → calendar → match experience |
+| **Owns** | `ios/Orbit/App/**`, `ios/Orbit/Core/**` (API client, models), `ios/Orbit/Onboarding/**`, `ios/Orbit/Radar/**`, the Xcode project file | `backend/**`, `data/**` | `ios/Orbit/Talks/**`, `ios/Orbit/Calendar/**`, `ios/Orbit/People/**`, `ios/Orbit/Matches/**` |
+| **Builds** | Device checklist + signing · Xcode project, tab bar, `APIClient` + `Models.swift` (from the contract below) · Onboarding · `ProximityManager` (Multipeer + NI) + `MockProximityManager` · RadarView, FindView, status · VoiceOver labels | Fastify scaffold with **stub** routes returning the sample JSON (by 2:55) · Elastic indices · `talks.json` + `personas.json` + seed · all endpoints below · deploy · OpenTelemetry → Dash0 | `SwipeDeck` view (reusable for talks and people) · TalksDeckView · MyCalendarView + EventKit export · PeopleDeckView · MatchesList + MatchDetailView (shared talks, free overlaps, next room, meetup suggestions, propose/accept) |
+| **Done when** | Two iPhones see each other on the radar, matches glow, and Find points the way | A real GitHub user gets good talk recommendations, and seeded personas match and suggest sensible meetups, each in under 1 second | Swipe 5 talks → they're in the iPhone Calendar → swipe people → match → accept a meetup → it's in the calendar |
+
+**Rules to avoid merge conflicts:**
+- **Only Jenish edits the Xcode project file.** C creates Swift files in their own folders, and Jenish adds them to the project. Alternatively, C's screens can live in a local Swift package that Jenish adds once.
+- `Models.swift` + `APIClient.swift` are written by Jenish **from the contract below** by 3:05. C uses them without editing (ask Jenish for changes).
+- All of C's screens work against **stub JSON** at first, so C never waits for B.
 
 **Hand-off points:**
-- **2:40:** C pushes the scaffold with **stub** endpoints returning the sample JSON from the API contract. A builds against the stubs, and B replaces them route by route.
-- **3:00:** B finishes the Elastic indices + seed. C's `/profiles` writes into `profiles`.
-- **4:00:** the backend is deployed to a public URL. A switches the app from stubs to it.
+- **2:55:** B pushes the stub backend. A pushes the Xcode shell + `Models.swift`/`APIClient.swift` by 3:05.
+- **3:40:** B deploys the real talk and profile endpoints. A and C switch from stubs to the live URL.
+- **4:20:** B's people, match and meet endpoints are live.
 - **4:50:** everyone tests end to end on 3 phones.
 
-## API contract (agree on this first, then build in parallel)
+## API contract (lock at 2:40–2:50)
 
-Base URL is set in the app's config. All JSON. No auth (demo only).
+All JSON, no auth (demo only). `pid` = profile id, `tid` = talk id.
 
-### `POST /profiles` (create or update)
-Request:
+| Method + path | Purpose | Response (shape) |
+|---|---|---|
+| `POST /profiles` | Create a profile from the onboarding answers + GitHub | `Profile` |
+| `GET /profiles/:pid` · `PATCH /profiles/:pid` | Read / edit (tags, status, `hide_next_room`) | `Profile` |
+| `GET /talks/recommended?pid=&limit=10` | Next cards for the talks deck (excludes talks already swiped) | `[TalkCard]` |
+| `POST /swipes` | `{pid, target_type: "talk"\|"person", target_id, dir: "right"\|"up"\|"left"}` | `{ok, match?: Match}` (a person swipe can create a match) |
+| `GET /schedule/:pid` | The user's saved talks, sorted, with clashes and free blocks | `Schedule` |
+| `GET /people/recommended?pid=&limit=10` | Next cards for the people deck | `[PersonCard]` |
+| `GET /matches/:pid` | Mutual matches | `[Match]` |
+| `GET /meet?a=&b=` | The partial calendar reveal + meetup suggestions (only works if a and b are matched) | `MeetView` |
+| `POST /meetups` · `PATCH /meetups/:id` | Propose `{a, b, start, end, place}` · accept or decline | `Meetup` |
+| `POST /radar/match` | `{me, others: [pid]}` → glow tier for each nearby person | `[{pid, tier: "match"\|"strong"\|"good"\|"weak", reason}]` |
+| `GET /healthz` | Health check | `{ok: true}` |
+
+Main shapes:
 ```json
-{
-  "pid": "optional; server generates if missing",
-  "name": "Arjun", "role": "ML Engineer", "company": "Acme", "pronouns": "he/him",
-  "github": "arjunprasaath",
-  "working_on": "Serving LLMs on Kubernetes with GPU autoscaling",
-  "looking_for": "Contributors for my operator; learn multi-cluster networking",
-  "offering": "KServe deployment, GPU autoscaling",
-  "here_for": ["finding_contributors", "learning"],
-  "status": "green"
-}
-```
-Response: the stored profile, including the extracted fields:
-```json
-{
-  "pid": "p_8f3k2",
-  "...": "all request fields",
-  "topics": ["kubernetes", "gpu", "llm-serving", "kserve"],
-  "summary": "Builds ML serving infra on Kubernetes...",
-  "evidence": [{"topic": "kserve", "source": "github:arjunprasaath/kserve-demo"}]
-}
-```
+// Profile
+{"pid":"p_8f3k2","name":"Arjun","role":"ML Engineer","company":"Acme","pronouns":"he/him",
+ "github":"arjunprasaath","working_on":"Serving LLMs on k8s with GPU autoscaling",
+ "looking_for":"Contributors for my operator; learn multi-cluster networking",
+ "offering":"KServe deployment, GPU autoscaling","here_for":["finding_contributors","learning"],
+ "topics":["kubernetes","gpu","llm-serving"],"summary":"…","status":"green","hide_next_room":false}
 
-### `GET /profiles/:pid`
-Returns the profile above. The app caches it for the session.
+// TalkCard
+{"tid":"t_42","title":"eBPF at Scale","speakers":["…"],"room":"Room 155",
+ "start":"2026-11-10T15:00:00-07:00","end":"2026-11-10T15:40:00-07:00","level":"intermediate",
+ "reason":"You maintain an eBPF tracing repo; this covers eBPF for network policy",
+ "clashes_with":null}
 
-### `PATCH /profiles/:pid`
-For edits after review, e.g. `{ "topics": [...], "status": "yellow" }`.
+// Schedule
+{"pid":"p_8f3k2","items":[{"tid":"t_42","title":"…","room":"…","start":"…","end":"…","must":true,"clash":false}],
+ "free":[{"start":"2026-11-10T15:40:00-07:00","end":"2026-11-10T16:30:00-07:00"}]}
 
-### `POST /match`
-Request: `{ "me": "p_8f3k2", "others": ["p_a1", "p_b2", "p_c3"] }`
-Response, sorted by score:
-```json
-[
-  {
-    "pid": "p_a1",
-    "score": 0.82,
-    "tier": "strong",
-    "reason": "Priya is looking for GPU autoscaling contributors, which you've done.",
-    "shared_topics": ["kubernetes", "gpu"]
-  }
-]
-```
-Tiers: `strong` ≥ 0.65, `good` ≥ 0.4, otherwise `weak`. The app uses the tier for glow and dimming.
+// PersonCard
+{"pid":"p_a1","name":"Priya","role":"…","company":"…","working_on":"…","here_for":["hiring"],
+ "shared_topics":["kubernetes","gpu"],"shared_talks_count":3,"score":0.82,
+ "reason":"Priya is looking for GPU autoscaling contributors, which you've done"}
 
-### `GET /talks/shared?a=<pid>&b=<pid>`
-Returns up to 3 upcoming talks both people would like:
-```json
-[{"id": "t_42", "title": "eBPF at Scale", "room": "Room 155", "start": "2026-11-10T15:30:00-07:00", "why": "Both of you work on Cilium"}]
+// Match
+{"pid":"p_a1","name":"Priya","matched_at":"…","reason":"…"}
+
+// MeetView (the partial calendar reveal)
+{"with":"p_a1",
+ "shared_talks":[{"tid":"t_42","title":"eBPF at Scale","room":"Room 155","start":"…","end":"…"}],
+ "free_overlaps":[{"start":"2026-11-10T15:40:00-07:00","end":"2026-11-10T16:10:00-07:00"}],
+ "their_next":{"room":"Room 155","until":"2026-11-10T15:40:00-07:00","planned":true},
+ "suggestions":[
+   {"kind":"after_shared_talk","place":"Room 155 door","start":"…15:40","end":"…15:55","label":"Meet when 'eBPF at Scale' ends"},
+   {"kind":"free_overlap","place":"Coffee by Hall B","start":"…15:45","end":"…16:10","label":"You're both free"}]}
 ```
 
-### `GET /healthz`
-Returns `{ "ok": true }`.
+## Backend details (B)
 
-## Backend details
+### Elastic indices
+- **`profiles`**:
+  - Keyword fields: `pid`, `role`, `company`, `status`, `here_for`, `topics`, `github`
+  - `semantic_text` fields: `working_on`, `looking_for`, `offering`
+  - Other: `hide_next_room` (boolean), `is_persona` (boolean)
+- **`talks`**:
+  - Keyword fields: `tid`, `room`, `level`, `track`, `topics`
+  - Text fields: `title`, `abstract`, `speakers`
+  - Dates: `start`, `end`
+  - `content` (`semantic_text`) = title + abstract + speakers
+- **`swipes`**: `pid`, `target_type`, `target_id`, `dir`, `ts`
+- **`meetups`**: `id`, `a`, `b`, `place`, `start`, `end`, `status`
+
+Embeddings come from Elastic's built-in inference (`semantic_text`), so there's no separate embedding service.
+A schedule is just the talks a person swiped right or up, so it's computed from `swipes` + `talks` rather than stored.
 
 ### Profile building (`POST /profiles`)
-1. If `github` is set, fetch these in parallel (with a 5-second timeout each):
-   - `GET /users/:u`
-   - `GET /users/:u/repos?sort=pushed&per_page=10` (names, descriptions, languages, topics)
-   - `GET /users/:u/starred?per_page=30` (interest signal)
-2. Send everything to OpenAI with **structured outputs** (JSON schema), asking for: `topics` (max 8, lowercase kebab-case), `summary` (one sentence), and `evidence[]`.
-   - Weight topics by evidence: a topic needs at least 2 signals, **or** has to appear in the user's own text.
-3. Index into `profiles`, then return the profile.
-4. If GitHub fails or there's no username, build the profile from the free text alone.
+1. If `github` is set, fetch in parallel with a 5-second timeout each: `/users/:u`, the 10 most recently pushed repos (description, language, topics), and 30 starred repos.
+2. Use OpenAI **structured outputs** to extract `topics` (max 8), `summary` (one sentence) and `evidence[]`. A topic needs at least 2 signals, or has to appear in the user's own text.
+3. If GitHub fails, build the profile from the free text alone.
 
-### Elastic `profiles` index
-```json
-{
-  "mappings": {
-    "properties": {
-      "pid":          {"type": "keyword"},
-      "name":         {"type": "text"},
-      "role":         {"type": "keyword"},
-      "company":      {"type": "keyword"},
-      "status":       {"type": "keyword"},
-      "here_for":     {"type": "keyword"},
-      "topics":       {"type": "keyword"},
-      "github":       {"type": "keyword"},
-      "summary":      {"type": "text"},
-      "working_on":   {"type": "semantic_text"},
-      "looking_for":  {"type": "semantic_text"},
-      "offering":     {"type": "semantic_text"},
-      "is_persona":   {"type": "boolean"}
-    }
-  }
-}
-```
+### Talk recommendations (`GET /talks/recommended`)
+1. Query text = `working_on` + `looking_for` + the titles of up to 5 talks the user swiped right on (feedback loop).
+2. Hybrid search: a `semantic` query on `content` plus a `terms` query on `topics`, merged with **RRF**. Exclude talks already swiped. Keep only future talks.
+3. Re-rank: boost talks whose level fits the person's seniority, and boost talks that the user's matches saved.
+4. Mark clashes against must-attends.
+5. `reason`: one batched OpenAI call per page of 10 (cached). Template fallback: "Covers {topic} from your work on {working_on}".
 
-### Elastic `talks` index
-```json
-{
-  "mappings": {
-    "properties": {
-      "id":       {"type": "keyword"},
-      "title":    {"type": "text"},
-      "abstract": {"type": "text"},
-      "speakers": {"type": "text"},
-      "room":     {"type": "keyword"},
-      "start":    {"type": "date"},
-      "end":      {"type": "date"},
-      "level":    {"type": "keyword"},
-      "track":    {"type": "keyword"},
-      "topics":   {"type": "keyword"},
-      "content":  {"type": "semantic_text"}
-    }
-  }
-}
-```
-`content` = title + abstract + speakers. Embeddings come from Elastic's built-in inference,
-so there is no separate embedding service.
+### Schedule (`GET /schedule/:pid`)
+Saved talks sorted by `start`. Clash = overlapping times. Free blocks = gaps of 20 minutes or more
+between 9:00 and 18:00 each day.
 
-### Reciprocal matching (`POST /match`)
-For each `other` in the request:
+### People recommendations (`GET /people/recommended`)
 ```
 need_offer   = sqrt( sim(me.looking_for, other.offering) · sim(other.looking_for, me.offering) )
-shared       = 0.5 · jaccard(me.topics, other.topics) + 0.5 · sim(me.working_on, other.working_on)
-goal_bonus   = 0.1 if the goals complement each other (hiring↔job_hunting, finding_contributors↔learning)
-score        = 0.55 · need_offer + 0.35 · shared + goal_bonus   (capped at 1)
+interests    = 0.5 · jaccard(topics) + 0.5 · sim(me.working_on, other.working_on)
+talk_overlap = |shared saved talks| / max(1, |my saved talks|)
+score        = 0.45 · need_offer + 0.30 · interests + 0.25 · talk_overlap  (+0.1 if goals complement)
 ```
-- `sim(text, field)` is a `semantic` query on that field, filtered to `pid: other`, with the score normalized to 0–1. For speed, run one `semantic` query per direction over **all** the `others` at once (`terms: {pid: others}`), then read off each person's score.
-- The geometric mean in `need_offer` means a pair only scores high if **both** people benefit.
-- `reason`: one short OpenAI call per **strong or good** match, using only the two profiles. Cache by `(me, other)` pair. Weak matches get a reason built from a template ("You both work on {topic}").
-- Skip anyone with `status: red`.
+- Run one batched `semantic` query per direction over the candidates. The geometric mean means a pair only scores high if **both** people benefit.
+- Use MMR to diversify the list. Exclude people already swiped and anyone with 🔴 status.
 
-### Talk search (`GET /talks/shared`)
-- Build the query text from both people's `working_on` and `looking_for`, joined together.
-- Run a hybrid query: a `semantic` query on `content` plus a `terms` query on `topics` (union of both people's topics), merged with **RRF**.
-- Keep only talks with `start > now`, and return the top 3.
-- `why`: template text from the shared topics, or an LLM line if there's time.
+### Mutual match (`POST /swipes` with `target_type: person`)
+- On a right swipe, check whether the other person has already swiped right on you. If so, create a match and return it.
+- **Demo helper:** seeded personas automatically swipe right on anyone whose score with them is ≥ 0.6, so a match happens live on stage.
+
+### Meet (`GET /meet?a=&b=`)
+- Return 403 unless a and b are matched.
+- `shared_talks` = the overlap of both schedules.
+- `free_overlaps` = the intersection of both people's free blocks (15 minutes or more).
+- `their_next` = b's next saved talk's room and end time. Omitted if `hide_next_room`.
+- Suggestions:
+  1. After each shared talk: "{room} door", for 15 minutes after it ends.
+  2. For each free overlap: a spot near both people's previous rooms, from a small `places` map (rooms → nearest coffee/hallway spot).
+  - Sort by start time, and return the top 3.
+
+### Radar (`POST /radar/match`)
+For each nearby pid:
+- tier `match` if mutually matched;
+- otherwise `strong` / `good` / `weak` from the people score (≥ 0.65 / ≥ 0.4).
+
+Include a short reason.
 
 ### Seed data
-- `data/talks.json`: about 50 talks covering several tracks and levels, with rooms and times on Nov 10–12. Use the public KubeCon NA schedule if an export exists; otherwise curate by hand.
-- `data/personas.json`: about 20 **made-up** personas (clearly fictional, not real attendees) with complementary needs, so matching has something to show.
-- `scripts/seed.ts`: creates both indices and bulk-loads both files.
+- `data/talks.json`: about 50 talks over Nov 10–12, with rooms, times, levels and topics. Use the public KubeCon NA schedule if there's an export; otherwise curate by hand.
+- `data/personas.json`: about 20 **made-up** personas (clearly fictional) with complementary needs, **each with 4–6 saved talks**, so overlaps, free time and meetups have data.
+- `data/places.json`: room → nearby meeting spot.
 
 ### Observability (Dash0)
-- Use the OpenTelemetry Node SDK with OTLP export to Dash0.
-- Auto-instrument HTTP, and add manual spans for `github.fetch`, `openai.extract`, `openai.reason`, `elastic.match` and `elastic.talks`.
-- Log each match as a structured event (score and tier only, no personal data).
-- Demo moment: plant a slow path (for example, no cache on `reason`), let Agent0 find it, fix it, and show the before/after in the demo.
+- OpenTelemetry Node SDK with OTLP export to Dash0.
+- Spans for the GitHub, OpenAI and Elastic calls.
+- Demo moment: Agent0 finds a planted slow path (uncached reasons), then show the fix.
 
-## iOS details (summary; full detail in [`PLAN_ORBIT.md`](PLAN_ORBIT.md))
+## iOS details
 
-- **Stack:** SwiftUI on iOS 17+, using MultipeerConnectivity and NearbyInteraction.
-- **Discovery:**
-  - Every phone advertises and browses the service type `orbit-cnh`, with `discoveryInfo = {"pid": "<pid>"}`.
-  - When a peer is found: invite it, connect the session, and exchange `NIDiscoveryToken`s.
-  - Then run one `NISession` per peer.
-- **Capabilities:** check `NISession.deviceCapabilities`. Direction may need camera assistance on newer iPhones. If it isn't available, fall back to distance only. A phone with no UWB shows peers as "nearby" on the outer ring.
-- **Match refresh:** when the set of nearby pids changes, call `POST /match` (debounced 2 seconds), cache the results, and refresh every 30 seconds.
-- **Status:**
-  - 🔴 stops advertising and browsing.
-  - 🟡 and 🟢 are sent to the backend (`PATCH /profiles/:pid`).
-  - The status is also included in `discoveryInfo`, so the radar updates instantly.
+### A: Jenish
+- **Stack:** SwiftUI on iOS 17+. A tab bar with **Talks · Calendar · People · Matches · Orbit**.
+- **Shared code:**
+  - `APIClient` (async/await, base URL from config, with a `useStubs` flag that loads bundled JSON).
+  - `Models.swift`, generated from the shapes above.
+- **Proximity:**
+  - **Discovery:** MultipeerConnectivity with service type `orbit-cnh` and `discoveryInfo = {pid, status}`. When a peer connects, exchange `NIDiscoveryToken`s and run one `NISession` per peer.
+  - **Capabilities:** check `deviceCapabilities`. Fall back to distance only, or to "nearby" only on phones without UWB.
+  - **Radar updates:** call `POST /radar/match` with the nearby pids, debounced 2 seconds and refreshed every 30 seconds.
+- **`MockProximityManager`:** emits seeded persona pids at random distances. Use it in the Simulator and for the stage fallback.
 - **`Info.plist` keys:**
   - `NSLocalNetworkUsageDescription`
   - `NSBonjourServices` (`_orbit-cnh._tcp`, `_orbit-cnh._udp`)
   - `NSNearbyInteractionUsageDescription`
+  - `NSCalendarsWriteOnlyAccessUsageDescription` (for C's EventKit)
   - `NSCameraUsageDescription` (only if camera assistance is used)
-- **Simulator:** it can't do proximity. Use a `MockProximityManager` that emits fake peers (seeded persona pids at random distances) so the UI and backend integration can be built without phones.
 
-## Privacy and accessibility (Merge Forward)
-
-- **No location ever leaves the phone.** Proximity is computed only between the two phones involved. The backend receives profile ids, never positions or distances.
-- **Visible only while the app is open.** 🔴 makes you invisible instantly.
-- **🟡 Ask first** lets people who find approaching strangers hard (or who are neurodivergent, or tired) still be discoverable on their own terms.
-- Profiles hold only what you typed or approved. The raw GitHub data is discarded after extraction, and all profiles are deleted after the event.
-- The app works with VoiceOver: dots have accessible labels ("Priya, strong match, about 3 meters, ahead-left"), and there's a list view as an alternative to the radar.
+### C: third teammate
+- **`SwipeDeck<Card>`:** a generic stack of cards with drag gestures (right / left / up) **plus buttons**, used for both talks and people.
+- **EventKit:**
+  - Request permission with `EKEventStore().requestWriteOnlyAccessToEvents()` (iOS 17).
+  - Create an `EKEvent` for each saved talk and each accepted meetup. Put the room in `location` and the reason in `notes`.
+  - Store the event ids so a talk isn't added twice.
+- **MyCalendarView:** a day timeline with talks as blocks, free time as dashed blocks, and clashes in red.
+- **MatchDetailView:** sections for shared talks, times you're both free, their next room, and suggestion cards with a **Propose** button. Show incoming proposals with **Accept** / **Decline**. Include a "Find on radar" button that opens Orbit with that person selected.
 
 ## Sponsor tracks
 
 | Track | How we qualify | Priority |
 |---|---|---|
-| **Best overall** (DGX Spark) | Hook + live two-phone demo + the "why you should meet" reason | 🎯 |
-| **Merge Forward** (iPad) | Consent-first status, no location stored, VoiceOver, 🟡 Ask first | 🎯 |
-| **Elasticsearch** ($4K) | Elastic is the core data layer: profiles, reciprocal semantic matching, hybrid talk search with RRF | 🎯 |
-| **Dash0** ($4K) | Traced backend, Agent0 finding the planted slow path, dashboard | ✅ if time allows |
+| **Elasticsearch: "Find the Right Talk"** ($4K) | Elastic is the whole data layer: hybrid talk recommendations with RRF and swipe feedback, reciprocal people matching, schedules and meetups | 🎯 |
+| **Best overall** (DGX Spark) | Full journey: swipe → calendar → match → meet → live radar + Find | 🎯 |
+| **Merge Forward** (iPad) | Partial-reveal consent model, no live location stored, 🔴/🟡, VoiceOver, button alternatives | 🎯 |
+| **Dash0** ($4K) | Traced backend + Agent0 fix in the demo | ✅ if time allows |
 | Gitar ($4K) | Features land through Gitar-reviewed PRs | Only if the repo is set up for it |
 | Radar ($4K) | — | Skip |
 
-## Repo layout
+## Timeline (2:40 → 5:30 PM MT)
 
-```
-/ios/Orbit.xcodeproj            SwiftUI app (Jenish)
-/backend/src/server.ts          Fastify app + routes (Arjun)
-/backend/src/elastic.ts         client, mappings, queries
-/backend/src/profile.ts         GitHub fetch + OpenAI extraction
-/backend/src/match.ts           reciprocal scoring + reasons
-/backend/src/talks.ts           shared-talk hybrid query
-/backend/src/otel.ts            OpenTelemetry → Dash0
-/backend/scripts/seed.ts        index creation + bulk load
-/data/talks.json  /data/personas.json
-README.md                       setup, architecture, AI-assistant disclosure
-```
-
-Backend env vars: `ELASTIC_URL`, `ELASTIC_API_KEY`, `OPENAI_API_KEY`, `GITHUB_TOKEN` (optional, to avoid rate limits), `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_HEADERS` (Dash0 auth).
-
-## Timeline (2:30 → 5:30 PM MT)
-
-| Time | A: Jenish (iOS) | B: Arjun (search + matching) | C: platform + profiles |
+| Time | A: Jenish | B: Arjun | C: third teammate |
 |---|---|---|---|
-| 2:30–2:40 | **All:** lock the API contract, agree on file ownership, create the folders | | |
-| 2:40–3:00 | Device checklist: Developer Mode, signing, hello-world on 2 iPhones | Elastic Serverless project, both index mappings, start `talks.json` | Fastify scaffold with **stub routes** returning sample JSON, pushed by 2:40. Then deploy it (Vercel/Render) |
-| 3:00–3:40 | Proximity spike: Multipeer + NI distance on 2 phones. *If NI fights back, ship Multipeer "nearby" only* | Finish `talks.json` + `personas.json`, run `seed.ts`, then the first version of `/talks/shared` | `/profiles` endpoints: GitHub fetch + OpenAI structured extraction + index into `profiles` |
-| 3:40–4:20 | `MockProximityManager`, RadarView, Onboarding → `POST /profiles` | `/match`: reciprocal scoring, tiers, template reasons, then LLM reasons with caching | OpenTelemetry → Dash0 (HTTP, Elastic, OpenAI, GitHub spans). Redeploy with the real routes |
-| 4:20–4:50 | Glow from `/match`, PersonCard (reason + shared talk), FindView, status | Tune weights on the personas, batch queries, warm the cache. Help A with integration | Planted slow path → Agent0 finds it → fix. Start the README |
-| 4:50–5:10 | **All:** test with 3 phones end to end, fix bugs. C records the 30-second backup video | | |
-| 5:10–5:30 | **All:** finish the README, rehearse the demo (A drives the phones, B explains Elastic, C explains Dash0 + privacy), **submit by 5:30** | | |
+| 2:40–2:50 | **All:** lock the API contract + folder ownership | | |
+| 2:50–3:10 | Device checklist (Developer Mode, signing, hello-world on 2 iPhones). Xcode shell + tab bar + `Models`/`APIClient` with stubs, pushed by 3:05 | Fastify scaffold with stub routes, pushed by 2:55. Elastic project + indices. Start `talks.json` | Write stub JSON files. Start `SwipeDeck` |
+| 3:10–3:40 | Proximity spike: Multipeer + NI on 2 phones. *If NI fights back, ship "nearby" only* | `POST /profiles` (GitHub + OpenAI), seed talks + personas, `/talks/recommended`, `POST /swipes`, deploy | TalksDeckView on stubs, then on live talks |
+| 3:40–4:20 | Onboarding → `POST /profiles`. RadarView + `MockProximityManager` + `/radar/match` glow | `/schedule`, `/people/recommended`, mutual match + persona auto-like, `/matches` | MyCalendarView + EventKit "Add all to Calendar". PeopleDeckView |
+| 4:20–4:50 | FindView, status 🟢🟡🔴, "Find on radar" hook-up from MatchDetail | `/meet` + `/meetups`, `/radar/match`, OpenTelemetry → Dash0, Agent0 fix | MatchesList + MatchDetailView (reveal + propose/accept → EventKit) |
+| 4:50–5:10 | **All:** end-to-end on 3 phones, fix bugs. C records the 30-second backup video | | |
+| 5:10–5:30 | **All:** README (setup + architecture + AI-assistant disclosure), rehearse, **submit by 5:30** | | |
 
 ### Cut order if behind
-1. Stretch items
-2. Dash0 extras (keep the basic traces)
-3. LLM-generated reasons (fall back to the template)
+1. Dash0 extras (keep the basic traces)
+2. LLM-generated reasons (fall back to the template)
+3. Meetup propose/accept (show the suggestions only)
 4. GitHub extraction (topics typed by hand)
-5. The Find arrow (distance only)
-6. NearbyInteraction (Multipeer "nearby" only)
+5. Find arrow (distance only), then NearbyInteraction (Multipeer "nearby" only)
+6. Orbit on real phones (keep the radar on `MockProximityManager`)
 
-The **glowing radar + reason + talk for both** experience is the core. Protect it.
+**Never cut:** swipe talks → calendar → swipe people → match → "where we can meet". That's the core story.
 
 ## Demo (3 minutes)
 
-1. **Hook** (20s): "You walked past 50 people today who could have changed your career."
-2. **Problem** (20s): networking is why we come. Apps hand you a list of 9,000 people and no way to know who's next to you.
-3. **Live** (100s), with one phone mirrored to the projector:
-   - Onboard live with a real GitHub username, and the tags appear.
-   - The radar shows the teammates on stage plus seeded personas. **One dot glows.**
-   - Tap it: "Why you should meet: Priya needs GPU autoscaling help, which you've done. A talk for both of you: eBPF at Scale, 3:30, Room 155."
-   - Tap **Find**, and the arrow points across the stage while the distance counts down. They shake hands.
-   - Priya flips to 🔴 and vanishes from the radar.
-4. **Under the hood** (25s): the Elastic reciprocal query, plus the Dash0 trace of one `/match` call and the bug Agent0 found.
-5. **Close** (15s): "No location ever leaves your phone. Never miss the person you needed to meet."
+1. **Hook** (15s): "You walked past 50 people today who could have changed your career."
+2. **Onboard** (20s): a real GitHub username, and the tags appear.
+3. **Swipe talks** (25s): 4 swipes with reasons, then they appear in the iPhone Calendar.
+4. **Swipe people** (25s): "Priya needs what you offer, and you share 3 talks." Swipe right, **it's a match** (she already liked you).
+5. **Where we can meet** (25s): shared talk at 3:00 in Room 155, both free 3:40–4:10 → propose "Room 155 door at 3:40" → accepted → it's in both calendars.
+6. **Orbit** (40s): with the phone mirrored, Priya's dot **glows** on the radar. Tap **Find**, the arrow and distance count down 8m → 1m, handshake. She flips to 🔴 and vanishes.
+7. **Under the hood** (20s): the Elastic RRF query + reciprocal score, and a Dash0 trace. "No location ever leaves your phone, and matches see only the overlap of your calendars."
 
 ## Risks
 
 | Risk | Mitigation |
 |---|---|
-| Signing or installing on iPhones eats the afternoon | Jenish does the device checklist **first**. The UI is built against `MockProximityManager` in the meantime |
-| NI direction unavailable or flaky | Distance-only rings. The demo focuses on the distance counting down |
-| Multipeer doesn't find peers | Check the Local Network permission and the Bonjour keys, toggle Bluetooth and Wi-Fi, and test by 3:40 |
-| `/match` too slow during the demo | Batch the semantic queries, cache reasons, warm the cache before going on stage |
-| The LLM gets a profile wrong | Weight topics by evidence and let the user review the tags |
-| Too few real users | Seeded personas appear through the mock or a demo-mode toggle |
-| "Isn't this creepy?" | No location is stored, you're visible only while the app is open, 🔴 makes you invisible, 🟡 means ask first |
-| Rules | Public repo, README, AI use disclosed, both of us able to explain every part |
+| Too much iOS UI for 3 hours | C has a reusable `SwipeDeck` for both decks. Stubs from minute one. Cut-order list above |
+| Signing or installing on iPhones eats time | Jenish does the device checklist first. Everyone else builds in the Simulator against `MockProximityManager` |
+| Conflicts in the Xcode project file | Only Jenish edits the project. C works only in their own folders |
+| NI or Multipeer flaky on stage | Distance only, then the mock radar, plus the backup video |
+| Empty data during the demo | Personas with saved talks + auto-like make matches and overlaps appear |
+| "Isn't this creepy?" | Partial reveal only after a mutual match, nothing about location stored, 🔴 invisible, 🟡 ask first |
+| Rules | Public repo, README, AI use disclosed, everyone can explain their part |
 
 ## Submission checklist
 
-- [ ] Public repo + README with setup (Xcode signing, backend env vars, seed command)
-- [ ] AI-assistant use disclosed in the README
-- [ ] Works live on at least 2 iPhones
-- [ ] Elastic mappings plus the `/match` and `/talks/shared` queries documented
-- [ ] Dash0 trace screenshot in the README
+- [ ] Public repo + README (Xcode signing steps, backend env vars, seed command)
+- [ ] AI-assistant use disclosed
+- [ ] The full journey works on at least 2 iPhones
+- [ ] Elastic mappings + recommendation, matching and meet queries documented
+- [ ] Dash0 trace screenshot
 - [ ] 30-second backup screen recording
 - [ ] Submitted before 5:30 PM
