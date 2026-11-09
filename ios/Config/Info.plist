@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ORBIT_API_BASE_URL</key>
+	<string>http://localhost:3000</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Orbit finds people near you at the conference over Bluetooth and Wi-Fi.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_orbit-cnh._tcp</string>
+		<string>_orbit-cnh._udp</string>
+	</array>
+	<key>NSNearbyInteractionUsageDescription</key>
+	<string>Orbit measures how far away nearby attendees are so it can point you to them.</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>Orbit adds the talks and meetups you save to your calendar.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Orbit uses the camera to make the direction arrow more accurate when you find someone.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,8 @@
+{"with":"p_priya",
+ "shared_talks":[{"tid":"t_42","title":"eBPF at Scale: Network Policy Without the Pain","room":"Room 155","start":"2026-11-10T15:00:00-07:00","end":"2026-11-10T15:40:00-07:00"}],
+ "free_overlaps":[{"start":"2026-11-10T15:40:00-07:00","end":"2026-11-10T16:10:00-07:00"}],
+ "their_next":{"room":"Room 155","until":"2026-11-10T15:40:00-07:00","planned":true},
+ "suggestions":[
+  {"kind":"after_shared_talk","place":"Room 155 door","start":"2026-11-10T15:40:00-07:00","end":"2026-11-10T15:55:00-07:00","label":"Meet when 'eBPF at Scale' ends"},
+  {"kind":"free_overlap","place":"Coffee by Hall B","start":"2026-11-10T15:45:00-07:00","end":"2026-11-10T16:10:00-07:00","label":"You're both free"}
+ ]}

@@ -1,0 +1,7 @@
+{"pid":"p_me","name":"Jenish","role":"Software Engineer","company":"Northeastern","pronouns":"he/him",
+ "github":"jenishk20","working_on":"Autoscaling LLM inference on Kubernetes",
+ "looking_for":"People running GPU workloads at scale; learn multi-cluster networking",
+ "offering":"KServe deployment, GPU autoscaling, text-to-SQL fine-tuning",
+ "here_for":["learning","job_hunting"],
+ "topics":["kubernetes","gpu","llm-serving","autoscaling","kserve"],
+ "summary":"Builds ML serving infrastructure on Kubernetes.","status":"green","hide_next_room":false}

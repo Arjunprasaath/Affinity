@@ -1,0 +1,14 @@
+[
+ {"tid":"t_42","title":"eBPF at Scale: Network Policy Without the Pain","speakers":["Maya Chen"],"room":"Room 155",
+  "start":"2026-11-10T15:00:00-07:00","end":"2026-11-10T15:40:00-07:00","level":"intermediate",
+  "reason":"You run Kubernetes networking, and this covers eBPF for network policy","clashes_with":null},
+ {"tid":"t_17","title":"GPU Autoscaling for LLM Inference","speakers":["Ravi Patel","Ana Souza"],"room":"Hall B",
+  "start":"2026-11-10T11:00:00-07:00","end":"2026-11-10T11:30:00-07:00","level":"advanced",
+  "reason":"Directly on your work autoscaling LLM inference","clashes_with":null},
+ {"tid":"t_08","title":"Multi-Cluster Networking 101","speakers":["Tom Becker"],"room":"Room 251",
+  "start":"2026-11-10T16:30:00-07:00","end":"2026-11-10T17:00:00-07:00","level":"beginner",
+  "reason":"You said you want to learn multi-cluster networking","clashes_with":"Platform Teams That Ship"},
+ {"tid":"t_23","title":"KServe in Production: Lessons From 40 Clusters","speakers":["Lena Ortiz"],"room":"Room 155",
+  "start":"2026-11-11T10:00:00-07:00","end":"2026-11-11T10:40:00-07:00","level":"intermediate",
+  "reason":"You deploy with KServe, and this is a production postmortem","clashes_with":null}
+]

@@ -1,0 +1,12 @@
+{"pid":"p_me",
+ "items":[
+  {"tid":"t_17","title":"GPU Autoscaling for LLM Inference","room":"Hall B","start":"2026-11-10T11:00:00-07:00","end":"2026-11-10T11:30:00-07:00","must":true,"clash":false},
+  {"tid":"t_42","title":"eBPF at Scale: Network Policy Without the Pain","room":"Room 155","start":"2026-11-10T15:00:00-07:00","end":"2026-11-10T15:40:00-07:00","must":false,"clash":false},
+  {"tid":"t_08","title":"Multi-Cluster Networking 101","room":"Room 251","start":"2026-11-10T16:30:00-07:00","end":"2026-11-10T17:00:00-07:00","must":false,"clash":true},
+  {"tid":"t_31","title":"Platform Teams That Ship","room":"Room 160","start":"2026-11-10T16:30:00-07:00","end":"2026-11-10T17:10:00-07:00","must":false,"clash":true}
+ ],
+ "free":[
+  {"start":"2026-11-10T09:00:00-07:00","end":"2026-11-10T11:00:00-07:00"},
+  {"start":"2026-11-10T11:30:00-07:00","end":"2026-11-10T15:00:00-07:00"},
+  {"start":"2026-11-10T15:40:00-07:00","end":"2026-11-10T16:30:00-07:00"}
+ ]}
