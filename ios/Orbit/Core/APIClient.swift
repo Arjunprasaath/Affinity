@@ -24,6 +24,8 @@ final class APIClient {
     static let shared = APIClient()
 
     private let session: URLSession
+    /// Stub mode only: remembers talk swipes so the Calendar tab shows what you actually saved.
+    private let stubSchedule = StubScheduleStore()
 
     init(session: URLSession = .shared) {
         self.session = session
@@ -78,11 +80,20 @@ final class APIClient {
     // MARK: - Talks and schedule
 
     func recommendedTalks(pid: String, limit: Int = 10) async throws -> [TalkCard] {
-        try await get("talks/recommended", query: ["pid": pid, "limit": String(limit)], stub: "stub_talks_recommended")
+        if useStubs {
+            let all: [TalkCard] = try Self.stub("stub_talks_recommended")
+            stubSchedule.remember(all)
+            return Array(stubSchedule.unswiped(all).prefix(limit))
+        }
+        return try await get("talks/recommended", query: ["pid": pid, "limit": String(limit)], stub: "stub_talks_recommended")
     }
 
     func swipe(_ swipe: Swipe) async throws -> SwipeResult {
         if useStubs {
+            if swipe.targetType == .talk {
+                stubSchedule.record(swipe)
+                return SwipeResult(ok: true, match: nil)
+            }
             // In stub mode, every right swipe on a person is a match so the match flow can be built.
             if swipe.targetType == .person && swipe.dir == .right {
                 return try Self.stub("stub_swipe_match")
@@ -93,7 +104,8 @@ final class APIClient {
     }
 
     func schedule(pid: String) async throws -> Schedule {
-        try await get("schedule/\(pid)", stub: "stub_schedule")
+        if useStubs { return stubSchedule.schedule(pid: pid) }
+        return try await get("schedule/\(pid)", stub: "stub_schedule")
     }
 
     // MARK: - People and matches
