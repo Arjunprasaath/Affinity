@@ -86,7 +86,7 @@ struct MatchesListView: View {
 
     private var emptyState: some View {
         ContentUnavailableView {
-            Label("No matches yet", systemImage: "heart.circle")
+            Label("No matches yet", systemImage: "person.line.dotted.person")
         } description: {
             Text("Swipe right on people. Mutual likes show up here.")
         } actions: {

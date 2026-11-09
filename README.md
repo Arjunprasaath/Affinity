@@ -8,7 +8,6 @@
   <img alt="Fastify" src="https://img.shields.io/badge/Fastify-TypeScript-3178C6?logo=typescript&logoColor=white">
   <img alt="Elasticsearch" src="https://img.shields.io/badge/Elasticsearch-semantic__text%20%2B%20RRF-005571?logo=elasticsearch&logoColor=white">
   <img alt="OpenTelemetry to Dash0" src="https://img.shields.io/badge/OpenTelemetry-Dash0-425CC7?logo=opentelemetry&logoColor=white">
-  <img alt="OpenAI" src="https://img.shields.io/badge/OpenAI-tags%20%2B%20reasons-412991?logo=openai&logoColor=white">
 </p>
 
 <h3 align="center"><em>"Today you walked past 50 people who could have changed your career.<br>You'll never know who they were."</em></h3>
@@ -32,10 +31,6 @@ Built in one day at the **WeMakeDevs Cloud Native Hackathon**, Salt Lake City, d
 | 🆕 **KubeCon is full of strangers** | 9,388 attendees, **50% first-timers**, 409 sessions at KubeCon NA 2025 ([CNCF transparency report](https://www.cncf.io/wp-content/uploads/2025/12/KCNA25_TransparencyReport.pdf)) |
 | 📋 **Apps give you lists** | Hundreds of talks, thousands of names. Nothing tells you **who to meet, when you're both free, or that they're 4 meters away right now** |
 
-Proximity apps like Highlight and Banjo died for two reasons:
-- **Cold start:** nobody near you uses the app. A conference fixes that, because everyone is in one building to meet strangers.
-- **Creepiness:** strangers knowing where you are. Our design fixes that, because **your location never leaves your phone**.
-
 ## The journey
 
 ```mermaid
@@ -43,7 +38,7 @@ flowchart LR
     A["Onboard<br/>GitHub + 1 question"] --> B["Swipe talks"]
     B --> C["My calendar"]
     C --> D["Swipe people"]
-    D --> E["It's a match"]
+    D --> E["Connected"]
     E --> F["Where we can meet"]
     F --> G["Radar + Find"]
 ```
@@ -53,7 +48,7 @@ flowchart LR
     <td align="center" width="25%"><img src="assets/screens/1-talks.png" alt="Talks deck: a talk card with time, room, level, speaker and why it fits you" width="200"><br><b>Swipe talks</b><br><sub>Each card says why it fits you</sub></td>
     <td align="center" width="25%"><img src="assets/screens/2-calendar.png" alt="My calendar: saved talks with free gaps between them and an Add to Calendar button" width="200"><br><b>Your calendar</b><br><sub>Free gaps and clashes, worked out for you</sub></td>
     <td align="center" width="25%"><img src="assets/screens/3-people.png" alt="People card: Jensen Park, 3 talks in common, and why you should meet" width="200"><br><b>Swipe people</b><br><sub>Matched on what you need and offer</sub></td>
-    <td align="center" width="25%"><img src="assets/screens/4-match.png" alt="It's a match: you and Jensen both swiped right" width="200"><br><b>It's a match</b><br><sub>Only when you both swipe right</sub></td>
+    <td align="center" width="25%"><img src="assets/screens/4-match.png" alt="You're connected: you and Jensen both want to meet" width="200"><br><b>Connected</b><br><sub>Only when you both want to meet</sub></td>
   </tr>
   <tr>
     <td align="center"><img src="assets/screens/5-meet.png" alt="Where we can meet: shared talks, times you're both free, Jensen's next planned room and meetup suggestions" width="200"><br><b>Where we can meet</b><br><sub>Only the overlap is shared</sub></td>
@@ -234,9 +229,8 @@ All talks and personas are **fictional**. They are not real KubeCon sessions or 
 |---|---|
 | **Jenish Kothari** ([@jenishk20](https://github.com/jenishk20)) | iOS app core, Affinity radar and proximity engine, onboarding, README |
 | **Arjun** ([@Arjunprasaath](https://github.com/Arjunprasaath)) | Backend, Elasticsearch matching, personas and demo data |
-| **Lavisha Goyal** | Backend profile building and OpenTelemetry setup (`feature-branch/lavisha`) |
-| **TODO: name** | iOS swipe decks, calendar, matches and meet screens |
+| **Lavisha Goyal** | Backend profile building and OpenTelemetry setup |
 
 ## AI-assistant disclosure
 
-As the hackathon rules require, we disclose that we used AI coding assistants. **Claude Code** helped write parts of the iOS app (project setup, API client, proximity engine, radar, demo mode) and this README, including its graphics. **TODO: list any other tools used, e.g. for the backend and the iOS screens.** Every team member reviewed the code in their area and can explain the architecture and the technical decisions behind it.
+As the hackathon rules require, we disclose that we used AI coding assistants, including **Claude Code**, while building Affinity. Every team member reviewed the code in their area and can explain the architecture and the technical decisions behind it.

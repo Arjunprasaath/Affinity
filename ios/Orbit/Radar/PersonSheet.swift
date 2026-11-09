@@ -25,7 +25,7 @@ struct PersonSheet: View {
                     Label {
                         Text(reason).fixedSize(horizontal: false, vertical: true)
                     } icon: {
-                        Image(systemName: isMatch ? "heart.fill" : "sparkles")
+                        Image(systemName: isMatch ? "checkmark.seal.fill" : "sparkles")
                     }
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(isMatch ? Color.green : Color.accentColor)

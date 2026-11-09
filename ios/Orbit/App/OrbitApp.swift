@@ -47,7 +47,7 @@ struct RootTabView: View {
                 .tabItem { Label("People", systemImage: "person.2") }
                 .tag(AppTab.people)
             MatchesListView()
-                .tabItem { Label("Matches", systemImage: "heart.circle") }
+                .tabItem { Label("Matches", systemImage: "person.line.dotted.person") }
                 .tag(AppTab.matches)
             RadarView()
                 .tabItem { Label("Radar", systemImage: "dot.radiowaves.left.and.right") }

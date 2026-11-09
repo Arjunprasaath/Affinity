@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 300" width="880" height="300" role="img" aria-labelledby="title desc">
   <title id="title">Match</title>
-  <desc id="desc">Two people swipe right on each other and slide together into a match. Then only the overlap of their free time lights up between their two calendars.</desc>
+  <desc id="desc">Two people swipe right on each other and slide together and connect. Then only the overlap of their free time lights up between their two calendars.</desc>
 
   <rect width="880" height="300" rx="20" fill="#0B1020"/>
 
@@ -25,12 +25,12 @@
       <text x="0" y="5" fill="#FFFFFF" font-size="14" font-weight="700">JP</text>
       <animateTransform attributeName="transform" type="translate" values="820 74; 710 74; 710 74" keyTimes="0; 0.25; 1" calcMode="spline" keySplines="0.3 0 0.2 1; 0 0 1 1" dur="6s" repeatCount="indefinite"/>
     </g>
-    <!-- Heart + label -->
+    <!-- Connected badge + label -->
     <g opacity="0">
-      <path d="M660 86 C 646 76, 640 66, 648 59 C 654 54, 660 58, 660 63 C 660 58, 666 54, 672 59 C 680 66, 674 76, 660 86 Z" fill="#ED93B1"/>
+      <circle cx="660" cy="74" r="13" fill="#1D9E75"/><path d="M653 74 L658 79 L667 69" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.25;0.32;1" dur="6s" repeatCount="indefinite"/>
     </g>
-    <text x="660" y="130" fill="#FFFFFF" font-size="18" font-weight="700" opacity="0">It's a match<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.3;0.38;1" dur="6s" repeatCount="indefinite"/></text>
+    <text x="660" y="130" fill="#FFFFFF" font-size="18" font-weight="700" opacity="0">Connected<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.3;0.38;1" dur="6s" repeatCount="indefinite"/></text>
 
     <!-- Two calendars -->
     <g opacity="0">

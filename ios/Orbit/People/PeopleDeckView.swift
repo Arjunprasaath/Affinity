@@ -2,7 +2,7 @@
 // Owner: Teammate C.
 //
 // POST /swipes returns the match when the other person had already swiped right on you,
-// which is the on-stage moment: swipe right on a persona, "It's a match" appears, and the
+// which is the on-stage moment: swipe right on a persona, "You're connected" appears, and the
 // partial calendar reveal unlocks.
 
 import SwiftUI
@@ -157,17 +157,16 @@ struct MatchCelebrationView: View {
         VStack(spacing: 18) {
             ZStack {
                 Circle()
-                    .fill(Color.accentColor.opacity(0.18))
-                    .frame(width: pulse ? 150 : 120, height: pulse ? 150 : 120)
+                    .fill(Color.accentColor.opacity(0.12))
+                    .frame(width: 124, height: 124)
                 Avatar(name: match.name, size: 84)
             }
             .padding(.top, 28)
-            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: pulse)
 
-            Text("It's a match")
-                .font(.largeTitle.bold())
+            Text("You're connected")
+                .font(.title.bold())
 
-            Text("You and \(match.name.split(separator: " ").first.map(String.init) ?? match.name) both swiped right.")
+            Text("You and \(match.name.split(separator: " ").first.map(String.init) ?? match.name) both want to meet.")
                 .font(.headline)
                 .multilineTextAlignment(.center)
 
