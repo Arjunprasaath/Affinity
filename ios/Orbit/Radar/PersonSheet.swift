@@ -3,11 +3,15 @@
 import SwiftUI
 
 struct PersonSheet: View {
+    /// Snapshot from when the dot was tapped; `live` below keeps distance and status current.
     let peer: NearbyPeer
     let result: RadarResult?
     let onFind: () -> Void
 
+    @Environment(AppState.self) private var appState
     @State private var profile: Profile?
+
+    private var live: NearbyPeer { appState.proximity.peers[peer.pid] ?? peer }
 
     var body: some View {
         NavigationStack {
@@ -19,8 +23,12 @@ struct PersonSheet: View {
                             Text(subtitle).foregroundStyle(.secondary)
                         }
                         HStack(spacing: 8) {
-                            StatusBadge(status: peer.status)
-                            Text(peer.distanceText).font(.subheadline.monospacedDigit()).foregroundStyle(.secondary)
+                            StatusBadge(status: live.status)
+                            Text(appState.proximity.peers[peer.pid] == nil ? "Out of range" : live.distanceText)
+                                .font(.subheadline.monospacedDigit())
+                                .foregroundStyle(.secondary)
+                                .contentTransition(.numericText())
+                                .animation(.default, value: live.distanceText)
                         }
                     }
                     .padding(.vertical, 4)
@@ -42,7 +50,7 @@ struct PersonSheet: View {
                     }
                 }
 
-                if peer.status == .yellow {
+                if live.status == .yellow {
                     Section {
                         Label("\(peer.firstName) asked people to check before walking over.", systemImage: "hand.raised")
                             .foregroundStyle(.orange)

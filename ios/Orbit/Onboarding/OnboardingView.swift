@@ -41,12 +41,12 @@ struct OnboardingView: View {
     private var form: some View {
         Form {
             Section("About you") {
-                TextField("Name", text: $name)
+                LabeledField(label: "Name", placeholder: "Your name", text: $name)
                     .textContentType(.name)
-                TextField("Role", text: $role, prompt: Text("Platform engineer"))
-                TextField("Company", text: $company)
-                TextField("Pronouns (optional)", text: $pronouns, prompt: Text("she/her"))
-                TextField("GitHub username", text: $github, prompt: Text("octocat"))
+                LabeledField(label: "Role", placeholder: "Platform engineer", text: $role)
+                LabeledField(label: "Company", placeholder: "Optional", text: $company)
+                LabeledField(label: "Pronouns", placeholder: "Optional", text: $pronouns)
+                LabeledField(label: "GitHub", placeholder: "username", text: $github)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
             }
@@ -238,6 +238,20 @@ struct TagReviewView: View {
             onConfirm(updated)
         } catch {
             errorMessage = "Couldn't save your tags. \(error.localizedDescription)"
+        }
+    }
+}
+
+/// A form row with a visible label on the left and the text field on the right.
+struct LabeledField: View {
+    let label: String
+    let placeholder: String
+    @Binding var text: String
+
+    var body: some View {
+        LabeledContent(label) {
+            TextField(label, text: $text, prompt: Text(placeholder))
+                .multilineTextAlignment(.trailing)
         }
     }
 }

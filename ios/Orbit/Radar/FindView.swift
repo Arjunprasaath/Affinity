@@ -46,7 +46,7 @@ struct FindView: View {
 
                 Text(hint)
                     .font(.headline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(isClose ? Color.white : Color.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
 
