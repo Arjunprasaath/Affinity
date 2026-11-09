@@ -9,44 +9,38 @@ struct PersonCardView: View {
     let person: PersonCard
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .top, spacing: 12) {
-                Avatar(name: person.name)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(person.name).font(.title2.bold())
+        VStack(alignment: .leading, spacing: 16) {
+            // Who
+            HStack(alignment: .center, spacing: 14) {
+                Avatar(name: person.name, github: person.github, size: 72)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(person.name)
+                        .font(.title2.bold())
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                     if let subtitle {
                         Text(subtitle)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+                    if person.sharedTalksCount > 0 {
+                        Label(
+                            "\(person.sharedTalksCount) talk\(person.sharedTalksCount == 1 ? "" : "s") in common",
+                            systemImage: "rectangle.stack.badge.checkmark"
+                        )
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(.tint)
                     }
                 }
-                Spacer()
+                Spacer(minLength: 0)
             }
 
-            if let workingOn = person.workingOn, !workingOn.isEmpty {
-                field("Working on", workingOn)
-            }
-
-            if !person.hereFor.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Here for").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                    ChipRow(items: person.hereFor.map { HereFor(rawValue: $0)?.label ?? $0 }, tint: .orange, limit: 4)
-                }
-            }
-
-            if !person.sharedTopics.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("You both work on").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                    ChipRow(items: person.sharedTopics, tint: .accentColor, limit: 5)
-                }
-            }
-
-            Spacer(minLength: 0)
-
+            // Why (the line that makes you swipe)
             HStack(alignment: .top, spacing: 8) {
                 Image(systemName: "sparkles")
                 Text(person.reason)
-                    .font(.subheadline)
+                    .font(.subheadline.weight(.medium))
                     .fixedSize(horizontal: false, vertical: true)
             }
             .foregroundStyle(.tint)
@@ -54,14 +48,26 @@ struct PersonCardView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.accentColor.opacity(0.1), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
 
-            if person.sharedTalksCount > 0 {
-                Label(
-                    "\(person.sharedTalksCount) talk\(person.sharedTalksCount == 1 ? "" : "s") you both saved",
-                    systemImage: "rectangle.stack.badge.checkmark"
-                )
-                .font(.footnote.weight(.medium))
-                .foregroundStyle(.secondary)
+            // What
+            if let workingOn = person.workingOn, !workingOn.isEmpty {
+                field("Working on", workingOn)
             }
+
+            if !person.sharedTopics.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("You both work on").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                    ChipRow(items: person.sharedTopics, tint: .accentColor, limit: 4)
+                }
+            }
+
+            if !person.hereFor.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Here for").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                    ChipRow(items: person.hereFor.map { HereFor(rawValue: $0)?.label ?? $0 }, tint: .orange, limit: 3)
+                }
+            }
+
+            Spacer(minLength: 0)
 
             Label("Their schedule stays private until you both swipe right", systemImage: "lock.fill")
                 .font(.caption2)
@@ -81,7 +87,7 @@ struct PersonCardView: View {
     private func field(_ title: String, _ value: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(title).font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-            Text(value).font(.subheadline).fixedSize(horizontal: false, vertical: true)
+            Text(value).font(.subheadline).lineLimit(2)
         }
     }
 
@@ -96,12 +102,41 @@ struct PersonCardView: View {
     }
 }
 
-/// Initials circle. No photos in the app — nobody uploads one in a 60-second onboarding.
+/// Profile photo from GitHub (github.com/<username>.png) when we have a username,
+/// otherwise a coloured initials circle. Nobody uploads a photo in a 60-second onboarding.
 struct Avatar: View {
     let name: String
+    var github: String? = nil
     var size: CGFloat = 52
 
     var body: some View {
+        if let url = photoURL {
+            AsyncImage(url: url, transaction: Transaction(animation: .easeIn(duration: 0.2))) { phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: size, height: size)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.primary.opacity(0.08), lineWidth: 1))
+                } else {
+                    initialsCircle
+                }
+            }
+            .frame(width: size, height: size)
+            .accessibilityHidden(true)
+        } else {
+            initialsCircle
+        }
+    }
+
+    private var photoURL: URL? {
+        guard let user = github?.trimmingCharacters(in: .whitespacesAndNewlines), !user.isEmpty,
+              user.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "-" }) else { return nil }
+        return URL(string: "https://github.com/\(user).png?size=\(Int(size * 3))")
+    }
+
+    private var initialsCircle: some View {
         Circle()
             .fill(LinearGradient(colors: [tint.opacity(0.9), tint.opacity(0.55)], startPoint: .topLeading, endPoint: .bottomTrailing))
             .frame(width: size, height: size)

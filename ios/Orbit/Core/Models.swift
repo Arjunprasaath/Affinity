@@ -161,6 +161,10 @@ struct PersonCard: Codable, Hashable, Identifiable {
     var name: String
     var role: String?
     var company: String?
+    var pronouns: String?
+    var github: String?
+    var status: PresenceStatus?
+    var topics: [String]?
     var workingOn: String?
     var hereFor: [String]
     var sharedTopics: [String]
