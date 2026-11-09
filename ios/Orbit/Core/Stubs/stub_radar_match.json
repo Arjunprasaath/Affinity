@@ -1,6 +1,6 @@
 [
- {"pid":"p_priya","tier":"match","reason":"You matched. Both going to eBPF at Scale."},
- {"pid":"p_aiko","tier":"strong","reason":"Maintains KServe, which you deploy"},
- {"pid":"p_marco","tier":"good","reason":"You both work on Kubernetes networking"},
+ {"pid":"p_jensen","tier":"match","reason":"You matched. Both going to eBPF at Scale."},
+ {"pid":"p_satya","tier":"strong","reason":"Maintains KServe, which you deploy"},
+ {"pid":"p_mark","tier":"good","reason":"You both work on Kubernetes networking"},
  {"pid":"p_sam","tier":"weak","reason":"You both work on Kubernetes"}
 ]

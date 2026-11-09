@@ -1,4 +1,4 @@
-{"with":"p_priya",
+{"with":"p_jensen",
  "shared_talks":[{"tid":"t_42","title":"eBPF at Scale: Network Policy Without the Pain","room":"Room 155","start":"2026-11-10T15:00:00-07:00","end":"2026-11-10T15:40:00-07:00"}],
  "free_overlaps":[{"start":"2026-11-10T15:40:00-07:00","end":"2026-11-10T16:10:00-07:00"}],
  "their_next":{"room":"Room 155","until":"2026-11-10T15:40:00-07:00","planned":true},

@@ -1,11 +1,11 @@
 [
- {"pid":"p_priya","name":"Priya Raman","role":"Platform Engineer","company":"Stripe","working_on":"GPU scheduling for internal ML platform",
+ {"pid":"p_jensen","name":"Jensen Park","role":"Platform Engineer","company":"Stripe","working_on":"GPU scheduling for internal ML platform",
   "here_for":["hiring","finding_contributors"],"shared_topics":["kubernetes","gpu"],"shared_talks_count":3,"score":0.82,
-  "reason":"Priya is looking for GPU autoscaling contributors, which you've done"},
- {"pid":"p_marco","name":"Marco Rossi","role":"SRE","company":"Shopify","working_on":"Cilium rollout across 40 clusters",
+  "reason":"Jensen is looking for GPU autoscaling contributors, which you've done"},
+ {"pid":"p_mark","name":"Mark Ellis","role":"SRE","company":"Shopify","working_on":"Cilium rollout across 40 clusters",
   "here_for":["learning"],"shared_topics":["kubernetes"],"shared_talks_count":2,"score":0.61,
-  "reason":"Marco is fighting multi-cluster networking, which you want to learn"},
- {"pid":"p_aiko","name":"Aiko Tanaka","role":"Maintainer, KServe","company":"Independent","working_on":"KServe autoscaler v2",
+  "reason":"Mark is fighting multi-cluster networking, which you want to learn"},
+ {"pid":"p_satya","name":"Satya Rao","role":"Maintainer, KServe","company":"Independent","working_on":"KServe autoscaler v2",
   "here_for":["meeting_users","finding_contributors"],"shared_topics":["kserve","llm-serving"],"shared_talks_count":1,"score":0.74,
-  "reason":"Aiko maintains KServe and wants feedback from people deploying it"}
+  "reason":"Satya maintains KServe and wants feedback from people deploying it"}
 ]

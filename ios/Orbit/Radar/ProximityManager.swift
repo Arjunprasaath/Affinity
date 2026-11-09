@@ -145,7 +145,7 @@ final class ProximityManager {
         }
     }
 
-    /// Four seeded personas (pids match Core/Stubs). Priya walks toward you and back so Find has something to do.
+    /// Four seeded personas (pids match Core/Stubs). Jensen walks toward you and back so Find has something to do.
     nonisolated static func demoPeers(at t: Double) -> [String: NearbyPeer] {
         func peer(_ pid: String, _ name: String, _ status: PresenceStatus, distance: Double, bearing: Double) -> NearbyPeer {
             NearbyPeer(
@@ -155,11 +155,11 @@ final class ProximityManager {
                 isDemo: true
             )
         }
-        let priyaDistance = 0.8 + 7.2 * (0.5 + 0.5 * cos(t / 5))
+        let jensenDistance = 0.8 + 7.2 * (0.5 + 0.5 * cos(t / 5))
         let list = [
-            peer("p_priya", "Priya Raman", .green, distance: priyaDistance, bearing: 0.6 * sin(t / 7) + 0.5),
-            peer("p_aiko", "Aiko Tanaka", .green, distance: 3.6 + 0.4 * sin(t / 3), bearing: -1.9),
-            peer("p_marco", "Marco Rossi", .yellow, distance: 8.5 + 1.5 * sin(t / 4), bearing: 2.6),
+            peer("p_jensen", "Jensen Park", .green, distance: jensenDistance, bearing: 0.6 * sin(t / 7) + 0.5),
+            peer("p_satya", "Satya Rao", .green, distance: 3.6 + 0.4 * sin(t / 3), bearing: -1.9),
+            peer("p_mark", "Mark Ellis", .yellow, distance: 8.5 + 1.5 * sin(t / 4), bearing: 2.6),
             peer("p_sam", "Sam Lee", .green, distance: 12.5, bearing: -0.4 + 0.1 * sin(t / 9)),
         ]
         return Dictionary(uniqueKeysWithValues: list.map { ($0.pid, $0) })

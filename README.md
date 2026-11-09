@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/orbit-radar.svg" alt="Orbit: an animated radar showing people near you at a conference, with your match pulsing as she walks toward you" width="100%">
+  <img src="assets/orbit-radar.svg" alt="Orbit: an animated radar showing people near you at a conference, with your match pulsing as he walks toward you" width="100%">
 </p>
 
 <p align="center">
@@ -124,7 +124,7 @@ OpenTelemetry auto-instruments HTTP, Fastify and the Elastic client. There are m
 - **🟢 Open to chat · 🟡 Ask first · 🔴 Invisible.** Red stops broadcasting immediately, so you vanish from every radar.
 - **🟡 Ask first** lets people who find approaching strangers hard (introverts, neurodivergent attendees, anyone tired) stay discoverable on their own terms.
 - You're visible only while the app is open. All data is deleted after the event.
-- Accessibility: VoiceOver labels on every radar dot ("Priya, your match, about 3 meters, to your right"), a list view as an alternative to the radar, and buttons as an alternative to swiping.
+- Accessibility: VoiceOver labels on every radar dot ("Jensen, your match, about 3 meters, to your right"), a list view as an alternative to the radar, and buttons as an alternative to swiping.
 
 ## Sponsor tracks
 
