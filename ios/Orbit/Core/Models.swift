@@ -97,15 +97,24 @@ struct ProfilePatch: Encodable, Hashable {
 struct TalkCard: Codable, Hashable, Identifiable {
     var tid: String
     var title: String
+    var abstract: String?
     var speakers: [String]
     var room: String
     var start: Date
     var end: Date
     var level: String?
+    var track: String?
+    var topics: [String]?
     var reason: String?
-    var clashesWith: String?
+    /// The must-attend talk this one overlaps with, if any.
+    var clashesWith: ClashRef?
 
     var id: String { tid }
+}
+
+struct ClashRef: Codable, Hashable {
+    var tid: String
+    var title: String
 }
 
 struct ScheduleItem: Codable, Hashable, Identifiable {
@@ -165,6 +174,8 @@ struct PersonCard: Codable, Hashable, Identifiable {
 struct Match: Codable, Hashable, Identifiable {
     var pid: String
     var name: String
+    var role: String?
+    var company: String?
     var matchedAt: Date?
     var reason: String?
 
@@ -185,6 +196,7 @@ struct SharedTalk: Codable, Hashable, Identifiable {
 
 struct NextRoom: Codable, Hashable {
     var room: String
+    var from: Date?
     var until: Date
     var planned: Bool
 }
@@ -203,6 +215,8 @@ struct MeetSuggestion: Codable, Hashable, Identifiable {
 struct MeetView: Codable, Hashable {
     /// The other person's pid.
     var with: String
+    /// The other person's name.
+    var name: String?
     var sharedTalks: [SharedTalk]
     var freeOverlaps: [TimeBlock]
     /// Missing when the other person turned on "Hide where I'll be".
@@ -261,7 +275,9 @@ struct RadarMatchRequest: Encodable, Hashable {
 
 struct RadarResult: Codable, Hashable, Identifiable {
     var pid: String
+    var name: String? = nil
     var tier: RadarTier
+    var score: Double? = nil
     var reason: String?
 
     var id: String { pid }

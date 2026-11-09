@@ -16,7 +16,7 @@ enum AppConfig {
            let url = URL(string: fromPlist) {
             return url
         }
-        return URL(string: "http://localhost:3000")!
+        return URL(string: "http://localhost:8080")!
     }
 
     static func setAPIBaseURL(_ value: String) {
