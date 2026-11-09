@@ -39,7 +39,17 @@ struct OnboardingView: View {
         ScrollView {
             VStack(spacing: 22) {
                 VStack(spacing: 8) {
-                    Avatar(name: name.isEmpty ? "?" : name, github: github, size: 80)
+                    // Neutral icon until there's a name or GitHub photo to show (no "?").
+                    if name.isEmpty && github.isEmpty {
+                        Image(systemName: "person.crop.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 80, height: 80)
+                            .foregroundStyle(Theme.accent.opacity(0.35))
+                            .accessibilityHidden(true)
+                    } else {
+                        Avatar(name: name.isEmpty ? " " : name, github: github, size: 80)
+                    }
                     Text("Affinity")
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .foregroundStyle(Theme.brand)

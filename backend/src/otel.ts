@@ -4,15 +4,17 @@ import { NodeSDK } from "@opentelemetry/sdk-node";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
+import { OTLPLogExporter } from "@opentelemetry/exporter-logs-otlp-http";
+import { BatchLogRecordProcessor } from "@opentelemetry/sdk-logs";
 import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
-import { trace, metrics, SpanStatusCode, type Span, type Attributes } from "@opentelemetry/api";
+import { trace, metrics, diag, DiagConsoleLogger, DiagLogLevel, SpanStatusCode, type Span, type Attributes } from "@opentelemetry/api";
 
 /**
  * Exports traces + metrics over OTLP/HTTP.
  * Either set the standard OTEL_EXPORTER_OTLP_ENDPOINT / OTEL_EXPORTER_OTLP_HEADERS,
  * or the shortcuts DASH0_ENDPOINT (e.g. https://ingress.<region>.dash0.com) + DASH0_AUTH_TOKEN (+ DASH0_DATASET).
  */
-function exporterOptions(signal: "traces" | "metrics") {
+function exporterOptions(signal: "traces" | "metrics" | "logs") {
   const dash0 = process.env.DASH0_ENDPOINT;
   if (process.env.OTEL_EXPORTER_OTLP_ENDPOINT || !dash0) return {}; // standard env vars are read by the exporter itself
   const headers: Record<string, string> = {};
@@ -24,6 +26,8 @@ function exporterOptions(signal: "traces" | "metrics") {
 const enabled = Boolean(process.env.OTEL_EXPORTER_OTLP_ENDPOINT || process.env.DASH0_ENDPOINT);
 
 if (enabled) {
+  // Print export failures (bad token, wrong endpoint) instead of failing silently.
+  diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.WARN);
   const sdk = new NodeSDK({
     serviceName: process.env.OTEL_SERVICE_NAME ?? "orbit-backend",
     traceExporter: new OTLPTraceExporter(exporterOptions("traces")),
@@ -33,6 +37,8 @@ if (enabled) {
         exportIntervalMillis: 15000,
       }),
     ],
+    // Fastify's pino logs are bridged into OpenTelemetry logs (with trace ids) and sent to Dash0.
+    logRecordProcessors: [new BatchLogRecordProcessor({ exporter: new OTLPLogExporter(exporterOptions("logs")) })],
     instrumentations: [
       getNodeAutoInstrumentations({
         "@opentelemetry/instrumentation-fs": { enabled: false },
