@@ -156,7 +156,8 @@ struct OnboardingView: View {
 
     private func useDemoProfile() async {
         do {
-            let demo: Profile = try APIClient.stub("stub_profile")
+            var demo: Profile = try APIClient.stub("stub_profile")
+            demo.pid = APIClient.randomPid()   // unique per phone so two demo phones still see each other
             appState.signIn(demo)
         } catch {
             errorMessage = error.localizedDescription

@@ -37,6 +37,7 @@ final class APIClient {
     func createProfile(_ new: NewProfile) async throws -> Profile {
         if useStubs {
             var profile: Profile = try Self.stub("stub_profile")
+            profile.pid = Self.randomPid()   // unique per phone, so two stub-mode phones can see each other
             profile.name = new.name
             profile.role = new.role
             profile.company = new.company
@@ -53,7 +54,14 @@ final class APIClient {
     }
 
     func profile(pid: String) async throws -> Profile {
-        try await get("profiles/\(pid)", stub: "stub_profile")
+        if useStubs {
+            let personas: [Profile] = try Self.stub("stub_personas")
+            if let persona = personas.first(where: { $0.pid == pid }) { return persona }
+            var mine: Profile = try Self.stub("stub_profile")
+            mine.pid = pid
+            return mine
+        }
+        return try await get("profiles/\(pid)", stub: "stub_profile")
     }
 
     func updateProfile(pid: String, _ patch: ProfilePatch) async throws -> Profile {
@@ -133,8 +141,9 @@ final class APIClient {
         guard !others.isEmpty else { return [] }
         if useStubs {
             let all: [RadarResult] = try Self.stub("stub_radar_match")
+            // Real phones in stub mode get "strong" so the glow can be tested between two iPhones.
             return others.map { pid in
-                all.first { $0.pid == pid } ?? RadarResult(pid: pid, tier: .weak, reason: nil)
+                all.first { $0.pid == pid } ?? RadarResult(pid: pid, tier: .strong, reason: "Another Orbit user nearby (stub data)")
             }
         }
         return try await request("POST", "radar/match", body: RadarMatchRequest(me: me, others: others))
@@ -146,6 +155,10 @@ final class APIClient {
     }
 
     // MARK: - Stubs
+
+    static func randomPid() -> String {
+        "p_" + UUID().uuidString.prefix(8).lowercased()
+    }
 
     /// Loads `name.json` from the app bundle. Also handy in SwiftUI previews.
     static func stub<T: Decodable>(_ name: String) throws -> T {
