@@ -56,7 +56,7 @@ struct PersonCardView: View {
             if !person.sharedTopics.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("You both work on").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                    ChipRow(items: person.sharedTopics, tint: .accentColor, limit: 4)
+                    ChipRow(items: person.sharedTopics, limit: 4, colorful: true)
                 }
             }
 
@@ -69,7 +69,7 @@ struct PersonCardView: View {
 
             Spacer(minLength: 0)
 
-            Label("Their schedule stays private until you both swipe right", systemImage: "lock.fill")
+            Label("Schedule stays private until you match", systemImage: "lock.fill")
                 .font(.caption2)
                 .foregroundStyle(.tertiary)
         }

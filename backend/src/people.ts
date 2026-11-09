@@ -3,7 +3,7 @@ import { config } from "./config";
 import { chatJSON, reasonCache } from "./llm";
 import { traced, matchCounter, swipeCounter } from "./otel";
 import { badRequest, notFound } from "./errors";
-import { getProfile, getProfiles } from "./profile";
+import { getProfile, getProfiles, interestTopics } from "./profile";
 import { getSwipe, putSwipe, savedTalkIds, savedTalksByPerson, swipesOf } from "./swipes";
 import { getMatchDoc, matchDocsFor, putMatch } from "./matches";
 import { getTalks } from "./talks";
@@ -62,14 +62,14 @@ export async function scoreAll(me: Profile): Promise<Scored[]> {
       semanticScores("offering", me.looking_for, me.pid),
       semanticScores("looking_for", me.offering, me.pid),
       semanticScores("working_on", me.working_on, me.pid),
-      searchAll<Profile>(IDX.profiles, { bool: { must_not: [{ term: { pid: me.pid } }] } }, 1000),
+      searchAll<Profile>(IDX.profiles, { bool: { must_not: [{ term: { pid: me.pid } }, { term: { status: "red" } }] } }, 1000),
       savedTalksByPerson(),
     ]);
     const mine = saved.get(me.pid) ?? new Set<string>();
     const hasTalks = mine.size > 0;
     const out = everyone.map((other) => {
       const need_offer = Math.sqrt((iNeedTheyOffer.get(other.pid) ?? 0) * (theyNeedIOffer.get(other.pid) ?? 0));
-      const shared_topics = me.topics.filter((t) => other.topics.includes(t));
+      const shared_topics = interestTopics(me).filter((t) => other.topics.includes(t));
       const interests = 0.5 * jaccard(me.topics, other.topics) + 0.5 * (workSim.get(other.pid) ?? 0);
       const theirs = saved.get(other.pid) ?? new Set<string>();
       const shared_talks = [...mine].filter((t) => theirs.has(t));
@@ -184,7 +184,10 @@ const toCard = (s: Scored, reason: string): PersonCard => ({
 export async function recommendPeople(pid: string, limit = 10): Promise<PersonCard[]> {
   const me = await getProfile(pid);
   const swiped = await swipesOf(pid, "person");
-  const scored = (await scoreAll(me)).filter((s) => !swiped.has(s.other.pid) && s.other.status !== "red");
+  // Precise: only people who share one of your interests, or who clearly need what you offer.
+  const scored = (await scoreAll(me)).filter(
+    (s) => !swiped.has(s.other.pid) && s.other.status !== "red" && (s.shared_topics.length > 0 || s.need_offer >= 0.7),
+  );
   const picked = diversify(scored, limit);
   const reasons = await personReasons(me, picked);
   return picked.map((s) => toCard(s, reasons.get(s.other.pid)!));
@@ -255,7 +258,7 @@ export async function listMatches(pid: string): Promise<Match[]> {
   return docs
     .map((d): Match | null => {
       const o = others.get(d.pids.find((x) => x !== pid)!);
-      if (!o) return null;
+      if (!o || o.status === "red") return null; // invisible people disappear from lists
       return {
         pid: o.pid,
         name: o.name,

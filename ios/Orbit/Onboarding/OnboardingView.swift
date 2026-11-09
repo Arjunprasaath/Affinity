@@ -1,4 +1,4 @@
-// OnboardingView.swift — create your profile, then review the topic tags. Owner: Jenish.
+// OnboardingView.swift — minimal sign-up (name, LinkedIn, GitHub, two questions), then confirm topics.
 
 import SwiftUI
 
@@ -6,15 +6,10 @@ struct OnboardingView: View {
     @Environment(AppState.self) private var appState
 
     @State private var name = ""
-    @State private var role = ""
-    @State private var company = ""
-    @State private var pronouns = ""
+    @State private var linkedin = ""
     @State private var github = ""
-    @State private var workingOn = ""
+    @State private var interests = ""
     @State private var lookingFor = ""
-    @State private var offering = ""
-    @State private var hereFor: Set<HereFor> = [.learning]
-    @State private var status: PresenceStatus = .green
 
     @State private var createdProfile: Profile?
     @State private var isSubmitting = false
@@ -31,123 +26,98 @@ struct OnboardingView: View {
                     form
                 }
             }
-            .navigationTitle(createdProfile == nil ? "Welcome to Orbit" : "Your tags")
+            .navigationTitle(createdProfile == nil ? "" : "Your topics")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) { DevSettingsButton() }
             }
         }
     }
 
+    // Minimal sign-up: name, LinkedIn, GitHub and two questions. Everything else is inferred.
     private var form: some View {
-        Form {
-            // Photo preview: pulled from GitHub as soon as a username is typed.
-            Section {
+        ScrollView {
+            VStack(spacing: 22) {
                 VStack(spacing: 8) {
-                    Avatar(name: name.isEmpty ? "?" : name, github: github, size: 84)
-                    Text(github.isEmpty ? "Add your GitHub to use your photo" : "Photo from GitHub")
-                        .font(.caption)
+                    Avatar(name: name.isEmpty ? "?" : name, github: github, size: 80)
+                    Text("Orbit")
+                        .font(.system(size: 40, weight: .heavy, design: .rounded))
+                        .foregroundStyle(Theme.brand)
+                    Text("Find your people at the conference")
+                        .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-                .frame(maxWidth: .infinity)
-                .listRowBackground(Color.clear)
-            }
+                .padding(.top, 4)
 
-            Section {
-                LabeledField(label: "Name", placeholder: "Your name", text: $name)
-                    .textContentType(.name)
-                LabeledField(label: "Role", placeholder: "Platform engineer", text: $role)
-                LabeledField(label: "GitHub", placeholder: "username", text: $github)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-            }
-
-            Section("What are you working on?") {
-                TextField("Migrating 40 clusters to Cilium", text: $workingOn, axis: .vertical)
-                    .lineLimit(1...3)
-            }
-
-            Section {
-                DisclosureGroup("Better matches (optional)") {
-                    LabeledField(label: "Company", placeholder: "Optional", text: $company)
-                    LabeledField(label: "Pronouns", placeholder: "Optional", text: $pronouns)
-                    TextField("Looking for: people running GPUs at scale", text: $lookingFor, axis: .vertical)
-                        .lineLimit(1...3)
-                    TextField("Can help with: KServe, autoscaling", text: $offering, axis: .vertical)
-                        .lineLimit(1...3)
-                    hereForPicker
-                    Picker("On the radar", selection: $status) {
-                        ForEach(PresenceStatus.allCases) { Text($0.label).tag($0) }
-                    }
+                VStack(spacing: 0) {
+                    LabeledField(label: "Name", placeholder: "Your name", text: $name)
+                        .textContentType(.name)
+                        .padding(.vertical, 12)
+                    Divider()
+                    LabeledField(label: "LinkedIn", placeholder: "linkedin.com/in/you", text: $linkedin)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .keyboardType(.URL)
+                        .padding(.vertical, 12)
+                    Divider()
+                    LabeledField(label: "GitHub", placeholder: "username", text: $github)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .padding(.vertical, 12)
                 }
-            }
+                .padding(.horizontal, 16)
+                .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
 
-            Section {
+                question("What are you into?", placeholder: "LLMs, pretraining, fine-tuning", text: $interests, color: .purple)
+                question("What do you want from this conference?", placeholder: "Meet people training LLMs at scale", text: $lookingFor, color: .pink)
+
                 Button {
                     Task { await submit() }
                 } label: {
-                    HStack {
-                        Spacer()
-                        if isSubmitting {
-                            ProgressView()
-                            Text("Building your profile…")
-                        } else {
-                            Text("Create profile").bold()
-                        }
-                        Spacer()
+                    HStack(spacing: 8) {
+                        if isSubmitting { ProgressView().tint(.white) }
+                        Text(isSubmitting ? "Building your profile…" : "Continue").bold()
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 15)
+                    .foregroundStyle(.white)
+                    .background(Theme.brand, in: Capsule())
                 }
-                if let errorMessage {
-                    Text(errorMessage)
-                        .font(.footnote)
-                        .foregroundStyle(.red)
-                }
-            }
+                .disabled(isSubmitting)
 
-            Section {
-                Button("Use the demo profile") {
-                    Task { await useDemoProfile() }
+                if let errorMessage {
+                    Text(errorMessage).font(.footnote).foregroundStyle(.red)
                 }
-            } footer: {
-                Text("Skips onboarding with a sample profile. For building and testing.")
+
+                Button("Use demo profile") { Task { await useDemoProfile() } }
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
+            .padding(20)
         }
+        .scrollDismissesKeyboard(.interactively)
+        .background(Theme.wash.ignoresSafeArea())
     }
 
-    /// "Here for" as one row of tappable chips instead of five list rows.
-    private var hereForPicker: some View {
+    private func question(_ title: String, placeholder: String, text: Binding<String>, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Here for").font(.subheadline)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(HereFor.allCases) { option in
-                        let isOn = hereFor.contains(option)
-                        Button {
-                            if isOn { hereFor.remove(option) } else { hereFor.insert(option) }
-                        } label: {
-                            Text(option.label)
-                                .font(.caption.weight(.medium))
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 6)
-                                .foregroundStyle(isOn ? Color.white : Color.primary)
-                                .background(isOn ? Color.accentColor : Color.secondary.opacity(0.15), in: Capsule())
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityAddTraits(isOn ? .isSelected : [])
-                    }
-                }
-            }
+            Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(color)
+            TextField(placeholder, text: text, axis: .vertical)
+                .lineLimit(1...3)
+                .padding(14)
+                .background(.background, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(color.opacity(0.35)))
         }
-        .padding(.vertical, 4)
     }
 
     private func submit() async {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedName.isEmpty else {
-            errorMessage = "Enter your name first."
+            errorMessage = "Add your name."
             return
         }
-        guard !workingOn.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Add a line about what you're working on. Matching depends on it."
+        guard interests.nilIfBlank != nil else {
+            errorMessage = "Tell us what you're into."
             return
         }
         errorMessage = nil
@@ -156,15 +126,16 @@ struct OnboardingView: View {
 
         let newProfile = NewProfile(
             name: trimmedName,
-            role: role.nilIfBlank,
-            company: company.nilIfBlank,
-            pronouns: pronouns.nilIfBlank,
+            role: nil,
+            company: nil,
+            pronouns: nil,
             github: github.nilIfBlank,
-            workingOn: workingOn.nilIfBlank,
+            linkedin: linkedin.nilIfBlank,
+            workingOn: interests.nilIfBlank,
             lookingFor: lookingFor.nilIfBlank,
-            offering: offering.nilIfBlank,
-            hereFor: HereFor.allCases.filter(hereFor.contains).map(\.rawValue),
-            status: status
+            offering: nil,
+            hereFor: [],
+            status: .green
         )
         do {
             createdProfile = try await APIClient.shared.createProfile(newProfile)
@@ -215,12 +186,13 @@ struct TagReviewView: View {
             }
             Section {
                 if topics.isEmpty {
-                    Text("No tags left. Add more detail to your profile for better matches.")
+                    Text("No topics left.")
                         .foregroundStyle(.secondary)
                 }
                 ForEach(topics, id: \.self) { topic in
                     HStack {
-                        Text(topic)
+                        Circle().fill(Theme.color(for: topic)).frame(width: 10, height: 10)
+                        Text(topic).foregroundStyle(Theme.color(for: topic))
                         Spacer()
                         Button {
                             topics.removeAll { $0 == topic }
@@ -232,9 +204,9 @@ struct TagReviewView: View {
                     }
                 }
             } header: {
-                Text("Topics we found")
+                Text("We'll match you on these")
             } footer: {
-                Text("Remove anything that's wrong. These drive your talk and people matches.")
+                Text("Remove any that don't fit.")
             }
 
             Section {

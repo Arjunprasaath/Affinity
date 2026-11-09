@@ -2,7 +2,7 @@ import { es, IDX } from "./elastic";
 import { nowMs } from "./config";
 import { chatJSON, reasonCache } from "./llm";
 import { traced } from "./otel";
-import { getProfile } from "./profile";
+import { getProfile, interestTopics } from "./profile";
 import { savedTalkIds, swipesOf } from "./swipes";
 import { freeBlocks, ms, overlaps } from "./time";
 import { acceptedMeetupsFor } from "./meetups";
@@ -29,7 +29,9 @@ const levelFit = (want: Talk["level"], got: Talk["level"]) => 1 - Math.abs(LEVEL
 
 /** Hybrid search: semantic on content + keyword on topics/title/abstract, fused with RRF. */
 async function hybridTalkSearch(queryText: string, topics: string[], exclude: string[], size: number): Promise<Talk[]> {
-  const filter = [{ range: { start: { gte: new Date(nowMs()).toISOString() } } }];
+  // Precise: only talks tagged with at least one of the person's interest topics.
+  const filter: Record<string, unknown>[] = [{ range: { start: { gte: new Date(nowMs()).toISOString() } } }];
+  if (topics.length) filter.push({ terms: { topics } });
   const mustNot = exclude.length ? [{ ids: { values: exclude } }] : [];
   const lexical = {
     bool: {
@@ -120,8 +122,7 @@ export async function recommendTalks(pid: string, limit = 10): Promise<TalkCard[
   // Feedback loop: talks you saved pull the query (and topic set) toward them.
   const likedList = [...liked.values()].slice(-5);
   const queryText = [p.working_on, p.looking_for, ...likedList.map((t) => t.title)].join(". ");
-  const likedTopics = likedList.flatMap((t) => t.topics);
-  const topics = [...new Set([...p.topics, ...likedTopics])];
+  const topics = interestTopics(p);
 
   const candidates = await hybridTalkSearch(queryText, topics, [...swiped.keys()], Math.max(limit * 3, 20));
 

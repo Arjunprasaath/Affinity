@@ -14,6 +14,7 @@ export interface Profile {
   company?: string;
   pronouns?: string;
   github?: string;
+  linkedin?: string;
   working_on: string;
   looking_for: string;
   offering: string;

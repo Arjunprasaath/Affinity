@@ -10,6 +10,7 @@ struct OrbitApp: App {
         WindowGroup {
             RootView()
                 .environment(appState)
+                .tint(Theme.accent)
                 .task { await appState.restoreSession() }
         }
     }

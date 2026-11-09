@@ -62,7 +62,7 @@ struct MatchesListView: View {
             }
 
             Section {
-                Text("You can see each other's shared talks and overlapping free time. Nothing else from either calendar is shared, and live location never leaves the phone.")
+                Text("Only shared talks and free time are visible. Live location never leaves your phone.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
@@ -88,7 +88,7 @@ struct MatchesListView: View {
         ContentUnavailableView {
             Label("No matches yet", systemImage: "heart.circle")
         } description: {
-            Text("Swipe right on people in the People tab. When they've swiped right on you too, they show up here with the talks you both saved and the times you're both free.")
+            Text("Swipe right on people. Mutual likes show up here.")
         } actions: {
             Button("Swipe people") { appState.selectedTab = .people }
                 .buttonStyle(.borderedProminent)

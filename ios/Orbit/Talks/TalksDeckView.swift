@@ -77,9 +77,9 @@ struct TalksDeckView: View {
             Label(savedCount > 0 ? "That's your conference" : "No talks to show", systemImage: "rectangle.stack.badge.person.crop")
         } description: {
             if savedCount > 0 {
-                Text("You saved \(savedCount) talk\(savedCount == 1 ? "" : "s"). Add them to your iPhone Calendar, then go find people worth meeting.")
+                Text("\(savedCount) saved. Now find your people.")
             } else {
-                Text("Nothing came back from the recommender. Pull to retry, or check the backend URL in Developer settings.")
+                Text("No talks found. Pull to retry.")
             }
         } actions: {
             if savedCount > 0 {

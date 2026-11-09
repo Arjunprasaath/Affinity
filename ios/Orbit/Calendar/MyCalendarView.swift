@@ -124,7 +124,7 @@ struct MyCalendarView: View {
                     }
                 }
 
-                Text("Free gaps are what your matches get to see — only where they overlap with theirs.")
+                Text("Matches only see where your free time overlaps.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .padding(.top, 8)
@@ -207,7 +207,7 @@ struct MyCalendarView: View {
         ContentUnavailableView {
             Label("Nothing saved yet", systemImage: "calendar")
         } description: {
-            Text("Swipe right on the talks you want and they'll land here as your day, with the gaps between them.")
+            Text("Swipe right on talks to fill your day.")
         } actions: {
             Button("Swipe talks") { appState.selectedTab = .talks }
                 .buttonStyle(.borderedProminent)
@@ -410,7 +410,7 @@ private struct ClashSheet: View {
         NavigationStack {
             List {
                 Section {
-                    Text("These overlap. Keep one and Orbit drops the other from your day.")
+                    Text("These overlap. Keep one.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }

@@ -1,64 +1,1003 @@
 {
-  "_note": "Demo dataset: fictional talks and speakers in a KubeCon-style layout. day 1-3 = Nov 10-12 2026. slot 1=10:00-10:35, 2=11:00-11:35, 3=14:00-14:35, 4=15:30-16:05 (America/Denver, -07:00).",
-  "talks": [
-    {"tid":"t01","day":1,"slot":1,"room":"Room 151","level":"intermediate","track":"Networking","title":"eBPF at Scale: Network Policy for 10,000 Nodes","speakers":["Ines Varga"],"topics":["ebpf","networking","security"],"abstract":"How we replaced iptables-based network policy with eBPF across a 10,000-node fleet, what broke, and the benchmarks that convinced leadership."},
-    {"tid":"t02","day":1,"slot":1,"room":"Room 155","level":"intermediate","track":"AI + ML","title":"Serving LLMs on Kubernetes Without Burning Your GPU Budget","speakers":["Theo Lindqvist"],"topics":["llm-serving","gpu","ai-ml","cost"],"abstract":"Batching, quantization, and right-sizing GPU nodes for LLM inference on Kubernetes, with real cost numbers from a production rollout."},
-    {"tid":"t03","day":1,"slot":1,"room":"Hall B","level":"beginner","track":"Platform Engineering","title":"Platform Engineering 101: Building Your First Internal Developer Platform","speakers":["Rosa Delgado"],"topics":["platform-engineering","developer-experience"],"abstract":"A practical starting point for teams building an internal developer platform: what to build first, what to buy, and how to measure adoption."},
-    {"tid":"t04","day":1,"slot":1,"room":"Room 250","level":"advanced","track":"Observability","title":"OpenTelemetry Collector Pipelines That Don't Fall Over","speakers":["Kai Brandt"],"topics":["opentelemetry","observability"],"abstract":"Tail sampling, memory limiting and load balancing exporters: designing collector pipelines that survive traffic spikes."},
-
-    {"tid":"t05","day":1,"slot":2,"room":"Room 151","level":"intermediate","track":"Security","title":"Securing the Software Supply Chain with Sigstore and SLSA","speakers":["Amara Eze"],"topics":["supply-chain","security"],"abstract":"Signing builds, generating provenance and reaching SLSA level 3 in a real CI system without slowing developers down."},
-    {"tid":"t06","day":1,"slot":2,"room":"Room 155","level":"advanced","track":"AI + ML","title":"GPU Autoscaling with KEDA and Custom Metrics","speakers":["Jun Park"],"topics":["gpu","autoscaling","ai-ml"],"abstract":"Scaling GPU inference on queue depth and GPU utilization instead of CPU, including scale-to-zero and cold-start tricks."},
-    {"tid":"t07","day":1,"slot":2,"room":"Hall B","level":"intermediate","track":"Delivery","title":"GitOps at 40 Clusters: Lessons from an Argo CD Migration","speakers":["Beatrix Holm"],"topics":["gitops","multi-cluster"],"abstract":"Moving 40 clusters from scripted deploys to GitOps: repo layout, app-of-apps, secrets, and the migration order that worked."},
-    {"tid":"t08","day":1,"slot":2,"room":"Room 250","level":"beginner","track":"Community","title":"Your First Steps into Open Source Contribution","speakers":["Femi Adebayo"],"topics":["open-source","community"],"abstract":"Finding a project, picking a good first issue, and getting your first pull request merged in a CNCF project."},
-
-    {"tid":"t09","day":1,"slot":3,"room":"Room 151","level":"advanced","track":"Networking","title":"Service Mesh Without Sidecars","speakers":["Oskar Wilde-Lund"],"topics":["service-mesh","ebpf","networking"],"abstract":"Sidecarless service mesh with eBPF and per-node proxies: latency, resource savings and the trade-offs in mTLS and observability."},
-    {"tid":"t10","day":1,"slot":3,"room":"Room 155","level":"intermediate","track":"Operations","title":"Debugging Kubernetes with an AI SRE: What Works and What Doesn't","speakers":["Maya Corrigan"],"topics":["sre","ai-ml","incident-response"],"abstract":"Six months of letting an AI assistant investigate production incidents: where it found root causes fast and where it confidently got it wrong."},
-    {"tid":"t11","day":1,"slot":3,"room":"Hall B","level":"intermediate","track":"Networking","title":"Multi-Cluster Networking Patterns That Actually Work","speakers":["Hugo Laurent"],"topics":["multi-cluster","networking"],"abstract":"Comparing flat networks, gateways and mesh federation for connecting services across clusters and regions."},
-    {"tid":"t12","day":1,"slot":3,"room":"Room 250","level":"beginner","track":"Community","title":"Building Inclusive Open Source Communities","speakers":["Zainab Yusuf"],"topics":["community","accessibility","open-source"],"abstract":"Concrete practices that made a project welcoming to newcomers, non-native English speakers and disabled contributors."},
-
-    {"tid":"t13","day":1,"slot":4,"room":"Room 151","level":"advanced","track":"Observability","title":"Profiling in Production with Continuous eBPF Profilers","speakers":["Nils Ekström"],"topics":["ebpf","observability","performance"],"abstract":"Always-on CPU and memory profiling with eBPF, and how flame graphs found a 30% CPU win in a service everyone thought was fine."},
-    {"tid":"t14","day":1,"slot":4,"room":"Room 155","level":"intermediate","track":"AI + ML","title":"Fine-Tuning and Serving Small Models on the Edge","speakers":["Leila Farouk"],"topics":["edge","ai-ml","llm-serving"],"abstract":"Running quantized small language models on edge Kubernetes nodes with limited GPUs, and keeping a fleet of them updated."},
-    {"tid":"t15","day":1,"slot":4,"room":"Hall B","level":"intermediate","track":"Security","title":"Policy as Code with Kyverno and OPA","speakers":["Daniel Mwangi"],"topics":["policy","security"],"abstract":"Writing, testing and rolling out admission policies without breaking every team's deploys."},
-    {"tid":"t16","day":1,"slot":4,"room":"Room 250","level":"beginner","track":"Platform Engineering","title":"FinOps for Kubernetes: Finding the 40% You're Wasting","speakers":["Clara Jensen"],"topics":["cost","platform-engineering"],"abstract":"Cost allocation, idle resources and request right-sizing: a beginner's guide to cutting cluster spend."},
-
-    {"tid":"t17","day":2,"slot":1,"room":"Room 151","level":"intermediate","track":"Security","title":"Zero-Trust Networking with SPIFFE and SPIRE","speakers":["Tariq Hassan"],"topics":["security","networking"],"abstract":"Workload identity for every service, across clusters and clouds, using SPIFFE IDs instead of network location."},
-    {"tid":"t18","day":2,"slot":1,"room":"Room 155","level":"intermediate","track":"AI + ML","title":"Vector Search Inside Your Cluster: Running Retrieval at Scale","speakers":["Anya Petrova"],"topics":["ai-ml","search","storage"],"abstract":"Operating vector and hybrid search for retrieval workloads on Kubernetes: sharding, memory, and keeping latency predictable."},
-    {"tid":"t19","day":2,"slot":1,"room":"Hall B","level":"intermediate","track":"Platform Engineering","title":"Golden Paths: Designing Templates Developers Actually Use","speakers":["Sven Aaltonen"],"topics":["platform-engineering","developer-experience"],"abstract":"How we got 80% of new services onto paved-road templates by treating developers as customers."},
-    {"tid":"t20","day":2,"slot":1,"room":"Room 250","level":"intermediate","track":"Observability","title":"Tracing LLM Applications with OpenTelemetry","speakers":["Priyanka Desai"],"topics":["opentelemetry","observability","ai-ml"],"abstract":"Instrumenting prompts, tool calls and token usage with OpenTelemetry semantic conventions for generative AI."},
-
-    {"tid":"t21","day":2,"slot":2,"room":"Room 151","level":"intermediate","track":"Runtimes","title":"WebAssembly on Kubernetes: Beyond Hello World","speakers":["Mateo Ruiz"],"topics":["wasm","serverless"],"abstract":"Running Wasm workloads next to containers: startup times, density, and what still doesn't work."},
-    {"tid":"t22","day":2,"slot":2,"room":"Room 155","level":"advanced","track":"AI + ML","title":"Scheduling GPUs Fairly Across Teams with Kueue","speakers":["Ingrid Solberg"],"topics":["gpu","ai-ml","scheduling"],"abstract":"Quotas, borrowing and preemption for shared GPU clusters used by dozens of ML teams."},
-    {"tid":"t23","day":2,"slot":2,"room":"Hall B","level":"intermediate","track":"Delivery","title":"Progressive Delivery with Argo Rollouts","speakers":["Paolo Greco"],"topics":["gitops","delivery"],"abstract":"Canaries and blue-green deploys driven by metrics, with automatic rollback that the on-call engineer trusts."},
-    {"tid":"t24","day":2,"slot":2,"room":"Room 250","level":"beginner","track":"Operations","title":"SLOs That Matter: From Dashboards to Decisions","speakers":["Ruth Abrams"],"topics":["sre","observability"],"abstract":"Choosing SLIs users care about, setting error budgets, and using them to decide when to ship and when to fix."},
-
-    {"tid":"t25","day":2,"slot":3,"room":"Room 151","level":"advanced","track":"Security","title":"Hunting Container Escapes with eBPF Runtime Security","speakers":["Viktoria Klein"],"topics":["ebpf","security"],"abstract":"Detecting and blocking container escape techniques in real time with eBPF-based runtime security."},
-    {"tid":"t26","day":2,"slot":3,"room":"Room 155","level":"intermediate","track":"AI + ML","title":"KServe in Production: Model Serving Lessons from a Year On Call","speakers":["Omar Siddiqui"],"topics":["llm-serving","ai-ml","sre"],"abstract":"Canary rollouts for models, GPU node failures, and the alerts that actually woke us up for the right reasons."},
-    {"tid":"t27","day":2,"slot":3,"room":"Hall B","level":"intermediate","track":"Platform Engineering","title":"Crossplane: Building Your Own Cloud APIs","speakers":["Freya Lund"],"topics":["platform-engineering","infrastructure-as-code"],"abstract":"Composing cloud resources into self-service APIs for developers, with guardrails built in."},
-    {"tid":"t28","day":2,"slot":3,"room":"Room 250","level":"beginner","track":"Community","title":"Maintainer Burnout and How to Avoid It","speakers":["Gabriel Costa"],"topics":["open-source","community"],"abstract":"What maintainers of busy projects do to stay sane: triage rotations, saying no, and growing new maintainers."},
-
-    {"tid":"t29","day":2,"slot":4,"room":"Room 151","level":"intermediate","track":"Networking","title":"Gateway API: The Future of Kubernetes Ingress","speakers":["Lucia Fernández"],"topics":["networking","service-mesh"],"abstract":"Migrating from Ingress to Gateway API, and how it unifies north-south and east-west traffic configuration."},
-    {"tid":"t30","day":2,"slot":4,"room":"Room 155","level":"advanced","track":"Storage","title":"Running Stateful Databases on Kubernetes Safely","speakers":["Henrik Dahl"],"topics":["storage","databases"],"abstract":"Operators, backups, failover drills and the storage settings that matter when your database lives in a pod."},
-    {"tid":"t31","day":2,"slot":4,"room":"Hall B","level":"intermediate","track":"Platform Engineering","title":"Developer Portals with Backstage: Year Two","speakers":["Naomi Feld"],"topics":["platform-engineering","developer-experience"],"abstract":"What happened after the launch: plugin sprawl, catalog quality, and making the portal something people open every day."},
-    {"tid":"t32","day":2,"slot":4,"room":"Room 250","level":"beginner","track":"Operations","title":"Incident Response Game Day: Live Chaos Engineering","speakers":["Isaac Blum"],"topics":["sre","incident-response","chaos"],"abstract":"A live game day on stage: we break a cluster and the audience helps us find the root cause."},
-
-    {"tid":"t33","day":3,"slot":1,"room":"Room 151","level":"advanced","track":"Networking","title":"Kubernetes Network Performance Deep Dive","speakers":["Elena Popescu"],"topics":["networking","performance"],"abstract":"Where packets spend their time in a Kubernetes node, and the tuning that cut p99 latency in half."},
-    {"tid":"t34","day":3,"slot":1,"room":"Room 155","level":"intermediate","track":"AI + ML","title":"Agents on Kubernetes: Orchestrating AI Workflows","speakers":["Ravi Chandran"],"topics":["ai-ml","agents"],"abstract":"Running long-lived AI agents that call internal tools, with isolation, retries and cost controls."},
-    {"tid":"t35","day":3,"slot":1,"room":"Hall B","level":"intermediate","track":"Platform Engineering","title":"Multi-Tenancy Done Right: Namespaces, Virtual Clusters, or Separate Clusters?","speakers":["Astrid Berg"],"topics":["multi-cluster","platform-engineering","security"],"abstract":"A decision framework for isolating teams and customers, with the costs of each approach."},
-    {"tid":"t36","day":3,"slot":1,"room":"Room 250","level":"beginner","track":"Community","title":"Accessible Dashboards: Observability for Everyone","speakers":["Moana Kealoha"],"topics":["accessibility","observability"],"abstract":"Color, contrast, screen readers and keyboard navigation in observability tools, and why on-call should work for everyone."},
-
-    {"tid":"t37","day":3,"slot":2,"room":"Room 151","level":"intermediate","track":"Security","title":"Signing Everything: Image Verification in Admission Control","speakers":["Kwame Boateng"],"topics":["supply-chain","security","policy"],"abstract":"Enforcing signed images and provenance at admission time across many clusters without blocking emergency fixes."},
-    {"tid":"t38","day":3,"slot":2,"room":"Room 155","level":"advanced","track":"AI + ML","title":"Cost-Aware Autoscaling for Inference Workloads","speakers":["Sakura Ito"],"topics":["gpu","cost","llm-serving","autoscaling"],"abstract":"Mixing spot GPUs, scale-to-zero and request batching to serve models at a fraction of the cost."},
-    {"tid":"t39","day":3,"slot":2,"room":"Hall B","level":"intermediate","track":"Edge","title":"Fleet Management for Edge Kubernetes","speakers":["Mikko Virtanen"],"topics":["edge","multi-cluster","gitops"],"abstract":"Managing thousands of small clusters in stores and factories with GitOps and intermittent connectivity."},
-    {"tid":"t40","day":3,"slot":2,"room":"Room 250","level":"intermediate","track":"Observability","title":"Logs, Metrics, Traces, Profiles: Correlating Signals in OpenTelemetry","speakers":["Selin Arslan"],"topics":["opentelemetry","observability"],"abstract":"Linking all four signals with shared context so you can jump from an alert to the exact slow function."},
-
-    {"tid":"t41","day":3,"slot":3,"room":"Room 151","level":"beginner","track":"Developer","title":"Writing Your First Kubernetes Operator in Go","speakers":["Dmitri Volkov"],"topics":["operators","kubernetes","go"],"abstract":"From an empty repo to a working operator with a custom resource, reconcile loop and tests."},
-    {"tid":"t42","day":3,"slot":3,"room":"Room 155","level":"intermediate","track":"AI + ML","title":"Retrieval-Augmented Generation over Your Runbooks","speakers":["Fatima Zahra"],"topics":["ai-ml","sre","search"],"abstract":"Turning runbooks and postmortems into an on-call assistant with hybrid search, and measuring whether it helps."},
-    {"tid":"t43","day":3,"slot":3,"room":"Hall B","level":"beginner","track":"Platform Engineering","title":"Platform Teams as Product Teams","speakers":["Owen Gallagher"],"topics":["platform-engineering","leadership"],"abstract":"Roadmaps, user research and product management for internal platforms."},
-    {"tid":"t44","day":3,"slot":3,"room":"Room 250","level":"beginner","track":"Community","title":"Hiring and Growing Cloud Native Engineers","speakers":["Adaeze Nwosu"],"topics":["career","community","leadership"],"abstract":"Interview loops, apprenticeships and growth paths that bring new people into cloud native engineering."},
-
-    {"tid":"t45","day":3,"slot":4,"room":"Room 151","level":"intermediate","track":"Observability","title":"eBPF for Observability Without Code Changes","speakers":["Pavel Novak"],"topics":["ebpf","observability"],"abstract":"Getting traces and metrics from services you can't modify, using eBPF auto-instrumentation."},
-    {"tid":"t46","day":3,"slot":4,"room":"Room 155","level":"intermediate","track":"Security","title":"Securing AI Workloads: Model Supply Chain and Runtime","speakers":["Yara Haddad"],"topics":["ai-ml","security","supply-chain"],"abstract":"Signing models, scanning weights, and isolating inference workloads that run untrusted prompts."},
-    {"tid":"t47","day":3,"slot":4,"room":"Hall B","level":"advanced","track":"Delivery","title":"Disaster Recovery Across Regions with GitOps","speakers":["Joaquim Silva"],"topics":["multi-cluster","gitops","storage"],"abstract":"Rebuilding a region from Git in under an hour, including the stateful parts."},
-    {"tid":"t48","day":3,"slot":4,"room":"Room 250","level":"beginner","track":"Community","title":"From Contributor to Maintainer: A CNCF Project Journey","speakers":["Lina Haddou"],"topics":["open-source","community","career"],"abstract":"The path from first pull request to maintainer, and what projects can do to make it easier."}
-  ]
+ "_note": "Demo dataset: fictional talks and speakers in a KubeCon-style layout. day 1-3 = Nov 10-12 2026. slot 1=10:00-10:35, 2=11:00-11:35, 3=14:00-14:35, 4=15:30-16:05 (America/Denver, -07:00).",
+ "talks": [
+  {
+   "tid": "t01",
+   "day": 1,
+   "slot": 1,
+   "room": "Room 151",
+   "level": "intermediate",
+   "track": "Networking",
+   "title": "eBPF at Scale: Network Policy for 10,000 Nodes",
+   "speakers": [
+    "Ines Varga"
+   ],
+   "topics": [
+    "ebpf",
+    "networking",
+    "security"
+   ],
+   "abstract": "How we replaced iptables-based network policy with eBPF across a 10,000-node fleet, what broke, and the benchmarks that convinced leadership."
+  },
+  {
+   "tid": "t02",
+   "day": 1,
+   "slot": 1,
+   "room": "Room 155",
+   "level": "intermediate",
+   "track": "AI + ML",
+   "title": "Serving LLMs on Kubernetes Without Burning Your GPU Budget",
+   "speakers": [
+    "Theo Lindqvist"
+   ],
+   "topics": [
+    "llm-serving",
+    "gpu",
+    "ai-ml",
+    "cost",
+    "llm"
+   ],
+   "abstract": "Batching, quantization, and right-sizing GPU nodes for LLM inference on Kubernetes, with real cost numbers from a production rollout."
+  },
+  {
+   "tid": "t03",
+   "day": 1,
+   "slot": 1,
+   "room": "Hall B",
+   "level": "beginner",
+   "track": "Platform Engineering",
+   "title": "Platform Engineering 101: Building Your First Internal Developer Platform",
+   "speakers": [
+    "Rosa Delgado"
+   ],
+   "topics": [
+    "platform-engineering",
+    "developer-experience"
+   ],
+   "abstract": "A practical starting point for teams building an internal developer platform: what to build first, what to buy, and how to measure adoption."
+  },
+  {
+   "tid": "t04",
+   "day": 1,
+   "slot": 1,
+   "room": "Room 250",
+   "level": "advanced",
+   "track": "Observability",
+   "title": "OpenTelemetry Collector Pipelines That Don't Fall Over",
+   "speakers": [
+    "Kai Brandt"
+   ],
+   "topics": [
+    "opentelemetry",
+    "observability"
+   ],
+   "abstract": "Tail sampling, memory limiting and load balancing exporters: designing collector pipelines that survive traffic spikes."
+  },
+  {
+   "tid": "t05",
+   "day": 1,
+   "slot": 2,
+   "room": "Room 151",
+   "level": "intermediate",
+   "track": "Security",
+   "title": "Securing the Software Supply Chain with Sigstore and SLSA",
+   "speakers": [
+    "Amara Eze"
+   ],
+   "topics": [
+    "supply-chain",
+    "security"
+   ],
+   "abstract": "Signing builds, generating provenance and reaching SLSA level 3 in a real CI system without slowing developers down."
+  },
+  {
+   "tid": "t06",
+   "day": 1,
+   "slot": 2,
+   "room": "Room 155",
+   "level": "advanced",
+   "track": "AI + ML",
+   "title": "GPU Autoscaling with KEDA and Custom Metrics",
+   "speakers": [
+    "Jun Park"
+   ],
+   "topics": [
+    "gpu",
+    "autoscaling",
+    "ai-ml"
+   ],
+   "abstract": "Scaling GPU inference on queue depth and GPU utilization instead of CPU, including scale-to-zero and cold-start tricks."
+  },
+  {
+   "tid": "t07",
+   "day": 1,
+   "slot": 2,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Delivery",
+   "title": "GitOps at 40 Clusters: Lessons from an Argo CD Migration",
+   "speakers": [
+    "Beatrix Holm"
+   ],
+   "topics": [
+    "gitops",
+    "multi-cluster"
+   ],
+   "abstract": "Moving 40 clusters from scripted deploys to GitOps: repo layout, app-of-apps, secrets, and the migration order that worked."
+  },
+  {
+   "tid": "t08",
+   "day": 1,
+   "slot": 2,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Community",
+   "title": "Your First Steps into Open Source Contribution",
+   "speakers": [
+    "Femi Adebayo"
+   ],
+   "topics": [
+    "open-source",
+    "community"
+   ],
+   "abstract": "Finding a project, picking a good first issue, and getting your first pull request merged in a CNCF project."
+  },
+  {
+   "tid": "t09",
+   "day": 1,
+   "slot": 3,
+   "room": "Room 151",
+   "level": "advanced",
+   "track": "Networking",
+   "title": "Service Mesh Without Sidecars",
+   "speakers": [
+    "Oskar Wilde-Lund"
+   ],
+   "topics": [
+    "service-mesh",
+    "ebpf",
+    "networking"
+   ],
+   "abstract": "Sidecarless service mesh with eBPF and per-node proxies: latency, resource savings and the trade-offs in mTLS and observability."
+  },
+  {
+   "tid": "t10",
+   "day": 1,
+   "slot": 3,
+   "room": "Room 155",
+   "level": "intermediate",
+   "track": "Operations",
+   "title": "Debugging Kubernetes with an AI SRE: What Works and What Doesn't",
+   "speakers": [
+    "Maya Corrigan"
+   ],
+   "topics": [
+    "sre",
+    "ai-ml",
+    "incident-response"
+   ],
+   "abstract": "Six months of letting an AI assistant investigate production incidents: where it found root causes fast and where it confidently got it wrong."
+  },
+  {
+   "tid": "t11",
+   "day": 1,
+   "slot": 3,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Networking",
+   "title": "Multi-Cluster Networking Patterns That Actually Work",
+   "speakers": [
+    "Hugo Laurent"
+   ],
+   "topics": [
+    "multi-cluster",
+    "networking"
+   ],
+   "abstract": "Comparing flat networks, gateways and mesh federation for connecting services across clusters and regions."
+  },
+  {
+   "tid": "t12",
+   "day": 1,
+   "slot": 3,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Community",
+   "title": "Building Inclusive Open Source Communities",
+   "speakers": [
+    "Zainab Yusuf"
+   ],
+   "topics": [
+    "community",
+    "accessibility",
+    "open-source"
+   ],
+   "abstract": "Concrete practices that made a project welcoming to newcomers, non-native English speakers and disabled contributors."
+  },
+  {
+   "tid": "t13",
+   "day": 1,
+   "slot": 4,
+   "room": "Room 151",
+   "level": "advanced",
+   "track": "Observability",
+   "title": "Profiling in Production with Continuous eBPF Profilers",
+   "speakers": [
+    "Nils Ekström"
+   ],
+   "topics": [
+    "ebpf",
+    "observability",
+    "performance"
+   ],
+   "abstract": "Always-on CPU and memory profiling with eBPF, and how flame graphs found a 30% CPU win in a service everyone thought was fine."
+  },
+  {
+   "tid": "t14",
+   "day": 1,
+   "slot": 4,
+   "room": "Room 155",
+   "level": "intermediate",
+   "track": "AI + ML",
+   "title": "Fine-Tuning and Serving Small Models on the Edge",
+   "speakers": [
+    "Leila Farouk"
+   ],
+   "topics": [
+    "edge",
+    "ai-ml",
+    "llm-serving",
+    "llm",
+    "fine-tuning"
+   ],
+   "abstract": "Running quantized small language models on edge Kubernetes nodes with limited GPUs, and keeping a fleet of them updated."
+  },
+  {
+   "tid": "t15",
+   "day": 1,
+   "slot": 4,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Security",
+   "title": "Policy as Code with Kyverno and OPA",
+   "speakers": [
+    "Daniel Mwangi"
+   ],
+   "topics": [
+    "policy",
+    "security"
+   ],
+   "abstract": "Writing, testing and rolling out admission policies without breaking every team's deploys."
+  },
+  {
+   "tid": "t16",
+   "day": 1,
+   "slot": 4,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Platform Engineering",
+   "title": "FinOps for Kubernetes: Finding the 40% You're Wasting",
+   "speakers": [
+    "Clara Jensen"
+   ],
+   "topics": [
+    "cost",
+    "platform-engineering"
+   ],
+   "abstract": "Cost allocation, idle resources and request right-sizing: a beginner's guide to cutting cluster spend."
+  },
+  {
+   "tid": "t17",
+   "day": 2,
+   "slot": 1,
+   "room": "Room 151",
+   "level": "intermediate",
+   "track": "Security",
+   "title": "Zero-Trust Networking with SPIFFE and SPIRE",
+   "speakers": [
+    "Tariq Hassan"
+   ],
+   "topics": [
+    "security",
+    "networking"
+   ],
+   "abstract": "Workload identity for every service, across clusters and clouds, using SPIFFE IDs instead of network location."
+  },
+  {
+   "tid": "t18",
+   "day": 2,
+   "slot": 1,
+   "room": "Room 155",
+   "level": "intermediate",
+   "track": "AI + ML",
+   "title": "Vector Search Inside Your Cluster: Running Retrieval at Scale",
+   "speakers": [
+    "Anya Petrova"
+   ],
+   "topics": [
+    "ai-ml",
+    "search",
+    "storage",
+    "rag"
+   ],
+   "abstract": "Operating vector and hybrid search for retrieval workloads on Kubernetes: sharding, memory, and keeping latency predictable."
+  },
+  {
+   "tid": "t19",
+   "day": 2,
+   "slot": 1,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Platform Engineering",
+   "title": "Golden Paths: Designing Templates Developers Actually Use",
+   "speakers": [
+    "Sven Aaltonen"
+   ],
+   "topics": [
+    "platform-engineering",
+    "developer-experience"
+   ],
+   "abstract": "How we got 80% of new services onto paved-road templates by treating developers as customers."
+  },
+  {
+   "tid": "t20",
+   "day": 2,
+   "slot": 1,
+   "room": "Room 250",
+   "level": "intermediate",
+   "track": "Observability",
+   "title": "Tracing LLM Applications with OpenTelemetry",
+   "speakers": [
+    "Priyanka Desai"
+   ],
+   "topics": [
+    "opentelemetry",
+    "observability",
+    "ai-ml",
+    "llm"
+   ],
+   "abstract": "Instrumenting prompts, tool calls and token usage with OpenTelemetry semantic conventions for generative AI."
+  },
+  {
+   "tid": "t21",
+   "day": 2,
+   "slot": 2,
+   "room": "Room 151",
+   "level": "intermediate",
+   "track": "Runtimes",
+   "title": "WebAssembly on Kubernetes: Beyond Hello World",
+   "speakers": [
+    "Mateo Ruiz"
+   ],
+   "topics": [
+    "wasm",
+    "serverless"
+   ],
+   "abstract": "Running Wasm workloads next to containers: startup times, density, and what still doesn't work."
+  },
+  {
+   "tid": "t22",
+   "day": 2,
+   "slot": 2,
+   "room": "Room 155",
+   "level": "advanced",
+   "track": "AI + ML",
+   "title": "Scheduling GPUs Fairly Across Teams with Kueue",
+   "speakers": [
+    "Ingrid Solberg"
+   ],
+   "topics": [
+    "gpu",
+    "ai-ml",
+    "scheduling"
+   ],
+   "abstract": "Quotas, borrowing and preemption for shared GPU clusters used by dozens of ML teams."
+  },
+  {
+   "tid": "t23",
+   "day": 2,
+   "slot": 2,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Delivery",
+   "title": "Progressive Delivery with Argo Rollouts",
+   "speakers": [
+    "Paolo Greco"
+   ],
+   "topics": [
+    "gitops",
+    "delivery"
+   ],
+   "abstract": "Canaries and blue-green deploys driven by metrics, with automatic rollback that the on-call engineer trusts."
+  },
+  {
+   "tid": "t24",
+   "day": 2,
+   "slot": 2,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Operations",
+   "title": "SLOs That Matter: From Dashboards to Decisions",
+   "speakers": [
+    "Ruth Abrams"
+   ],
+   "topics": [
+    "sre",
+    "observability"
+   ],
+   "abstract": "Choosing SLIs users care about, setting error budgets, and using them to decide when to ship and when to fix."
+  },
+  {
+   "tid": "t25",
+   "day": 2,
+   "slot": 3,
+   "room": "Room 151",
+   "level": "advanced",
+   "track": "Security",
+   "title": "Hunting Container Escapes with eBPF Runtime Security",
+   "speakers": [
+    "Viktoria Klein"
+   ],
+   "topics": [
+    "ebpf",
+    "security"
+   ],
+   "abstract": "Detecting and blocking container escape techniques in real time with eBPF-based runtime security."
+  },
+  {
+   "tid": "t26",
+   "day": 2,
+   "slot": 3,
+   "room": "Room 155",
+   "level": "intermediate",
+   "track": "AI + ML",
+   "title": "KServe in Production: Model Serving Lessons from a Year On Call",
+   "speakers": [
+    "Omar Siddiqui"
+   ],
+   "topics": [
+    "llm-serving",
+    "ai-ml",
+    "sre",
+    "llm"
+   ],
+   "abstract": "Canary rollouts for models, GPU node failures, and the alerts that actually woke us up for the right reasons."
+  },
+  {
+   "tid": "t27",
+   "day": 2,
+   "slot": 3,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Platform Engineering",
+   "title": "Crossplane: Building Your Own Cloud APIs",
+   "speakers": [
+    "Freya Lund"
+   ],
+   "topics": [
+    "platform-engineering",
+    "infrastructure-as-code"
+   ],
+   "abstract": "Composing cloud resources into self-service APIs for developers, with guardrails built in."
+  },
+  {
+   "tid": "t28",
+   "day": 2,
+   "slot": 3,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Community",
+   "title": "Maintainer Burnout and How to Avoid It",
+   "speakers": [
+    "Gabriel Costa"
+   ],
+   "topics": [
+    "open-source",
+    "community"
+   ],
+   "abstract": "What maintainers of busy projects do to stay sane: triage rotations, saying no, and growing new maintainers."
+  },
+  {
+   "tid": "t29",
+   "day": 2,
+   "slot": 4,
+   "room": "Room 151",
+   "level": "intermediate",
+   "track": "Networking",
+   "title": "Gateway API: The Future of Kubernetes Ingress",
+   "speakers": [
+    "Lucia Fernández"
+   ],
+   "topics": [
+    "networking",
+    "service-mesh"
+   ],
+   "abstract": "Migrating from Ingress to Gateway API, and how it unifies north-south and east-west traffic configuration."
+  },
+  {
+   "tid": "t30",
+   "day": 2,
+   "slot": 4,
+   "room": "Room 155",
+   "level": "advanced",
+   "track": "Storage",
+   "title": "Running Stateful Databases on Kubernetes Safely",
+   "speakers": [
+    "Henrik Dahl"
+   ],
+   "topics": [
+    "storage",
+    "databases"
+   ],
+   "abstract": "Operators, backups, failover drills and the storage settings that matter when your database lives in a pod."
+  },
+  {
+   "tid": "t31",
+   "day": 2,
+   "slot": 4,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Platform Engineering",
+   "title": "Developer Portals with Backstage: Year Two",
+   "speakers": [
+    "Naomi Feld"
+   ],
+   "topics": [
+    "platform-engineering",
+    "developer-experience"
+   ],
+   "abstract": "What happened after the launch: plugin sprawl, catalog quality, and making the portal something people open every day."
+  },
+  {
+   "tid": "t32",
+   "day": 2,
+   "slot": 4,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Operations",
+   "title": "Incident Response Game Day: Live Chaos Engineering",
+   "speakers": [
+    "Isaac Blum"
+   ],
+   "topics": [
+    "sre",
+    "incident-response",
+    "chaos"
+   ],
+   "abstract": "A live game day on stage: we break a cluster and the audience helps us find the root cause."
+  },
+  {
+   "tid": "t33",
+   "day": 3,
+   "slot": 1,
+   "room": "Room 151",
+   "level": "advanced",
+   "track": "Networking",
+   "title": "Kubernetes Network Performance Deep Dive",
+   "speakers": [
+    "Elena Popescu"
+   ],
+   "topics": [
+    "networking",
+    "performance"
+   ],
+   "abstract": "Where packets spend their time in a Kubernetes node, and the tuning that cut p99 latency in half."
+  },
+  {
+   "tid": "t34",
+   "day": 3,
+   "slot": 1,
+   "room": "Room 155",
+   "level": "intermediate",
+   "track": "AI + ML",
+   "title": "Agents on Kubernetes: Orchestrating AI Workflows",
+   "speakers": [
+    "Ravi Chandran"
+   ],
+   "topics": [
+    "ai-ml",
+    "agents",
+    "llm"
+   ],
+   "abstract": "Running long-lived AI agents that call internal tools, with isolation, retries and cost controls."
+  },
+  {
+   "tid": "t35",
+   "day": 3,
+   "slot": 1,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Platform Engineering",
+   "title": "Multi-Tenancy Done Right: Namespaces, Virtual Clusters, or Separate Clusters?",
+   "speakers": [
+    "Astrid Berg"
+   ],
+   "topics": [
+    "multi-cluster",
+    "platform-engineering",
+    "security"
+   ],
+   "abstract": "A decision framework for isolating teams and customers, with the costs of each approach."
+  },
+  {
+   "tid": "t36",
+   "day": 3,
+   "slot": 1,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Community",
+   "title": "Accessible Dashboards: Observability for Everyone",
+   "speakers": [
+    "Moana Kealoha"
+   ],
+   "topics": [
+    "accessibility",
+    "observability"
+   ],
+   "abstract": "Color, contrast, screen readers and keyboard navigation in observability tools, and why on-call should work for everyone."
+  },
+  {
+   "tid": "t37",
+   "day": 3,
+   "slot": 2,
+   "room": "Room 151",
+   "level": "intermediate",
+   "track": "Security",
+   "title": "Signing Everything: Image Verification in Admission Control",
+   "speakers": [
+    "Kwame Boateng"
+   ],
+   "topics": [
+    "supply-chain",
+    "security",
+    "policy"
+   ],
+   "abstract": "Enforcing signed images and provenance at admission time across many clusters without blocking emergency fixes."
+  },
+  {
+   "tid": "t38",
+   "day": 3,
+   "slot": 2,
+   "room": "Room 155",
+   "level": "advanced",
+   "track": "AI + ML",
+   "title": "Cost-Aware Autoscaling for Inference Workloads",
+   "speakers": [
+    "Sakura Ito"
+   ],
+   "topics": [
+    "gpu",
+    "cost",
+    "llm-serving",
+    "autoscaling",
+    "llm"
+   ],
+   "abstract": "Mixing spot GPUs, scale-to-zero and request batching to serve models at a fraction of the cost."
+  },
+  {
+   "tid": "t39",
+   "day": 3,
+   "slot": 2,
+   "room": "Hall B",
+   "level": "intermediate",
+   "track": "Edge",
+   "title": "Fleet Management for Edge Kubernetes",
+   "speakers": [
+    "Mikko Virtanen"
+   ],
+   "topics": [
+    "edge",
+    "multi-cluster",
+    "gitops"
+   ],
+   "abstract": "Managing thousands of small clusters in stores and factories with GitOps and intermittent connectivity."
+  },
+  {
+   "tid": "t40",
+   "day": 3,
+   "slot": 2,
+   "room": "Room 250",
+   "level": "intermediate",
+   "track": "Observability",
+   "title": "Logs, Metrics, Traces, Profiles: Correlating Signals in OpenTelemetry",
+   "speakers": [
+    "Selin Arslan"
+   ],
+   "topics": [
+    "opentelemetry",
+    "observability"
+   ],
+   "abstract": "Linking all four signals with shared context so you can jump from an alert to the exact slow function."
+  },
+  {
+   "tid": "t41",
+   "day": 3,
+   "slot": 3,
+   "room": "Room 151",
+   "level": "beginner",
+   "track": "Developer",
+   "title": "Writing Your First Kubernetes Operator in Go",
+   "speakers": [
+    "Dmitri Volkov"
+   ],
+   "topics": [
+    "operators",
+    "kubernetes",
+    "go"
+   ],
+   "abstract": "From an empty repo to a working operator with a custom resource, reconcile loop and tests."
+  },
+  {
+   "tid": "t42",
+   "day": 3,
+   "slot": 3,
+   "room": "Room 155",
+   "level": "intermediate",
+   "track": "AI + ML",
+   "title": "Retrieval-Augmented Generation over Your Runbooks",
+   "speakers": [
+    "Fatima Zahra"
+   ],
+   "topics": [
+    "ai-ml",
+    "sre",
+    "search",
+    "llm",
+    "rag"
+   ],
+   "abstract": "Turning runbooks and postmortems into an on-call assistant with hybrid search, and measuring whether it helps."
+  },
+  {
+   "tid": "t43",
+   "day": 3,
+   "slot": 3,
+   "room": "Hall B",
+   "level": "beginner",
+   "track": "Platform Engineering",
+   "title": "Platform Teams as Product Teams",
+   "speakers": [
+    "Owen Gallagher"
+   ],
+   "topics": [
+    "platform-engineering",
+    "leadership"
+   ],
+   "abstract": "Roadmaps, user research and product management for internal platforms."
+  },
+  {
+   "tid": "t44",
+   "day": 3,
+   "slot": 3,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Community",
+   "title": "Hiring and Growing Cloud Native Engineers",
+   "speakers": [
+    "Adaeze Nwosu"
+   ],
+   "topics": [
+    "career",
+    "community",
+    "leadership"
+   ],
+   "abstract": "Interview loops, apprenticeships and growth paths that bring new people into cloud native engineering."
+  },
+  {
+   "tid": "t45",
+   "day": 3,
+   "slot": 4,
+   "room": "Room 151",
+   "level": "intermediate",
+   "track": "Observability",
+   "title": "eBPF for Observability Without Code Changes",
+   "speakers": [
+    "Pavel Novak"
+   ],
+   "topics": [
+    "ebpf",
+    "observability"
+   ],
+   "abstract": "Getting traces and metrics from services you can't modify, using eBPF auto-instrumentation."
+  },
+  {
+   "tid": "t46",
+   "day": 3,
+   "slot": 4,
+   "room": "Room 155",
+   "level": "intermediate",
+   "track": "Security",
+   "title": "Securing AI Workloads: Model Supply Chain and Runtime",
+   "speakers": [
+    "Yara Haddad"
+   ],
+   "topics": [
+    "ai-ml",
+    "security",
+    "supply-chain",
+    "llm"
+   ],
+   "abstract": "Signing models, scanning weights, and isolating inference workloads that run untrusted prompts."
+  },
+  {
+   "tid": "t47",
+   "day": 3,
+   "slot": 4,
+   "room": "Hall B",
+   "level": "advanced",
+   "track": "Delivery",
+   "title": "Disaster Recovery Across Regions with GitOps",
+   "speakers": [
+    "Joaquim Silva"
+   ],
+   "topics": [
+    "multi-cluster",
+    "gitops",
+    "storage"
+   ],
+   "abstract": "Rebuilding a region from Git in under an hour, including the stateful parts."
+  },
+  {
+   "tid": "t48",
+   "day": 3,
+   "slot": 4,
+   "room": "Room 250",
+   "level": "beginner",
+   "track": "Community",
+   "title": "From Contributor to Maintainer: A CNCF Project Journey",
+   "speakers": [
+    "Lina Haddou"
+   ],
+   "topics": [
+    "open-source",
+    "community",
+    "career"
+   ],
+   "abstract": "The path from first pull request to maintainer, and what projects can do to make it easier."
+  },
+  {
+   "tid": "t49",
+   "day": 1,
+   "slot": 1,
+   "room": "Room 160",
+   "level": "advanced",
+   "track": "LLMs",
+   "title": "Pretraining LLMs on Kubernetes: Scheduling 1,000 GPUs",
+   "speakers": [
+    "Mara Quist"
+   ],
+   "topics": [
+    "llm",
+    "pretraining",
+    "gpu",
+    "scheduling"
+   ],
+   "abstract": "Gang scheduling, topology-aware placement and failure recovery for multi-week pretraining runs on Kubernetes."
+  },
+  {
+   "tid": "t50",
+   "day": 1,
+   "slot": 3,
+   "room": "Room 160",
+   "level": "intermediate",
+   "track": "LLMs",
+   "title": "Fine-Tuning Open Models with LoRA on Shared Clusters",
+   "speakers": [
+    "Devin Ocampo"
+   ],
+   "topics": [
+    "llm",
+    "fine-tuning",
+    "gpu"
+   ],
+   "abstract": "Running many small LoRA fine-tunes side by side on a shared GPU pool without teams stepping on each other."
+  },
+  {
+   "tid": "t51",
+   "day": 2,
+   "slot": 1,
+   "room": "Room 160",
+   "level": "advanced",
+   "track": "LLMs",
+   "title": "Checkpoints That Survive: Fault-Tolerant LLM Pretraining",
+   "speakers": [
+    "Yuki Halvorsen"
+   ],
+   "topics": [
+    "llm",
+    "pretraining",
+    "storage"
+   ],
+   "abstract": "Async checkpointing, fast restarts and storage layouts that keep a pretraining run alive when nodes fail."
+  },
+  {
+   "tid": "t52",
+   "day": 2,
+   "slot": 2,
+   "room": "Room 160",
+   "level": "intermediate",
+   "track": "LLMs",
+   "title": "Evaluating LLMs Before They Reach Production",
+   "speakers": [
+    "Ana Brightwater"
+   ],
+   "topics": [
+    "llm",
+    "evaluation",
+    "fine-tuning"
+   ],
+   "abstract": "Automated eval suites in CI for fine-tuned models: regressions, safety checks and cost per answer."
+  },
+  {
+   "tid": "t53",
+   "day": 2,
+   "slot": 4,
+   "room": "Room 160",
+   "level": "intermediate",
+   "track": "LLMs",
+   "title": "RAG at Scale: Hybrid Search for LLM Apps",
+   "speakers": [
+    "Tomas Reyes"
+   ],
+   "topics": [
+    "llm",
+    "rag",
+    "search"
+   ],
+   "abstract": "Combining keyword and vector search to ground LLM answers, and measuring whether retrieval actually helps."
+  },
+  {
+   "tid": "t54",
+   "day": 3,
+   "slot": 1,
+   "room": "Room 160",
+   "level": "intermediate",
+   "track": "LLMs",
+   "title": "From Pretraining to Serving: An Open LLM Pipeline",
+   "speakers": [
+    "Ines Mokoena"
+   ],
+   "topics": [
+    "llm",
+    "pretraining",
+    "fine-tuning",
+    "llm-serving"
+   ],
+   "abstract": "One open source pipeline on Kubernetes that takes a model from pretraining through fine-tuning to serving."
+  },
+  {
+   "tid": "t55",
+   "day": 3,
+   "slot": 3,
+   "room": "Room 160",
+   "level": "beginner",
+   "track": "LLMs",
+   "title": "Instruction Tuning on a Budget",
+   "speakers": [
+    "Ravi Kapoor"
+   ],
+   "topics": [
+    "llm",
+    "fine-tuning",
+    "cost"
+   ],
+   "abstract": "Spot GPUs, small base models and good data: instruction tuning that fits a startup budget."
+  },
+  {
+   "tid": "t56",
+   "day": 3,
+   "slot": 4,
+   "room": "Room 160",
+   "level": "advanced",
+   "track": "LLMs",
+   "title": "Serving Fine-Tuned Adapters: Multi-LoRA Inference",
+   "speakers": [
+    "Helena Strand"
+   ],
+   "topics": [
+    "llm",
+    "fine-tuning",
+    "llm-serving"
+   ],
+   "abstract": "Serving hundreds of fine-tuned LoRA adapters from one base model with low latency."
+  }
+ ]
 }

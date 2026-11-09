@@ -27,7 +27,7 @@ struct TalkCardView: View {
             }
 
             if let topics = talk.topics, !topics.isEmpty {
-                ChipRow(items: topics, tint: .secondary, limit: 5)
+                ChipRow(items: topics, limit: 5, colorful: true)
             }
 
             Spacer(minLength: 0)

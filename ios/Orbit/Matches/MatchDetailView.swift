@@ -77,7 +77,7 @@ struct MatchDetailView: View {
     private func sharedTalksSection(_ meet: MeetView) -> some View {
         Section {
             if meet.sharedTalks.isEmpty {
-                Text("No talks in common yet. Save a few more and they'll appear here.")
+                Text("No shared talks yet.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             } else {
@@ -99,7 +99,7 @@ struct MatchDetailView: View {
     private func freeSection(_ meet: MeetView) -> some View {
         Section {
             if meet.freeOverlaps.isEmpty {
-                Text("No overlapping free time on the days you've both filled in.")
+                Text("No shared free time yet.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             } else {
@@ -117,7 +117,7 @@ struct MatchDetailView: View {
         } header: {
             Label("Times you're both free", systemImage: "clock.arrow.2.circlepath")
         } footer: {
-            Text("Only the overlap is shared. \(firstName) can't see what you're doing the rest of the day, and you can't see theirs.")
+            Text("Only the overlap is shared.")
         }
     }
 
@@ -177,7 +177,7 @@ struct MatchDetailView: View {
         } header: {
             Label("Where you can meet", systemImage: "sparkles")
         } footer: {
-            Text("Once you both accept, it goes in both calendars.")
+            Text("Accepted meetups go in both calendars.")
         }
     }
 

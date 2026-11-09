@@ -59,6 +59,7 @@ struct Profile: Codable, Hashable, Identifiable {
     var company: String?
     var pronouns: String?
     var github: String?
+    var linkedin: String?
     var workingOn: String?
     var lookingFor: String?
     var offering: String?
@@ -78,6 +79,7 @@ struct NewProfile: Encodable, Hashable {
     var company: String?
     var pronouns: String?
     var github: String?
+    var linkedin: String? = nil
     var workingOn: String?
     var lookingFor: String?
     var offering: String?

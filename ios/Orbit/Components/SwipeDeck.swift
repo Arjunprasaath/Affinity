@@ -248,15 +248,19 @@ struct ChipRow: View {
     let items: [String]
     var tint: Color = .accentColor
     var limit: Int = 6
+    /// Give each chip its own colour from the topic name (same topic, same colour everywhere).
+    var colorful = false
+
+    private func color(_ text: String) -> Color { colorful ? Theme.color(for: text) : tint }
 
     var body: some View {
         let shown = Array(items.prefix(limit))
         ViewThatFits(in: .horizontal) {
-            HStack(spacing: 6) { ForEach(shown, id: \.self) { Chip(text: $0, tint: tint) } }
+            HStack(spacing: 6) { ForEach(shown, id: \.self) { Chip(text: $0, tint: color($0)) } }
             VStack(alignment: .leading, spacing: 6) {
-                HStack(spacing: 6) { ForEach(shown.prefix(3), id: \.self) { Chip(text: $0, tint: tint) } }
+                HStack(spacing: 6) { ForEach(shown.prefix(3), id: \.self) { Chip(text: $0, tint: color($0)) } }
                 if shown.count > 3 {
-                    HStack(spacing: 6) { ForEach(shown.dropFirst(3), id: \.self) { Chip(text: $0, tint: tint) } }
+                    HStack(spacing: 6) { ForEach(shown.dropFirst(3), id: \.self) { Chip(text: $0, tint: color($0)) } }
                 }
             }
         }

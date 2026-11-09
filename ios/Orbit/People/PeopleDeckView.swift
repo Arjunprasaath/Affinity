@@ -82,7 +82,7 @@ struct PeopleDeckView: View {
         ContentUnavailableView {
             Label("You've seen everyone for now", systemImage: "person.2")
         } description: {
-            Text("Save a few more talks and the recommender will have more to go on — people who saved the same talks score higher.")
+            Text("Save more talks for better matches.")
         } actions: {
             if matchCount > 0 {
                 Button("See my matches") { appState.selectedTab = .matches }

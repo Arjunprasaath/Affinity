@@ -24,8 +24,13 @@ export const TOPIC_VOCAB: Record<string, RegExp> = {
   "developer-experience": /developer experience|\bdevex\b|backstage|developer portal/i,
   gitops: /gitops|argo ?cd|flux|argo rollouts/i,
   "multi-cluster": /multi.?cluster|fleet|multi.?region|multi.?tenan/i,
-  "ai-ml": /\bai\b|\bml\b|machine learning|model|llm|genai|inference|mlops/i,
-  "llm-serving": /llm|serving|inference|kserve|vllm|triton/i,
+  llm: /\bllms?\b|large language|language models?|\bgpt\b|transformer/i,
+  pretraining: /pre-?train/i,
+  "fine-tuning": /fine-?tun|\blora\b|instruction[- ]tun|\brlhf\b|\bsft\b/i,
+  rag: /\brag\b|retrieval[- ]augmented/i,
+  evaluation: /\bevals?\b|evaluat|benchmark/i,
+  "ai-ml": /\bai\b|\bml\b|machine learning|genai|mlops/i,
+  "llm-serving": /serving|inference|kserve|vllm|triton/i,
   gpu: /\bgpu|cuda|nvidia/i,
   autoscaling: /autoscal|\bkeda\b|\bhpa\b|karpenter|scale.?to.?zero/i,
   scheduling: /schedul|kueue|quota|volcano/i,
@@ -56,6 +61,7 @@ export interface ProfileInput {
   company?: string;
   pronouns?: string;
   github?: string;
+  linkedin?: string;
   working_on?: string;
   looking_for?: string;
   offering?: string;
@@ -101,6 +107,7 @@ async function extract(input: ProfileInput, gh: GithubSignals | null) {
 Return JSON: {"topics": string[], "summary": string, "evidence": [{"topic": string, "source": string}]}.
 - topics: at most 8, lowercase kebab-case. Prefer these when they fit: ${Object.keys(TOPIC_VOCAB).join(", ")}.
 - Only include a topic if the person's own words mention it, or at least two GitHub signals support it. Don't guess from one starred repo.
+- Put the topics from the person's own words first, using the most specific tag (e.g. "pretraining", "fine-tuning", "llm" rather than "ai-ml").
 - evidence: one entry per topic; source is "self" or "github:<repo>" or "github-star:<repo>".
 - summary: one sentence, third person, under 25 words, about what they build and care about.`,
     JSON.stringify({
@@ -128,6 +135,17 @@ Return JSON: {"topics": string[], "summary": string, "evidence": [{"topic": stri
   return { topics, summary, evidence: llm?.evidence?.length ? llm.evidence : fallback.evidence };
 }
 
+/**
+ * The topics a person actually said they care about. Tags that only came from GitHub
+ * (e.g. a starred repo) are left out when the person stated interests themselves,
+ * so "I like LLMs, pretraining, fine-tuning" means only those.
+ */
+export function interestTopics(p: Profile): string[] {
+  const self = new Set((p.evidence ?? []).filter((e) => e.source === "self").map((e) => e.topic));
+  const stated = p.topics.filter((t) => self.has(t));
+  return stated.length ? stated : p.topics;
+}
+
 export function newPid(): string {
   return "p_" + randomBytes(4).toString("hex");
 }
@@ -150,6 +168,7 @@ export async function createProfile(input: ProfileInput): Promise<Profile> {
       company: input.company?.trim() || gh?.company?.replace(/^@/, "") || undefined,
       pronouns: input.pronouns?.trim() || undefined,
       github: gh?.login ?? input.github?.trim() ?? undefined,
+      linkedin: input.linkedin?.trim() || undefined,
       working_on: workingOn,
       // semantic_text fields must not be empty; fall back to related text
       looking_for: input.looking_for?.trim() || `People working on ${topics.slice(0, 3).join(", ") || workingOn}`,
@@ -175,7 +194,7 @@ export async function getProfile(pid: string): Promise<Profile> {
   return p;
 }
 
-const EDITABLE = ["name", "role", "company", "pronouns", "working_on", "looking_for", "offering", "here_for", "topics", "status", "hide_next_room"] as const;
+const EDITABLE = ["name", "linkedin", "role", "company", "pronouns", "working_on", "looking_for", "offering", "here_for", "topics", "status", "hide_next_room"] as const;
 
 export async function patchProfile(pid: string, patch: Partial<Profile>): Promise<Profile> {
   await getProfile(pid);
