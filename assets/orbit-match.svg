@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 300" width="880" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Match</title>
+  <desc id="desc">Two people swipe right on each other and slide together into a match. Then only the overlap of their free time lights up between their two calendars.</desc>
+
+  <rect width="880" height="300" rx="20" fill="#0B1020"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="56" y="88" fill="#FFFFFF" font-size="34" font-weight="700">Match</text>
+    <text x="56" y="126" fill="#B4B2A9" font-size="17">A match takes both of you.</text>
+    <text x="56" y="152" fill="#B4B2A9" font-size="17">Then you see only the overlap</text>
+    <text x="56" y="176" fill="#B4B2A9" font-size="17">of your calendars. Nothing else.</text>
+    <text x="56" y="230" fill="#5DCAA5" font-size="14">Shared talks · times you're both free · where to meet</text>
+  </g>
+
+  <g font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" text-anchor="middle">
+    <!-- You -->
+    <g>
+      <circle cx="0" cy="0" r="26" fill="#378ADD"/>
+      <text x="0" y="5" fill="#FFFFFF" font-size="14" font-weight="700">You</text>
+      <animateTransform attributeName="transform" type="translate" values="500 74; 610 74; 610 74" keyTimes="0; 0.25; 1" calcMode="spline" keySplines="0.3 0 0.2 1; 0 0 1 1" dur="6s" repeatCount="indefinite"/>
+    </g>
+    <!-- Jensen -->
+    <g>
+      <circle cx="0" cy="0" r="26" fill="#7F77DD"/>
+      <text x="0" y="5" fill="#FFFFFF" font-size="14" font-weight="700">JP</text>
+      <animateTransform attributeName="transform" type="translate" values="820 74; 710 74; 710 74" keyTimes="0; 0.25; 1" calcMode="spline" keySplines="0.3 0 0.2 1; 0 0 1 1" dur="6s" repeatCount="indefinite"/>
+    </g>
+    <!-- Heart + label -->
+    <g opacity="0">
+      <path d="M660 86 C 646 76, 640 66, 648 59 C 654 54, 660 58, 660 63 C 660 58, 666 54, 672 59 C 680 66, 674 76, 660 86 Z" fill="#ED93B1"/>
+      <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.25;0.32;1" dur="6s" repeatCount="indefinite"/>
+    </g>
+    <text x="660" y="130" fill="#FFFFFF" font-size="18" font-weight="700" opacity="0">It's a match<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.3;0.38;1" dur="6s" repeatCount="indefinite"/></text>
+
+    <!-- Two calendars -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.45;0.55;1" dur="6s" repeatCount="indefinite"/>
+      <text x="590" y="160" fill="#85B7EB" font-size="11" font-weight="600">Your day</text>
+      <text x="730" y="160" fill="#AFA9EC" font-size="11" font-weight="600">Jensen's day</text>
+      <!-- you -->
+      <rect x="530" y="170" width="120" height="22" rx="6" fill="#26314F"/>
+      <rect x="530" y="198" width="120" height="22" rx="6" fill="none" stroke="#3A4566" stroke-dasharray="4 3"/>
+      <rect x="530" y="226" width="120" height="22" rx="6" fill="none" stroke="#3A4566" stroke-dasharray="4 3"/>
+      <rect x="530" y="254" width="120" height="22" rx="6" fill="#26314F"/>
+      <!-- jensen -->
+      <rect x="670" y="170" width="120" height="22" rx="6" fill="none" stroke="#3A4566" stroke-dasharray="4 3"/>
+      <rect x="670" y="198" width="120" height="22" rx="6" fill="#26314F"/>
+      <rect x="670" y="226" width="120" height="22" rx="6" fill="none" stroke="#3A4566" stroke-dasharray="4 3"/>
+      <rect x="670" y="254" width="120" height="22" rx="6" fill="#26314F"/>
+      <g fill="#5F5E5A" font-size="9">
+        <text x="590" y="184">busy</text><text x="590" y="268">busy</text>
+        <text x="730" y="212">busy</text><text x="730" y="268">busy</text>
+      </g>
+    </g>
+
+    <!-- The only thing shared: the overlap -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.65;0.75;0.95;1" dur="6s" repeatCount="indefinite"/>
+      <rect x="524" y="222" width="272" height="30" rx="8" fill="#1D9E75" fill-opacity="0.28" stroke="#5DCAA5"/>
+      <text x="660" y="241" fill="#E1F5EE" font-size="12" font-weight="700">Both free 3:40 – 4:10 · meet at Room 155</text>
+    </g>
+  </g>
+</svg>

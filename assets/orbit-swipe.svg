@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 300" width="880" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Swipe talks</title>
+  <desc id="desc">Talk cards swipe away one by one, saved or marked must-attend, while the matching blocks appear in your calendar.</desc>
+
+  <rect width="880" height="300" rx="20" fill="#0B1020"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="56" y="88" fill="#FFFFFF" font-size="34" font-weight="700">Swipe</text>
+    <text x="56" y="126" fill="#B4B2A9" font-size="17">Every talk says why it fits you.</text>
+    <text x="56" y="152" fill="#B4B2A9" font-size="17">Your calendar builds itself.</text>
+    <g font-size="14">
+      <circle cx="64" cy="200" r="11" fill="#1D9E75" fill-opacity="0.25"/><text x="64" y="205" text-anchor="middle" fill="#5DCAA5">✓</text>
+      <text x="84" y="205" fill="#D3D1C7">save</text>
+      <circle cx="146" cy="200" r="11" fill="#378ADD" fill-opacity="0.25"/><text x="146" y="205" text-anchor="middle" fill="#85B7EB">★</text>
+      <text x="166" y="205" fill="#D3D1C7">must-attend</text>
+      <circle cx="270" cy="200" r="11" fill="#E24B4A" fill-opacity="0.25"/><text x="270" y="205" text-anchor="middle" fill="#F09595">✕</text>
+      <text x="290" y="205" fill="#D3D1C7">skip</text>
+    </g>
+    <text x="56" y="248" fill="#5DCAA5" font-size="14">Clashes and free time are worked out for you.</text>
+  </g>
+
+  <!-- Phone with the talk deck -->
+  <g transform="translate(500 150)" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <rect x="-82" y="-136" width="164" height="272" rx="26" fill="#1A2238" stroke="#3A4566" stroke-width="2"/>
+    <rect x="-72" y="-126" width="144" height="252" rx="18" fill="#111827"/>
+
+    <!-- saved counter -->
+    <g font-size="10" font-weight="600" fill="#5DCAA5">
+      <text x="-56" y="-104" opacity="1">0 saved<animate attributeName="opacity" values="1;0;1" keyTimes="0;0.3;0.97" calcMode="discrete" dur="6s" repeatCount="indefinite"/></text>
+      <text x="-56" y="-104" opacity="0">1 saved<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.3;0.6" calcMode="discrete" dur="6s" repeatCount="indefinite"/></text>
+      <text x="-56" y="-104" opacity="0">2 saved · 1 ★<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.6;0.9" calcMode="discrete" dur="6s" repeatCount="indefinite"/></text>
+      <text x="-56" y="-104" opacity="0">3 saved · 1 ★<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.9;0.97" calcMode="discrete" dur="6s" repeatCount="indefinite"/></text>
+    </g>
+
+    <clipPath id="screen"><rect x="-72" y="-126" width="144" height="252" rx="18"/></clipPath>
+    <g clip-path="url(#screen)">
+    <!-- card 3 (bottom of the stack) -->
+    <g>
+      <rect x="-60" y="-80" width="120" height="150" rx="12" fill="#1F2A44" stroke="#3A4566"/>
+      <rect x="-48" y="-64" width="70" height="7" rx="3" fill="#888780"/>
+      <rect x="-48" y="-48" width="92" height="10" rx="3" fill="#D3D1C7"/>
+      <rect x="-48" y="-32" width="60" height="10" rx="3" fill="#D3D1C7"/>
+      <rect x="-48" y="28" width="96" height="28" rx="8" fill="#378ADD" fill-opacity="0.25"/>
+      <text x="0" y="0" text-anchor="middle" font-size="18" font-weight="800" fill="#5DCAA5" opacity="0" transform="rotate(-12)">SAVE<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.68;0.76;0.88;1" dur="6s" repeatCount="indefinite"/></text>
+      <animateTransform attributeName="transform" type="translate" values="0 12; 0 12; 0 0; 0 0; 230 -6; 230 -6" keyTimes="0; 0.45; 0.6; 0.75; 0.9; 1" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.84;0.9;1" dur="6s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- card 2: swiped up = must-attend -->
+    <g>
+      <rect x="-60" y="-80" width="120" height="150" rx="12" fill="#1F2A44" stroke="#3A4566"/>
+      <rect x="-48" y="-64" width="56" height="7" rx="3" fill="#888780"/>
+      <rect x="-48" y="-48" width="84" height="10" rx="3" fill="#D3D1C7"/>
+      <rect x="-48" y="-32" width="72" height="10" rx="3" fill="#D3D1C7"/>
+      <rect x="-48" y="28" width="96" height="28" rx="8" fill="#378ADD" fill-opacity="0.25"/>
+      <text x="0" y="0" text-anchor="middle" font-size="18" font-weight="800" fill="#85B7EB" opacity="0">★ MUST<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.38;0.46;0.58;1" dur="6s" repeatCount="indefinite"/></text>
+      <animateTransform attributeName="transform" type="translate" values="0 6; 0 6; 0 0; 0 0; 0 -230; 0 -230" keyTimes="0; 0.15; 0.3; 0.45; 0.6; 1" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.54;0.6;1" dur="6s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- card 1 (top): swiped right = save -->
+    <g>
+      <rect x="-60" y="-80" width="120" height="150" rx="12" fill="#1F2A44" stroke="#3A4566"/>
+      <rect x="-48" y="-64" width="64" height="7" rx="3" fill="#888780"/>
+      <rect x="-48" y="-48" width="96" height="10" rx="3" fill="#D3D1C7"/>
+      <rect x="-48" y="-32" width="50" height="10" rx="3" fill="#D3D1C7"/>
+      <rect x="-48" y="28" width="96" height="28" rx="8" fill="#378ADD" fill-opacity="0.25"/>
+      <text x="0" y="0" text-anchor="middle" font-size="18" font-weight="800" fill="#5DCAA5" opacity="0" transform="rotate(-12)">SAVE<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.08;0.16;0.28;1" dur="6s" repeatCount="indefinite"/></text>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 230 -6; 230 -6" keyTimes="0; 0.15; 0.3; 1" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.24;0.3;1" dur="6s" repeatCount="indefinite"/>
+    </g>
+    </g>
+
+    <!-- buttons -->
+    <circle cx="-38" cy="100" r="13" fill="#E24B4A" fill-opacity="0.22"/>
+    <circle cx="0" cy="100" r="13" fill="#378ADD" fill-opacity="0.22"/>
+    <circle cx="38" cy="100" r="13" fill="#1D9E75" fill-opacity="0.22"/>
+    <g font-size="12" text-anchor="middle">
+      <text x="-38" y="104" fill="#F09595">✕</text>
+      <text x="0" y="104" fill="#85B7EB">★</text>
+      <text x="38" y="104" fill="#5DCAA5">✓</text>
+    </g>
+  </g>
+
+  <!-- Calendar filling in -->
+  <g transform="translate(650 40)" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10">
+    <text x="0" y="12" fill="#FFFFFF" font-size="14" font-weight="700">My calendar</text>
+    <g fill="#5F5E5A">
+      <text x="0" y="48">11:00</text>
+      <text x="0" y="104">15:00</text>
+      <text x="0" y="160">16:30</text>
+    </g>
+    <rect x="40" y="28" width="150" height="30" rx="8" fill="none" stroke="#3A4566" stroke-dasharray="4 3"/>
+    <rect x="40" y="84" width="150" height="30" rx="8" fill="none" stroke="#3A4566" stroke-dasharray="4 3"/>
+    <rect x="40" y="140" width="150" height="30" rx="8" fill="none" stroke="#3A4566" stroke-dasharray="4 3"/>
+    <text x="115" y="214" text-anchor="middle" fill="#5F5E5A">free time shows between talks</text>
+
+    <g opacity="0">
+      <rect x="40" y="84" width="150" height="30" rx="8" fill="#378ADD" fill-opacity="0.3" stroke="#378ADD"/>
+      <text x="52" y="103" fill="#E6F1FB">eBPF at Scale</text>
+      <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.3;0.97" calcMode="discrete" dur="6s" repeatCount="indefinite"/>
+    </g>
+    <g opacity="0">
+      <rect x="40" y="28" width="150" height="30" rx="8" fill="#378ADD" fill-opacity="0.3" stroke="#378ADD"/>
+      <text x="52" y="47" fill="#E6F1FB">★ GPU Autoscaling</text>
+      <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.6;0.97" calcMode="discrete" dur="6s" repeatCount="indefinite"/>
+    </g>
+    <g opacity="0">
+      <rect x="40" y="140" width="150" height="30" rx="8" fill="#378ADD" fill-opacity="0.3" stroke="#378ADD"/>
+      <text x="52" y="159" fill="#E6F1FB">Multi-Cluster 101</text>
+      <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.9;0.97" calcMode="discrete" dur="6s" repeatCount="indefinite"/>
+    </g>
+  </g>
+</svg>
