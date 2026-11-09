@@ -13,6 +13,8 @@ export async function proposeMeetup(input: Partial<Meetup>): Promise<Meetup> {
     throw badRequest("start and end must be ISO times with end after start");
   }
   if (!(await getMatchDoc(a, b))) throw forbidden("you can only propose meetups to mutual matches");
+  // Demo helper: seeded (fictional) personas accept meetups right away, like they match back.
+  const invitee = await getDoc<{ is_persona?: boolean }>(IDX.profiles, b);
   const m: MeetupDoc = {
     id: "m_" + randomBytes(4).toString("hex"),
     a,
@@ -22,7 +24,7 @@ export async function proposeMeetup(input: Partial<Meetup>): Promise<Meetup> {
     start,
     end,
     label,
-    status: "proposed",
+    status: invitee?.is_persona ? "accepted" : "proposed",
     created_at: new Date().toISOString(),
   };
   await es().index({ index: IDX.meetups, id: m.id, document: m, refresh: true });
