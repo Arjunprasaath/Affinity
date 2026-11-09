@@ -40,12 +40,22 @@ struct OnboardingView: View {
 
     private var form: some View {
         Form {
-            Section("About you") {
+            // Photo preview: pulled from GitHub as soon as a username is typed.
+            Section {
+                VStack(spacing: 8) {
+                    Avatar(name: name.isEmpty ? "?" : name, github: github, size: 84)
+                    Text(github.isEmpty ? "Add your GitHub to use your photo" : "Photo from GitHub")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .listRowBackground(Color.clear)
+            }
+
+            Section {
                 LabeledField(label: "Name", placeholder: "Your name", text: $name)
                     .textContentType(.name)
                 LabeledField(label: "Role", placeholder: "Platform engineer", text: $role)
-                LabeledField(label: "Company", placeholder: "Optional", text: $company)
-                LabeledField(label: "Pronouns", placeholder: "Optional", text: $pronouns)
                 LabeledField(label: "GitHub", placeholder: "username", text: $github)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -53,40 +63,22 @@ struct OnboardingView: View {
 
             Section("What are you working on?") {
                 TextField("Migrating 40 clusters to Cilium", text: $workingOn, axis: .vertical)
-            }
-            Section("What are you looking for here?") {
-                TextField("People running GPU workloads at scale", text: $lookingFor, axis: .vertical)
-            }
-            Section("What could you help someone with?") {
-                TextField("KServe deployment, GPU autoscaling", text: $offering, axis: .vertical)
-            }
-
-            Section("Here for") {
-                ForEach(HereFor.allCases) { option in
-                    Button {
-                        if hereFor.contains(option) { hereFor.remove(option) } else { hereFor.insert(option) }
-                    } label: {
-                        HStack {
-                            Text(option.label).foregroundStyle(.primary)
-                            Spacer()
-                            if hereFor.contains(option) {
-                                Image(systemName: "checkmark").foregroundStyle(.tint)
-                            }
-                        }
-                    }
-                    .accessibilityAddTraits(hereFor.contains(option) ? .isSelected : [])
-                }
+                    .lineLimit(1...3)
             }
 
             Section {
-                Picker("Status", selection: $status) {
-                    ForEach(PresenceStatus.allCases) { Text($0.label).tag($0) }
+                DisclosureGroup("Better matches (optional)") {
+                    LabeledField(label: "Company", placeholder: "Optional", text: $company)
+                    LabeledField(label: "Pronouns", placeholder: "Optional", text: $pronouns)
+                    TextField("Looking for: people running GPUs at scale", text: $lookingFor, axis: .vertical)
+                        .lineLimit(1...3)
+                    TextField("Can help with: KServe, autoscaling", text: $offering, axis: .vertical)
+                        .lineLimit(1...3)
+                    hereForPicker
+                    Picker("On the radar", selection: $status) {
+                        ForEach(PresenceStatus.allCases) { Text($0.label).tag($0) }
+                    }
                 }
-                .pickerStyle(.segmented)
-            } header: {
-                Text("On the radar")
-            } footer: {
-                Text("Invisible hides you from everyone's radar. You can change this any time.")
             }
 
             Section {
@@ -119,6 +111,33 @@ struct OnboardingView: View {
                 Text("Skips onboarding with a sample profile. For building and testing.")
             }
         }
+    }
+
+    /// "Here for" as one row of tappable chips instead of five list rows.
+    private var hereForPicker: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Here for").font(.subheadline)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(HereFor.allCases) { option in
+                        let isOn = hereFor.contains(option)
+                        Button {
+                            if isOn { hereFor.remove(option) } else { hereFor.insert(option) }
+                        } label: {
+                            Text(option.label)
+                                .font(.caption.weight(.medium))
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 6)
+                                .foregroundStyle(isOn ? Color.white : Color.primary)
+                                .background(isOn ? Color.accentColor : Color.secondary.opacity(0.15), in: Capsule())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityAddTraits(isOn ? .isSelected : [])
+                    }
+                }
+            }
+        }
+        .padding(.vertical, 4)
     }
 
     private func submit() async {
@@ -182,8 +201,17 @@ struct TagReviewView: View {
 
     var body: some View {
         Form {
-            if let summary = profile.summary {
-                Section("Summary") { Text(summary) }
+            Section {
+                HStack(spacing: 14) {
+                    Avatar(name: profile.name, github: profile.github, size: 56)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(profile.name).font(.headline)
+                        if let summary = profile.summary {
+                            Text(summary).font(.subheadline).foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                .padding(.vertical, 4)
             }
             Section {
                 if topics.isEmpty {
