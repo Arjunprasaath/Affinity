@@ -64,7 +64,7 @@ struct MatchDetailView: View {
                 } label: {
                     Label("Find on radar", systemImage: "dot.radiowaves.left.and.right")
                 }
-                .accessibilityLabel("Find \(firstName) on the Orbit radar")
+                .accessibilityLabel("Find \(firstName) on the radar")
             }
         }
         .overlay(alignment: .top) { bannerView }

@@ -65,7 +65,7 @@ struct FindView: View {
     }
 
     private var hint: String {
-        guard let peer else { return "\(name) isn't in range. Walk around a bit, or ask them to open Orbit." }
+        guard let peer else { return "\(name) isn't in range. Walk around a bit, or ask them to open Affinity." }
         if isClose { return "You're here. Say hi to \(peer.firstName)!" }
         if peer.distance == nil { return "\(peer.firstName) is nearby. Distance shows up once you're both a little closer." }
         if peer.bearing == nil { return "Follow the distance. This iPhone can't show direction." }

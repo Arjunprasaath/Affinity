@@ -1,4 +1,4 @@
-# Orbit — build plan
+# Affinity — build plan
 
 > Cloud Native Hackathon (WeMakeDevs × KubeCon NA), Salt Lake City, Nov 9 2026.
 > Submissions close **5:30 PM MT**. This plan was written at 2:27 PM, so we have **about 3 hours**.
@@ -33,7 +33,7 @@ A conference removes both:
 - thousands of people are packed into one building;
 - they came specifically to meet strangers.
 
-Orbit's design also never sends anyone's location to a server (see Privacy).
+Affinity's design also never sends anyone's location to a server (see Privacy).
 
 ## Features (in scope)
 
@@ -166,7 +166,7 @@ Steps:
 1. **Hook** (20s): "You walked past 50 people today who could have changed your career."
 2. **Problem** (30s): networking is why we come, and it's awkward and random. Apps give you a list of 9,000 people.
 3. **Live** (90s):
-   - Two teammates stand at opposite ends of the stage with Orbit open, and the phone screen is mirrored to the projector.
+   - Two teammates stand at opposite ends of the stage with Affinity open, and the phone screen is mirrored to the projector.
    - Dots appear on the radar: "Arjun · Platform eng · 8m · 🟢 Open to chat · You both work on Cilium."
    - Tap **Find**, and the arrow points across the stage while the distance counts down: 8m → 4m → 1m.
    - They meet and shake hands.
@@ -187,10 +187,10 @@ Steps:
 
 ## Relation to HallwayTrack ([`PLAN.md`](PLAN.md))
 
-HallwayTrack deliberately avoids live location and works from **planned** schedules. Orbit is the
+HallwayTrack deliberately avoids live location and works from **planned** schedules. Affinity is the
 **live, in-the-room** layer. If the team wants to combine them:
 - share the Elastic `profiles` index and the profile JSON shape;
-- HallwayTrack handles *"who should I meet and when"*, and Orbit handles *"they're 4m away right now."*
+- HallwayTrack handles *"who should I meet and when"*, and Affinity handles *"they're 4m away right now."*
 
 The two plans are independent. Pick one to build today, given about 3 hours.
 

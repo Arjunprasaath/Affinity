@@ -35,7 +35,7 @@ struct RadarView: View {
             }
             .padding(.horizontal)
             .padding(.bottom, 8)
-            .navigationTitle("Orbit")
+            .navigationTitle("Radar")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

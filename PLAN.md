@@ -1,16 +1,16 @@
-# Orbit — build plan
+# Affinity — build plan
 
 > Cloud Native Hackathon (WeMakeDevs × KubeCon NA), Salt Lake City, Nov 9 2026.
 > Written at **2:40 PM MT**. Submissions close at **5:30 PM**.
 >
 > One iPhone app that combines **HallwayTrack** (swipe on talks → your calendar → matched people →
-> where you can meet) and **Orbit** (a live radar of who's near you).
+> where you can meet) and **Affinity** (a live radar of who's near you).
 > [`PLAN_ORBIT.md`](PLAN_ORBIT.md) remains as the detailed reference for the proximity work.
 
 ## One-liner
 
 **Swipe to build your conference. Get matched with people who share your interests. See where you
-can meet. When they're nearby, Orbit points the way.**
+can meet. When they're nearby, Affinity points the way.**
 
 ## Pitch hook
 
@@ -23,7 +23,7 @@ can meet. When they're nearby, Orbit points the way.**
 ## The user flow (5 steps)
 
 ```
-1. Onboard ─► 2. Swipe talks ─► 3. My calendar ─► 4. Swipe people ─► 5. Match: where we can meet ─► 6. Orbit radar + Find
+1. Onboard ─► 2. Swipe talks ─► 3. My calendar ─► 4. Swipe people ─► 5. Match: where we can meet ─► 6. Affinity radar + Find
    profile      (Elastic)          (EventKit)        (reciprocal)       (partial calendar reveal)       (live, peer to peer)
 ```
 
@@ -55,7 +55,7 @@ can meet. When they're nearby, Orbit points the way.**
      1. A shared talk: "Meet at the Room 155 door when 'eBPF at Scale' ends (3:40)"
      2. Overlapping free time: "Coffee by Hall B, Tue 2:45–3:15", a spot between both previous rooms
    - **Propose → Accept**: once both accept, the meetup is added to both in-app calendars and the iPhone Calendar.
-6. **📡 Orbit radar** (live, in the room)
+6. **📡 Affinity radar** (live, in the room)
    - Shows nearby people as dots on distance rings (< 2m, 2–5m, 5–15m), found phone-to-phone.
    - **Your matches glow brightest**, recommended people glow softly, and everyone else is dimmed.
    - Tap a dot to open their card. For a match it shows the meetup and the times you're both free.
@@ -82,7 +82,7 @@ can meet. When they're nearby, Orbit points the way.**
 
 ```
 ┌──────────────────────────── iPhone app (SwiftUI) ────────────────────────────┐
-│ Onboarding │ Talks deck │ My Calendar │ People deck │ Matches │ Orbit radar   │
+│ Onboarding │ Talks deck │ My Calendar │ People deck │ Matches │ Affinity radar   │
 │                              │ EventKit                         │ Multipeer   │
 │                              ▼                                  │ + NI (UWB)  │
 │                         iPhone Calendar                         ▼             │
@@ -106,7 +106,7 @@ can meet. When they're nearby, Orbit points the way.**
 
 Each person owns separate files, so nobody blocks anyone else after the first 10 minutes.
 
-| | **A: Jenish (iOS core + Orbit)** | **B: Arjun (backend + Elastic)** | **C: third teammate (iOS screens)** |
+| | **A: Jenish (iOS core + Affinity)** | **B: Arjun (backend + Elastic)** | **C: third teammate (iOS screens)** |
 |---|---|---|---|
 | **Mission** | App shell + the live radar | The brain: profiles, recommendations, matching, meetups | The swipe → calendar → match experience |
 | **Owns** | `ios/Orbit/App/**`, `ios/Orbit/Core/**` (API client, models), `ios/Orbit/Onboarding/**`, `ios/Orbit/Radar/**`, the Xcode project file | `backend/**`, `data/**` | `ios/Orbit/Talks/**`, `ios/Orbit/Calendar/**`, `ios/Orbit/People/**`, `ios/Orbit/Matches/**` |
@@ -257,7 +257,7 @@ Include a short reason.
 ## iOS details
 
 ### A: Jenish
-- **Stack:** SwiftUI on iOS 17+. A tab bar with **Talks · Calendar · People · Matches · Orbit**.
+- **Stack:** SwiftUI on iOS 17+. A tab bar with **Talks · Calendar · People · Matches · Affinity**.
 - **Shared code:**
   - `APIClient` (async/await, base URL from config, with a `useStubs` flag that loads bundled JSON).
   - `Models.swift`, generated from the shapes above.
@@ -280,7 +280,7 @@ Include a short reason.
   - Create an `EKEvent` for each saved talk and each accepted meetup. Put the room in `location` and the reason in `notes`.
   - Store the event ids so a talk isn't added twice.
 - **MyCalendarView:** a day timeline with talks as blocks, free time as dashed blocks, and clashes in red.
-- **MatchDetailView:** sections for shared talks, times you're both free, their next room, and suggestion cards with a **Propose** button. Show incoming proposals with **Accept** / **Decline**. Include a "Find on radar" button that opens Orbit with that person selected.
+- **MatchDetailView:** sections for shared talks, times you're both free, their next room, and suggestion cards with a **Propose** button. Show incoming proposals with **Accept** / **Decline**. Include a "Find on radar" button that opens Affinity with that person selected.
 
 ## Sponsor tracks
 
@@ -311,7 +311,7 @@ Include a short reason.
 3. Meetup propose/accept (show the suggestions only)
 4. GitHub extraction (topics typed by hand)
 5. Find arrow (distance only), then NearbyInteraction (Multipeer "nearby" only)
-6. Orbit on real phones (keep the radar on `MockProximityManager`)
+6. Affinity on real phones (keep the radar on `MockProximityManager`)
 
 **Never cut:** swipe talks → calendar → swipe people → match → "where we can meet". That's the core story.
 
@@ -322,7 +322,7 @@ Include a short reason.
 3. **Swipe talks** (25s): 4 swipes with reasons, then they appear in the iPhone Calendar.
 4. **Swipe people** (25s): "Priya needs what you offer, and you share 3 talks." Swipe right, **it's a match** (she already liked you).
 5. **Where we can meet** (25s): shared talk at 3:00 in Room 155, both free 3:40–4:10 → propose "Room 155 door at 3:40" → accepted → it's in both calendars.
-6. **Orbit** (40s): with the phone mirrored, Priya's dot **glows** on the radar. Tap **Find**, the arrow and distance count down 8m → 1m, handshake. She flips to 🔴 and vanishes.
+6. **Affinity** (40s): with the phone mirrored, Priya's dot **glows** on the radar. Tap **Find**, the arrow and distance count down 8m → 1m, handshake. She flips to 🔴 and vanishes.
 7. **Under the hood** (20s): the Elastic RRF query + reciprocal score, and a Dash0 trace. "No location ever leaves your phone, and matches see only the overlap of your calendars."
 
 ## Risks

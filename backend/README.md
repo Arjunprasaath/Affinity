@@ -1,6 +1,6 @@
-# Orbit backend
+# Affinity backend
 
-Fastify + TypeScript API for Orbit. It handles:
+Fastify + TypeScript API for Affinity. It handles:
 - profiles,
 - talk recommendations and schedules,
 - people matching,

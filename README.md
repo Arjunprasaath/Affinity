@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/orbit-radar.svg" alt="Orbit: an animated radar showing people near you at a conference, with your match pulsing as he walks toward you" width="100%">
+  <img src="assets/orbit-radar.svg" alt="Affinity: an animated radar showing people near you at a conference, with your match pulsing as he walks toward you" width="100%">
 </p>
 
 <p align="center">
@@ -15,11 +15,11 @@
 
 ---
 
-**Orbit** is an iPhone app for conferences:
+**Affinity** is an iPhone app for conferences:
 1. **Swipe** through talks, and your schedule builds itself.
 2. **Match** with people who need what you offer, and offer what you need.
 3. **See** only the overlap of your calendars: when and where you can meet.
-4. When they're **physically near you**, Orbit puts them on a live radar and points the way.
+4. When they're **physically near you**, Affinity puts them on a live radar and points the way.
 
 Built in one day at the **WeMakeDevs Cloud Native Hackathon**, Salt Lake City, during KubeCon NA 2026.
 
@@ -57,7 +57,7 @@ flowchart LR
   </tr>
   <tr>
     <td align="center"><img src="assets/screens/5-meet.png" alt="Where we can meet: shared talks, times you're both free, Jensen's next planned room and meetup suggestions" width="200"><br><b>Where we can meet</b><br><sub>Only the overlap is shared</sub></td>
-    <td align="center"><img src="assets/screens/6-radar.png" alt="Orbit radar: nearby people as dots on 2, 5 and 15 meter rings, with the match glowing" width="200"><br><b>Orbit radar</b><br><sub>Who's near you right now</sub></td>
+    <td align="center"><img src="assets/screens/6-radar.png" alt="Affinity radar: nearby people as dots on 2, 5 and 15 meter rings, with the match glowing" width="200"><br><b>Affinity radar</b><br><sub>Who's near you right now</sub></td>
     <td align="center"><img src="assets/screens/7-card.png" alt="Person card from the radar: Satya Rao, why you might talk, and a Find button" width="200"><br><b>Who they are</b><br><sub>One tap on a dot</sub></td>
     <td align="center"><img src="assets/screens/8-find.png" alt="Find: a large arrow pointing toward the person and the live distance" width="200"><br><b>Find</b><br><sub>Arrow + live distance</sub></td>
   </tr>
@@ -128,7 +128,7 @@ sequenceDiagram
     S-->>A: Glow tier and a reason for each person
 ```
 
-- **MultipeerConnectivity** finds nearby iPhones running Orbit the way AirDrop does, with no shared Wi-Fi needed.
+- **MultipeerConnectivity** finds nearby iPhones running Affinity the way AirDrop does, with no shared Wi-Fi needed.
 - **NearbyInteraction** uses the Ultra Wideband chip (iPhone 11 and newer, except SE) for precise distance and, on supported models, direction. Other phones fall back to distance only, or "nearby".
 - The backend only ever receives **profile ids**. It never knows where anyone is.
 
@@ -172,7 +172,7 @@ OpenTelemetry auto-instruments HTTP, Fastify and the Elastic client, with manual
 
 ## Sponsor tracks
 
-| Track | How Orbit uses it |
+| Track | How Affinity uses it |
 |---|---|
 | **Elasticsearch: Find the Right Talk** | The whole data layer: hybrid talk search with RRF and swipe feedback, reciprocal people matching, schedules and meetups |
 | **Dash0: Stop Flying Blind** | OpenTelemetry traces and metrics across the API, Elastic and LLM calls |
@@ -209,7 +209,7 @@ Environment variables (Elastic, OpenAI, Dash0) are in [`backend/README.md`](back
 | Simulated people move on the radar (Jensen walks toward you and back) | **Demo people** (radar menu). On by default in the Simulator |
 | Use the live backend instead | **Gear icon** → set the URL → turn off **Use stub data** |
 
-To test the radar for real you need **two iPhones** running Orbit, with Bluetooth and Wi-Fi on and **Demo people** off. See [`ios/README.md`](ios/README.md).
+To test the radar for real you need **two iPhones** running Affinity, with Bluetooth and Wi-Fi on and **Demo people** off. See [`ios/README.md`](ios/README.md).
 
 ## Repo layout
 
@@ -232,7 +232,7 @@ All talks and personas are **fictional**. They are not real KubeCon sessions or 
 
 | | Built |
 |---|---|
-| **Jenish Kothari** ([@jenishk20](https://github.com/jenishk20)) | iOS app core, Orbit radar and proximity engine, onboarding, README |
+| **Jenish Kothari** ([@jenishk20](https://github.com/jenishk20)) | iOS app core, Affinity radar and proximity engine, onboarding, README |
 | **Arjun** ([@Arjunprasaath](https://github.com/Arjunprasaath)) | Backend, Elasticsearch matching, personas and demo data |
 | **Lavisha Goyal** | Backend profile building and OpenTelemetry setup (`feature-branch/lavisha`) |
 | **TODO: name** | iOS swipe decks, calendar, matches and meet screens |

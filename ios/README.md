@@ -1,4 +1,4 @@
-# Orbit iOS app
+# Affinity iOS app
 
 SwiftUI, iOS 17+, Xcode 16.
 
@@ -23,5 +23,5 @@ The `Orbit/` folder is **synced**. Any `.swift` or `.json` file you drop into it
 - `Core/Models.swift` contains every type in the API contract (`PLAN.md`). `Core/APIClient.swift` has one async method per endpoint, e.g. `try await APIClient.shared.recommendedTalks(pid:)`.
 - **Stub mode is on by default.** Every call returns the JSON in `Core/Stubs/`, so screens work before the backend exists.
 - Switch to the live backend at runtime with the **gear icon** → Developer → set the base URL, then turn off "Use stub data".
-- The signed-in user is `appState.profile` (`@Environment(AppState.self)`). `appState.findOnRadar(pid:)` jumps to the Orbit tab.
+- The signed-in user is `appState.profile` (`@Environment(AppState.self)`). `appState.findOnRadar(pid:)` jumps to the Radar tab.
 - "Use the demo profile" on the onboarding screen skips straight to the tabs.

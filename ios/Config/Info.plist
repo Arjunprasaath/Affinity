@@ -13,13 +13,13 @@
 		<string>_orbit-cnh._udp</string>
 	</array>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
-	<string>Orbit adds the talks and meetups you save to your calendar.</string>
+	<string>Affinity adds the talks and meetups you save to your calendar.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Orbit uses the camera to make the direction arrow more accurate when you find someone.</string>
+	<string>Affinity uses the camera to make the direction arrow more accurate when you find someone.</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Orbit finds people near you at the conference over Bluetooth and Wi-Fi.</string>
+	<string>Affinity finds people near you at the conference over Bluetooth and Wi-Fi.</string>
 	<key>NSNearbyInteractionUsageDescription</key>
-	<string>Orbit measures how far away nearby attendees are so it can point you to them.</string>
+	<string>Affinity measures how far away nearby attendees are so it can point you to them.</string>
 	<key>ORBIT_API_BASE_URL</key>
 	<string>http://localhost:8080</string>
 </dict>

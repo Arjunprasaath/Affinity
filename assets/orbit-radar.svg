@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360" width="880" height="360" role="img" aria-labelledby="title desc">
-  <title id="title">Orbit</title>
+  <title id="title">Affinity</title>
   <desc id="desc">Animated radar: you in the center, a match pulsing as he walks toward you, other attendees on distance rings at 2, 5 and 15 meters.</desc>
   <defs>
     <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
@@ -12,7 +12,7 @@
 
   <!-- Wordmark -->
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
-    <text x="56" y="140" fill="#FFFFFF" font-size="72" font-weight="700" letter-spacing="-2">Orbit</text>
+    <text x="56" y="140" fill="#FFFFFF" font-size="72" font-weight="700" letter-spacing="-2">Affinity</text>
     <text x="58" y="182" fill="#B4B2A9" font-size="19">See who's around you at the conference,</text>
     <text x="58" y="208" fill="#B4B2A9" font-size="19">and who's worth meeting.</text>
     <rect x="58" y="236" width="282" height="30" rx="15" fill="#1A2238"/>

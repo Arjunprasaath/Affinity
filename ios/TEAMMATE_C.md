@@ -27,7 +27,7 @@ touch the project file, and you never block Jenish.
 - Switch to the live backend from the **gear icon** → set the base URL → turn off "Use stub data".
 - On the onboarding screen, **"Use the demo profile"** skips straight to the tabs.
 - The signed-in pid is `appState.profile?.pid`. `appState.selectedTab = .calendar` moves tabs;
-  `appState.findOnRadar(pid:)` opens Orbit focused on someone.
+  `appState.findOnRadar(pid:)` opens Affinity focused on someone.
 
 ## Two things for Jenish, when there's a minute
 

@@ -40,7 +40,7 @@ struct OnboardingView: View {
             VStack(spacing: 22) {
                 VStack(spacing: 8) {
                     Avatar(name: name.isEmpty ? "?" : name, github: github, size: 80)
-                    Text("Orbit")
+                    Text("Affinity")
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .foregroundStyle(Theme.brand)
                     Text("Find your people at the conference")

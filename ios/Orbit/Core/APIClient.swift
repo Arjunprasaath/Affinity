@@ -155,7 +155,7 @@ final class APIClient {
             let all: [RadarResult] = try Self.stub("stub_radar_match")
             // Real phones in stub mode get "strong" so the glow can be tested between two iPhones.
             return others.map { pid in
-                all.first { $0.pid == pid } ?? RadarResult(pid: pid, tier: .strong, reason: "Another Orbit user nearby (stub data)")
+                all.first { $0.pid == pid } ?? RadarResult(pid: pid, tier: .strong, reason: "Another Affinity user nearby (stub data)")
             }
         }
         return try await request("POST", "radar/match", body: RadarMatchRequest(me: me, others: others))

@@ -50,7 +50,7 @@ struct RootTabView: View {
                 .tabItem { Label("Matches", systemImage: "heart.circle") }
                 .tag(AppTab.matches)
             RadarView()
-                .tabItem { Label("Orbit", systemImage: "dot.radiowaves.left.and.right") }
+                .tabItem { Label("Radar", systemImage: "dot.radiowaves.left.and.right") }
                 .tag(AppTab.orbit)
         }
     }

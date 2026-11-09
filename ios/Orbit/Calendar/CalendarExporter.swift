@@ -27,7 +27,7 @@ final class CalendarExporter {
             switch self {
             case let .added(n): "Added \(n) event\(n == 1 ? "" : "s") to your calendar."
             case .nothingNew: "Everything is already in your calendar."
-            case .denied: "Orbit needs calendar access. Open Settings › Orbit › Calendars to turn it on."
+            case .denied: "Affinity needs calendar access. Open Settings › Affinity › Calendars to turn it on."
             case let .failed(detail): "Couldn't write to the calendar. \(detail)"
             }
         }
@@ -75,7 +75,7 @@ final class CalendarExporter {
                 location: $0.room,
                 start: $0.start,
                 end: $0.end,
-                notes: $0.must ? "Must-attend · saved in Orbit" : "Saved in Orbit"
+                notes: $0.must ? "Must-attend · saved in Affinity" : "Saved in Affinity"
             )
         })
     }
@@ -83,7 +83,7 @@ final class CalendarExporter {
     /// Called when a meetup is accepted, from either side.
     @discardableResult
     func addMeetup(_ meetup: Meetup, withName name: String?) async -> Outcome {
-        let who = name ?? "your Orbit match"
+        let who = name ?? "your Affinity match"
         return await write([
             Draft(
                 key: meetup.id,
@@ -91,7 +91,7 @@ final class CalendarExporter {
                 location: meetup.place,
                 start: meetup.start,
                 end: meetup.end,
-                notes: "Orbit meetup at \(meetup.place). Open Orbit and tap Find to walk over."
+                notes: "Affinity meetup at \(meetup.place). Open Affinity and tap Find to walk over."
             )
         ])
     }
