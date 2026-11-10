@@ -59,7 +59,8 @@ struct RadarView: View {
             .fullScreenCover(item: $findTarget) { peer in
                 FindView(pid: peer.pid, name: peer.name)
             }
-            .task(id: Set(proximity.peers.keys)) {
+            // Refresh when people come and go, and whenever the Radar tab is opened (new matches).
+            .task(id: "\(Set(proximity.peers.keys).hashValue)-\(appState.selectedTab == .orbit)") {
                 await refreshResults()
             }
         }
@@ -91,8 +92,8 @@ struct RadarView: View {
 
     @ViewBuilder
     private var emptyHint: some View {
-        if proximity.peers.isEmpty && proximity.isRunning {
-            Label("Looking for people nearby… Keep Bluetooth and Wi-Fi on.", systemImage: "antenna.radiowaves.left.and.right")
+        if matchedPeers.isEmpty && proximity.isRunning {
+            Label("None of your matches are nearby yet.", systemImage: "antenna.radiowaves.left.and.right")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .padding(10)
@@ -102,7 +103,7 @@ struct RadarView: View {
     }
 
     private var peerList: some View {
-        List(rankedPeers) { peer in
+        List(matchedPeers) { peer in
             Button {
                 selectedPeer = peer
             } label: {
@@ -134,6 +135,13 @@ struct RadarView: View {
                 Text(error).font(.caption).foregroundStyle(.red).multilineTextAlignment(.center)
             }
         }
+    }
+
+    /// Only people you've mutually matched with appear on the radar, closest first.
+    private var matchedPeers: [NearbyPeer] {
+        proximity.sortedPeers
+            .filter { results[$0.pid]?.tier == .match }
+            .sorted { ($0.distance ?? .greatestFiniteMagnitude) < ($1.distance ?? .greatestFiniteMagnitude) }
     }
 
     /// Matches first, then strong, good, weak; closest first within a tier.
@@ -206,7 +214,8 @@ struct RadarCanvas: View {
                     )
                     .position(point)
                     .animation(.easeInOut(duration: 0.4), value: point)
-                    .onTapGesture { onTap(peer) }
+                    // Only matches open a card; everyone else stays an anonymous dot.
+                    .onTapGesture { if results[peer.pid]?.tier == .match { onTap(peer) } }
                 }
             }
         }
@@ -262,7 +271,7 @@ struct PeerDot: View {
                 Circle()
                     .fill(style.color.opacity(style.opacity))
                     .frame(width: style.size, height: style.size)
-                if peer.status == .yellow {
+                if peer.status == .yellow && tier == .match {
                     Circle()
                         .stroke(Color.orange, lineWidth: 2.5)
                         .frame(width: style.size + 6, height: style.size + 6)
@@ -283,8 +292,8 @@ struct PeerDot: View {
         }
         .contentShape(Rectangle().inset(by: -12))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(peer.accessibilityDescription(tier: tier))
-        .accessibilityAddTraits(.isButton)
+        .accessibilityLabel(tier == .match ? peer.accessibilityDescription(tier: tier) : "Someone nearby")
+        .accessibilityAddTraits(tier == .match ? .isButton : [])
     }
 }
 
@@ -298,9 +307,8 @@ struct TierStyle {
     init(_ tier: RadarTier?) {
         switch tier {
         case .match: (color, size, opacity, showsName) = (.green, 26, 1, true)
-        case .strong: (color, size, opacity, showsName) = (.blue, 20, 1, true)
-        case .good: (color, size, opacity, showsName) = (.blue, 15, 0.55, false)
-        case .weak, nil: (color, size, opacity, showsName) = (.gray, 12, 0.5, false)
+        // People you haven't matched with: a plain dot, no name, no colour coding.
+        case .strong, .good, .weak, nil: (color, size, opacity, showsName) = (.gray, 13, 0.45, false)
         }
     }
 }

@@ -17,6 +17,18 @@ interface Suggestion {
   label: string;
 }
 
+/** Split free blocks into back-to-back 1-hour slots, dropping leftovers shorter than an hour. */
+function hourSlots(blocks: TimeBlock[]): TimeBlock[] {
+  const HOUR = 60 * 60000;
+  const out: TimeBlock[] = [];
+  for (const b of blocks) {
+    for (let t = ms(b.start); t + HOUR <= ms(b.end); t += HOUR) {
+      out.push({ start: toLocalIso(t), end: toLocalIso(t + HOUR) });
+    }
+  }
+  return out;
+}
+
 /** Room of the last talk that ends at or before `t` that day (where the person is coming from). */
 function roomBefore(items: ScheduleItem[], t: number): string | undefined {
   const day = toLocalIso(t).slice(0, 10);
@@ -40,7 +52,8 @@ export async function meetView(a: string, b: string) {
       .filter((i) => bIds.has(i.tid) && ms(i.end) > now)
       .map(({ tid, title, room, start, end }) => ({ tid, title, room, start, end }));
 
-    const free_overlaps: TimeBlock[] = intersectBlocks(sa.free, sb.free, 15);
+    // Shared free time as 1-hour slots (not whole 9-to-6 stretches).
+    const free_overlaps: TimeBlock[] = hourSlots(intersectBlocks(sa.free, sb.free, 60)).slice(0, 8);
 
     const next = sb.items.find((i) => ms(i.end) > now);
     const their_next =
@@ -60,7 +73,7 @@ export async function meetView(a: string, b: string) {
     }
     for (const f of free_overlaps.slice(0, 4)) {
       const s = ms(f.start);
-      const e = Math.min(ms(f.end), s + 30 * 60000);
+      const e = ms(f.end); // each slot is already exactly 1 hour
       const fromA = roomBefore(sa.items, s);
       const fromB = roomBefore(sb.items, s);
       suggestions.push({

@@ -155,9 +155,11 @@ final class ProximityManager {
                 isDemo: true
             )
         }
-        let jensenDistance = 0.8 + 7.2 * (0.5 + 0.5 * cos(t / 5))
+        // Mei is the demo's first match: she walks toward you and back so Find has something to do.
+        let meiDistance = 0.8 + 7.2 * (0.5 + 0.5 * cos(t / 5))
         let list = [
-            peer("p_jensen", "Jensen Park", .green, distance: jensenDistance, bearing: 0.6 * sin(t / 7) + 0.5),
+            peer("p_mei", "Mei Lin", .green, distance: meiDistance, bearing: 0.6 * sin(t / 7) + 0.5),
+            peer("p_jensen", "Jensen Park", .green, distance: 6.0 + 0.5 * sin(t / 6), bearing: 1.2),
             peer("p_satya", "Satya Rao", .green, distance: 3.6 + 0.4 * sin(t / 3), bearing: -1.9),
             peer("p_mark", "Mark Ellis", .yellow, distance: 8.5 + 1.5 * sin(t / 4), bearing: 2.6),
             peer("p_sam", "Sam Lee", .green, distance: 12.5, bearing: -0.4 + 0.1 * sin(t / 9)),
