@@ -43,21 +43,6 @@ flowchart LR
     F --> G["Radar + Find"]
 ```
 
-<table>
-  <tr>
-    <td align="center" width="25%"><img src="assets/screens/1-talks.png" alt="Talks deck: a talk card with time, room, level, speaker and why it fits you" width="200"><br><b>Swipe talks</b><br><sub>Each card says why it fits you</sub></td>
-    <td align="center" width="25%"><img src="assets/screens/2-calendar.png" alt="My calendar: saved talks with free gaps between them and an Add to Calendar button" width="200"><br><b>Your calendar</b><br><sub>Free gaps and clashes, worked out for you</sub></td>
-    <td align="center" width="25%"><img src="assets/screens/3-people.png" alt="People card: Jensen Park, 3 talks in common, and why you should meet" width="200"><br><b>Swipe people</b><br><sub>Matched on what you need and offer</sub></td>
-    <td align="center" width="25%"><img src="assets/screens/4-match.png" alt="You're connected: you and Jensen both want to meet" width="200"><br><b>Connected</b><br><sub>Only when you both want to meet</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="assets/screens/5-meet.png" alt="Where we can meet: shared talks, times you're both free, Jensen's next planned room and meetup suggestions" width="200"><br><b>Where we can meet</b><br><sub>Only the overlap is shared</sub></td>
-    <td align="center"><img src="assets/screens/6-radar.png" alt="Affinity radar: nearby people as dots on 2, 5 and 15 meter rings, with the match glowing" width="200"><br><b>Affinity radar</b><br><sub>Who's near you right now</sub></td>
-    <td align="center"><img src="assets/screens/7-card.png" alt="Person card from the radar: Satya Rao, why you might talk, and a Find button" width="200"><br><b>Who they are</b><br><sub>One tap on a dot</sub></td>
-    <td align="center"><img src="assets/screens/8-find.png" alt="Find: a large arrow pointing toward the person and the live distance" width="200"><br><b>Find</b><br><sub>Arrow + live distance</sub></td>
-  </tr>
-</table>
-
 ### Swipe → your calendar builds itself
 
 <p align="center">
@@ -217,7 +202,7 @@ ios/                    SwiftUI app
   Orbit/Talks|Calendar|People|Matches|Components/   swipe decks, calendar, matches
 backend/                Fastify + TypeScript API (Elastic, OpenAI, OpenTelemetry)
 data/                   fictional talks, personas and meeting spots
-assets/                 README graphics and screenshots
+assets/                 README graphics
 PLAN.md                 build plan
 ```
 
