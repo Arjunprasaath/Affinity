@@ -10,20 +10,23 @@ struct TalkCardView: View {
             header
 
             Text(talk.title)
-                .font(.title2.bold())
+                .font(.system(size: 30, weight: .bold))
+                .lineLimit(4)
+                .minimumScaleFactor(0.8)
                 .fixedSize(horizontal: false, vertical: true)
 
             if !talk.speakers.isEmpty {
                 Label(talk.speakers.joined(separator: ", "), systemImage: "person.wave.2")
-                    .font(.subheadline)
+                    .font(.headline)
                     .foregroundStyle(.secondary)
             }
 
             if let abstract = talk.abstract, !abstract.isEmpty {
                 Text(abstract)
-                    .font(.footnote)
+                    .font(.body)
                     .foregroundStyle(.secondary)
-                    .lineLimit(4)
+                    .lineLimit(5)
+                    .padding(.top, 4)
             }
 
             if let topics = talk.topics, !topics.isEmpty {

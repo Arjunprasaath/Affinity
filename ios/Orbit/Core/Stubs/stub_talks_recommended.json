@@ -10,7 +10,13 @@
   "end": "2026-11-10T15:40:00-07:00",
   "level": "intermediate",
   "reason": "You run Kubernetes networking, and this covers eBPF for network policy",
-  "clashes_with": null
+  "clashes_with": null,
+  "abstract": "How one team replaced iptables network policy with eBPF across 10,000 nodes: what broke, what got faster, and the rollout plan that kept production calm.",
+  "topics": [
+   "ebpf",
+   "networking",
+   "security"
+  ]
  },
  {
   "tid": "t_17",
@@ -24,7 +30,13 @@
   "end": "2026-11-10T11:30:00-07:00",
   "level": "advanced",
   "reason": "Directly on your work autoscaling LLM inference",
-  "clashes_with": null
+  "clashes_with": null,
+  "abstract": "Scaling GPU inference pods on queue depth and token latency instead of CPU, with KEDA, custom metrics and a few hard-won lessons about cold starts.",
+  "topics": [
+   "gpu",
+   "autoscaling",
+   "llm-serving"
+  ]
  },
  {
   "tid": "t_08",
@@ -40,7 +52,13 @@
   "clashes_with": {
    "tid": "t_31",
    "title": "Platform Teams That Ship"
-  }
+  },
+  "abstract": "A gentle tour of multi-cluster networking: service discovery, east-west traffic and failover, and when you actually need a mesh.",
+  "topics": [
+   "networking",
+   "multi-cluster",
+   "kubernetes"
+  ]
  },
  {
   "tid": "t_23",
@@ -53,7 +71,13 @@
   "end": "2026-11-11T10:40:00-07:00",
   "level": "intermediate",
   "reason": "You deploy with KServe, and this is a production postmortem",
-  "clashes_with": null
+  "clashes_with": null,
+  "abstract": "Running KServe across 40 clusters: canary rollouts for models, GPU bin-packing, and the dashboards that caught real incidents.",
+  "topics": [
+   "kserve",
+   "llm-serving",
+   "observability"
+  ]
  },
  {
   "tid": "t_55",
@@ -66,7 +90,13 @@
   "end": "2026-11-10T14:35:00-07:00",
   "level": "intermediate",
   "reason": "You serve LLMs, and this shows how to trace token latency end to end",
-  "clashes_with": null
+  "clashes_with": null,
+  "abstract": "Tracing LLM apps with OpenTelemetry: spans for prompts, tokens and retrieval, and how to find the slow step in a RAG pipeline.",
+  "topics": [
+   "opentelemetry",
+   "llm",
+   "observability"
+  ]
  },
  {
   "tid": "t_31",
@@ -79,7 +109,12 @@
   "end": "2026-11-10T17:10:00-07:00",
   "level": "beginner",
   "reason": "Lessons from teams running internal ML platforms like yours",
-  "clashes_with": null
+  "clashes_with": null,
+  "abstract": "What separates platform teams that ship from ones that ticket: golden paths, paved roads and measuring developer experience.",
+  "topics": [
+   "platform-engineering",
+   "devex"
+  ]
  },
  {
   "tid": "t_61",
@@ -92,7 +127,13 @@
   "end": "2026-11-11T11:35:00-07:00",
   "level": "advanced",
   "reason": "Covers multi-cluster networking, which you want to learn",
-  "clashes_with": null
+  "clashes_with": null,
+  "abstract": "Cilium's sidecar-free service mesh in practice: mTLS, L7 policy and observability without injecting a proxy into every pod.",
+  "topics": [
+   "cilium",
+   "service-mesh",
+   "ebpf"
+  ]
  },
  {
   "tid": "t_70",
@@ -105,6 +146,12 @@
   "end": "2026-11-11T14:35:00-07:00",
   "level": "beginner",
   "reason": "Hands-on, and close to the autoscaling controllers you build",
-  "clashes_with": null
+  "clashes_with": null,
+  "abstract": "Build a small operator from scratch with controller-runtime: reconcile loops, status, and testing against a real API server.",
+  "topics": [
+   "operators",
+   "kubernetes",
+   "go"
+  ]
  }
 ]
